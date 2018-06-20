@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">APP</li>
+			<li class="text-muted">APP版本管理</li>
+		</ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                            <div class="row" >
+                                <div class="col-xs-12">
+                                    <form action="/Admin/App/update" method="post" class="form-horizontal form form-builder">
+                                        <div class="form-type-list">
+                                            <div class="form-group hidden item_id ">
+                                                <label class="left control-label">ID：</label>
+                                                <div class="right">
+                                                    <input type="hidden" class="form-control input" name="id" th:value="${yskappeditionentity==null}?'0':${yskappeditionentity.id}">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">APP版本：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="appEdition" id="appEdition" th:value="${yskappeditionentity==null}?'':${yskappeditionentity.appEdition}" placeholder="APP版本" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">APP下载路径：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="downloadingPath" id="downloadingPath" th:value="${yskappeditionentity==null}?'':${yskappeditionentity.downloadingPath}" placeholder="APP下载路径" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="left control-label">是否强制更新：</label>
+                                                <div class="right">
+                                                    <select name="whetherUpdate" class="form-control cui-select select" id="whetherUpdate">
+                                                       	<option th:selected="${yskappeditionentity.whetherUpdate == 0}?true" th:value="0">是</option>
+                                                        <option th:selected="${yskappeditionentity.whetherUpdate == 1}?true" th:value="1">否</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+             
+                                        <div class="form-group"></div>
+                                        <div class="form-group bottom_button_list">
+                                            <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                            <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript">
+	$('#update').click(function() {
+		if (required("APP版本", $("#appEdition").val()) == 1) {
+			$.alertMessager("APP版本不能为空", "danger")
+			return false;
+		}
+		if (required("APP下载路径", $("#downloadingPath").val()) == 1) {
+			$.alertMessager("APP下载路径格式错误", "danger")
+			return false;
+		}
+		if(required("是否强制更新",$("#whetherUpdate").val()) == 1) {
+			$.alertMessager("请选择是否强制更新", "danger")
+			return false;
+        }
+	})
+</script>
+</html>

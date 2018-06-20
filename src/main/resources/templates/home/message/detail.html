@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+<script src="/admin/libs/jquery/1.x/jquery.min.js"></script>
+<title>华彩天下</title>
+</head>
+<body>
+	<div style="margin-top: 0vmin;" class="tongzhi_details">
+		<h3>
+			<span th:text="${info.title}"></span>
+			<p class="dateFormater" th:text="${info.createTime}"></p>
+		</h3>
+		<p th:text="${info.content}"></p>
+	</div>
+</body>
+<script>
+	function changeDateFormat(value) {//日期格式化
+		var date = new Date();
+		date.setTime(value * 1000);
+		var y = date.getFullYear();
+		var m = date.getMonth() + 1;
+		m = m < 10 ? ('0' + m) : m;
+		var d = date.getDate();
+		d = d < 10 ? ('0' + d) : d;
+		var h = date.getHours();
+		h = h < 10 ? ('0' + h) : h;
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		minute = minute < 10 ? ('0' + minute) : minute;
+		second = second < 10 ? ('0' + second) : second;
+		return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+	}
+
+	$('.dateFormater').each(function(index, element) {
+		$(element).text(changeDateFormat($(element).text()))
+	})
+</script>
+</html>

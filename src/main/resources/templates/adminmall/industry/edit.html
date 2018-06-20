@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head th:replace="common/includ" />
+	<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+            <li><i class="fa fa-map-marker"></i></li>
+            <li>商城</li>
+            <li>行业管理</li>
+            <li>行业列表</li>
+            <li class="text-muted">新增</li>
+        </ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                            <div class="row" >
+                                <div class="col-xs-12">
+                                    <form action="/Adminmall/Industry/update" method="post" class="form-horizontal form form-builder" >
+                                        <div class="form-type-list">
+                                            <div class="form-group hidden item_id ">
+                                                <label class="left control-label">ID：</label>
+                                                <div class="right">
+                                                    <input type="hidden" class="form-control input" name="id" id="adsid" th:value="${ads==null}?'0':${ads.id}">
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="form-group">
+                                                <label class="left control-label">上级行业：</label>
+                                                <div class="right">
+                                                    <select name="pid" class="form-control lyui-select select" id="adslist">
+                                                        <option value="-1">请选择</option>
+                                                        <option th:selected="${ads!=null} and ${ads.pid==0}" value="0">顶级分类</option>
+                                                    </select>
+                                                </div>
+                                                <span style="color: #999;margin-left:140px;">最多分为两级</span>
+                                            </div>
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">行业名称：</label>
+                                                <div class="right">
+                                                    <input  type="text" class="form-control input" name="name" th:value="${ads==null}?'':${ads.name}" placeholder="名称" >
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">行业排序：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input text" name="sortOrder" placeholder="排序" th:value="${ads==null}?'0':${ads.sortOrder}" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')">
+                                                    <span style="color: #999;">根据排序进行由大到小排列显示。</span>
+                                                </div>
+                                            </div>
+
+                                        <div class="form-group"></div>
+                                        <div class="form-group bottom_button_list">
+                                           <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder">确定</a>
+                                            <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>                   
+</div>
+	<script type="text/javascript">
+    $(function() {
+    	adsList(); 
+   })
+   //商品品牌
+   function adsList(){
+   	var id = $('#adsid').val();
+   	if(id==' '||id==null){
+   		id = 0;
+   	}
+   	var url = "/Adminmall/Industry/all/"+id
+   	  $.ajax({  
+          url: url, 
+          dataType:"json",
+          success: function (data) {  
+             $("#adslist").append(data); 
+          },  
+          error: function (XMLHttpRequest, textStatus, errorThrown) {  
+              alert("error");  
+          }  
+      }); 
+   };
+    </script>
+</body>
+</html>

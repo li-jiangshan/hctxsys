@@ -1,0 +1,647 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head th:replace="common/includ" />
+	<head th:replace="common/layout" />
+    <script src="/admin/js/ajaxfileupload.js" type="text/javascript"></script>
+	<script src="/admin/js/uploadImg2.js"></script>
+    <style type="text/css">
+		.file {
+		    position: relative;
+		    display: inline-block;
+		    background: #2699ED;
+		    border: 1px solid #99D3F5;
+		    border-radius: ;
+		    padding: 4px 12px;
+		    overflow: hidden;
+		    color: #FFFFFF;
+		    text-decoration: none;
+		    text-indent: 0;
+		    line-height: 20px;
+		}
+		.shang {
+		    position: relative;
+		    display: inline-block;
+		    background: #2699ED;
+		    border: 1px solid #99D3F5;
+		    border-radius: ;
+		    padding: 4px 12px;
+		    overflow: hidden;
+		    color: #FFFFFF;
+		    text-decoration: none;
+		    text-indent: 0;
+		    line-height: 20px;
+		}
+		.filepi{
+			position: relative;
+		    display: inline-block;
+		    border-radius: ;
+		    padding: 0px 0px;
+		    overflow: hidden;
+		    text-decoration: none;
+		    text-indent: 0;
+		    line-height: 20px;
+		}
+		.file input {
+		    position: absolute;
+		    font-size: 100px;
+		    right: 0;
+		    top: 0;
+		    opacity: 0;
+		}
+		.filepi input {
+		    position: absolute;
+		    font-size: 100px;
+		    right: 0;
+		    top: 0;
+		    opacity: 0;
+		}
+		.file:hover {
+		    background: #117FCF;
+		    border-color: #78C3F3;
+		    color: #FFFFFF;
+		    text-decoration: none;
+		}
+		.filepi:hover {
+		    text-decoration: none;
+		}
+		
+	</style>
+</head>
+
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+            <li><i class="fa fa-map-marker"></i></li>
+	        <li>商城</li>
+            <li>商品管理</li>
+            <li>商品列表</li>
+            <li class="text-muted">添加商品</li>
+        </ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+                <div class="builder formbuilder-box">
+                  <div class="panel-body">
+                  <form action="/Adminmall/Good/addgood" method="post" class="form-horizontal form form-builder" enctype="multipart/form-data" >
+                        <ul class="nav-tabs nav">
+                            <li class="active" ><a href="javascript:void(0)" data-toggle="tab" aria-expanded="true">基本信息</a></li>
+                            <li >
+                                <a href="javascript:void(0)" data-toggle="tab" aria-expanded="false">商品模型</a>
+                            </li>
+                             <li >
+                                <a href="javascript:void(0)" data-toggle="tab" aria-expanded="false">商品图片</a>
+                            </li>                
+                        </ul>
+                       
+                        <div class="tab-content" >
+                        
+                            <!-- 卡片1 -->
+                            <div id="tab1" class="tab-pane active" >
+                                <div class="col-xs-12">
+                                        <div style="height:20px;" ></div>
+                                        <div class="form-type-list">
+                                            <input type="hidden" name="goodId" value="0">
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">商品名称：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input" name="goodName" value="" placeholder="商品名称" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">商品编号：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input text" name="goodNo" placeholder="商品编号"  >
+                                                    <span style="color: #999;">商品编号，商品的唯一标识。</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title">
+                                                <label class="left control-label">商品分类：</label>
+                                                <div style="width:60%" class="right">
+                                                    <select id="catList" name="categoryId" class="form-control select" >
+                                                        <option value="">请选择</option>
+                                                    </select>
+                                                    <span style="color: #999;">推荐选择最底层分类</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="left control-label">商品品牌：</label>
+                                                <div style="width:60%" class="right">
+                                                    <select id="brandList" name="brandId" class="form-control lyui-select select">
+                                                        <option value="">请选择</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">供应商：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input" name="goodSupplier" value="" placeholder="供应商" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">关键词：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input text" name="keywords" value="" placeholder="关键词" >
+                                                    <span style="color: #999">设置关键便于搜索</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">售价：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input text" name="goodPrice" value="" placeholder="销售价格" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                    <span style="color: #999">多参数价格请在商品模型添加</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">市场价：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input" name="marketPrice" value="" placeholder="市场价" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">成本价：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input" name="costPrice" value="" placeholder="成本价" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_title">
+                                                <label class="left control-label">佣金比例：</label>
+                                                <div style="width:42%" class="input-group">
+                                                    <input type="text" name="goodCommission" class="form-control text" value="0" placeholder="佣金比例" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                                    <span style="color: #999;margin-left:12%">用于商城分销,微信三级分销。0不设置分佣比例</span>
+                                            </div>
+                                            
+                                           <div class="form-group ">
+                                                <label class="left control-label">商品重量：</label>
+                                                <div style="width:42%" class="input-group">
+                                                    <input type="text" name="goodWeight" class="form-control"  placeholder="商品重量" value="" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" >
+                                                     <span class="input-group-addon">g</span>
+                                                </div>
+                                                <span style="color: #999;margin-left:12%">务必设置商品重量, 用于计算物流费.以克为单位</span>
+                                            </div>
+                                            
+                                            <div class="form-group item_type ">
+                                                <label class="left control-label">
+                                                    <span>是否包邮：</span>
+                                                </label>
+                                                <div class="right">
+                                                    <div class="radio-inline lyui-control lyui-radio">
+                                                        <label for="typemodule">
+                                                            <input type="radio" id="typemodule" class="radio" name="shipFee" value="module"> 
+                                                            <span class="lyui-control-indicator"></span>
+                                                            <span>是</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline lyui-control lyui-radio">
+                                                        <label for="typetheme">
+                                                            <input type="radio" checked="true" id="typetheme" class="radio" name="shipFee" value="theme"> 
+                                                            <span class="lyui-control-indicator"></span>
+                                                            <span>否</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_title">
+                                                <label class="left control-label">商品总库存：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" name="goodStore" class="form-control input text" placeholder="商品库存" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                    <span class="check-tips text-muted small">多参数商品库存请在商品模型添加</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_ysj ">
+                                                <label class="left control-label">
+                                                  <span>商城属性：</span>
+                                                </label>
+                                                <div class="right">
+                                                    <div class="checkbox-inline lyui-control lyui-checkbox">
+                                                        <label class="checkbox-label">
+                                                            <input type="checkbox" name="isHot" value="1">
+                                                            <span class="lyui-control-indicator"></span>
+                                                            <span>热销商品</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox-inline lyui-control lyui-checkbox">
+                                                        <label class="checkbox-label">
+                                                            <input type="checkbox" name="isRecommend" value="1">
+                                                                <span class="lyui-control-indicator"></span>
+                                                                <span>精品推荐</span>
+                                                        </label>
+                                                    </div> 
+                                                    <div class="checkbox-inline lyui-control lyui-checkbox">
+                                                        <label class="checkbox-label">
+                                                            <input type="checkbox" name="isNew" value="1">
+                                                                <span class="lyui-control-indicator"></span>
+                                                                <span>新品上市</span>
+                                                        </label>
+                                                    </div>        
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group item_title">
+                                                <label class="left control-label">赠送积分：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" name="goodIntegral" class="form-control input text" placeholder="赠送积分" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+                                                    <span style="color: #999">订单完成后赠送积分,如果设置0，不赠送积分</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">商品排序：</label>
+                                                <div style="width:60%" class="right">
+                                                    <input type="text" class="form-control input text" name="goodSort" placeholder="商品编号" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" >
+                                                    <span style="color: #999;">数值越大越靠前。</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="left control-label">商品详情描述：</label>
+                                                <div class="right">
+                                                    <textarea style="min-height:400px" class="form-control" rows="5" name="goodContent" id="editor"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                </div> 
+                            </div>
+                            <!-- 卡片2 -->
+                            <div id="tab2" class="tab-pane" >
+                                <div class="col-xs-12">
+                                
+                                    <div style="height:20px;" ></div>
+                                    <div class="form-type-list">
+
+                                         <div class="form-group">
+                                            <label class="left control-label">商品模型：</label>
+                                            <div style="width:60%" class="right">
+                                                <select name="modelId" id="spec_type" class="form-control  select">
+                                                    <option value="">请选择</option>
+                                                </select>
+                                                <span style="color: #999;">选择商品模型后添加对应参数</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="left control-label">商品规格：</label>
+                                            <div style="width:60%" class="right">
+                                                <!-- 规格数据 S -->
+                                                <div  id="ajax_spec_data">
+                                                </div>
+                                                 <!-- 规格数据 E -->
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div> 
+                            </div>
+                            <!-- 卡片3 -->
+                            <div id="tab3" class="tab-pane" >
+                                <div class="col-xs-12">
+                                    <div style="height:20px;" ></div>
+                                    <div class="form-type-list">
+                                        
+                                         <div class="form-group">
+                                            <label class="left control-label">封面：</label>
+                                            <div style="width:60%" class="right">
+                                                <input type="hidden" id="goodCoverImg" name="goodCoverImg" value="" class="type-file-text">
+                                                <div style="width:20%;height:100px;border:1px solid #ccc;text-align:center" >
+                                                    <img style="max-width:100%;max-height:100%;display: block;" id="showpic1" src="" alt="">
+                                                </div>
+                                                <a href="javascript:void(0);" class="file">选择上传...
+    												<input type="file" name="file" id="pic1" onchange="ajaxFileUpload(this.id)" >
+												</a>
+                                                <br>
+                                                <b style="color: #d6d6d6;font-size: 10px">图片尺寸最佳为1比1比例(300*300,200*200)</b>
+                                            </div>
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label class="left control-label">商品图集：</label>
+                                            <div style="width:60%" class="right">
+                                               <div class="tab-pane" id="tab_goods_images">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>
+                                                            	<span id="imgBox"></span>
+                                                                <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;" id="inputBox">
+                                                                    <input type="hidden" name="goodImages" value="0">
+                                                                    <a href="javascript:void(0);" class="filepi">
+                                                                    <img src="/admin/images/add-button.jpg" width="100" height="100"/>
+                                                                    	<input type="file" name="file" title="" id="file" multiple="multiple" accept="image/png,image/jpg,image/gif,image/JPEG" />
+                                                                    </a>
+                                                                    <br>
+                                                                    <input type="button" value="上传 " id="btn" class="shang">
+                                                                </div>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group bottom_button_list">
+                                <a class="btn btn-primary submit" type="submit" target-form="form" onclick="sub()">保存</a>
+                                <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                            </div>
+                            <div class="form-group"></div>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>              
+</div>
+<script type="text/javascript">
+			$(function() {
+				 catList(); 
+				 brandList();
+				 ModelList();
+			})
+            $('.nav li').click(function(){
+                var index=$(this).index();
+                $(this).addClass('active').siblings('li').removeClass('active');
+                $('.tab-content .tab-pane').removeClass('active');
+                $('.tab-content .tab-pane').eq(index).addClass('active');
+            })
+        var editortext;
+		KindEditor.ready(function(K) {
+				window.editor = K.create('#editor', {
+					uploadJson : '/fileUpload',
+					fileManagerJson : '/fileManager',
+					allowFileManager : true,
+					afterBlur : function() {
+						this.sync();
+						editortext = $("#editor").val();
+					}
+				});
+			});
+        //商品品牌
+        function brandList(){
+        	  $.ajax({  
+                 url: "/Adminmall/Goodbrand/all/0", 
+                 dataType:"json",
+                 success: function (data) {  
+                    $("#brandList").append(data); 
+                 },  
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {  
+                     alert("error");  
+                 }  
+             }); 
+        };
+        //商品模型
+        function ModelList(){
+      	  $.ajax({  
+               url: "/Adminmall/Goodmodel/all/0", 
+               dataType:"json",
+               success: function (data) {  
+                  $("#spec_type").append(data); 
+               },  
+               error: function (XMLHttpRequest, textStatus, errorThrown) {  
+                   alert("error");  
+               }  
+           }); 
+      };
+        //商品分类
+        function catList(){
+      	  $.ajax({  
+               url: "/Adminmall/Goodtype/all/0", 
+               dataType:"json",
+               success: function (data) {  
+                  $("#catList").append(data); 
+               },  
+               error: function (XMLHttpRequest, textStatus, errorThrown) {  
+                   alert("error");  
+               }  
+           }); 
+      };
+
+       /** 以下 商品规格相关 js*/
+        $(document).ready(function(){   
+            // 商品模型切换时 ajax 调用  返回不同的属性输入框
+            $("#spec_type").change(function(){  
+                var goods_id = $("input[name='goodId']").val();
+                if(goods_id==''||goods_id==null){
+                	goods_id = 0;
+                }
+                var spec_type = $(this).val();
+                var url = '/goodAttr/getTable'
+                    $.ajax({
+                            type:'GET',
+                            data:{goodId:goods_id,modelId:spec_type}, 
+                            url:url,
+                            success:function(data){                            
+                                   $("#ajax_spec_data").html('')
+                                   $("#ajax_spec_data").append(data);
+                                     ajaxGetSpecInput();  // 触发完  马上触发 规格输入框
+                            }
+                    });           
+            });
+            // 触发商品规格
+            $("#spec_type").trigger('change'); 
+            
+        });
+       
+		function ajaxFileUpload(id) {
+			var fileObj = document.getElementById(id)
+			var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+			var extention = document.getElementById(id).value.substring(
+					fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+			var browserVersion = window.navigator.userAgent.toUpperCase();
+			if (allowExtention.indexOf(extention) > -1) {
+				$.ajaxFileUpload({
+					url : '/testuploadimg', //用于文件上传的服务器端请求地址
+					contentType : "application/json; charset=utf-8",
+					secureuri : false, //是否需要安全协议，一般设置为false
+					cache : false,//防止缓存
+					fileElementId : id, //文件上传域的ID
+					dataType : 'JSON', //返回值类型 一般设置为json
+					success : function(data) //服务器成功响应处理函数
+					{
+						data = data.replace(/<pre.*?>/g, '');
+						data = data.replace(/<PRE.*?>/g, '');
+						data = data.replace("<PRE>", '');
+						data = data.replace("</PRE>", '');
+						data = data.replace("<pre>", '');
+						data = data.replace("</pre>", '');
+						var json = JSON.parse(data);
+						$("#show" + id).attr("src", json.path);
+						$("#goodCoverImg").attr("value", json.path);
+					},
+					error : function(e)//服务器响应失败处理函数
+					{
+						alert(e);
+					}
+				});
+			} else {
+				alert("仅支持" + allowExtention + "为后缀名的文件!");
+				fileObj.value = ""; //清空选中文件
+				if (browserVersion.indexOf("MSIE") > -1) {
+					fileObj.select();
+					document.selection.clear();
+				}
+			}
+			return false;
+		}
+		
+		//批量上传图片js
+			imgUpload({
+			inputId : 'file', //input框id
+			imgBox : 'imgBox', //图片容器id
+			buttonId : 'btn', //提交按钮id
+			upUrl : '/uploadImg', //提交地址
+			data : 'file', //参数名
+			num : "10"//最多上传图片个数
+		})
+	
+		//图片展示
+		function addNewContent(obj) {
+		$(imgBox).html("");
+		for(var a = 0; a < imgSrc.length; a++) {
+			var oldBox = $(obj).html();                                                       																																																															
+			$(obj).html(oldBox + '<div class="imgContainer" style="width:100px; text-align:center; margin: 5px; display:inline-block;"><img title=' + imgName[a] + ' alt=' + imgName[a] + ' src=' + imgSrc[a] + ' onclick="imgDisplay(this)" width="100" height="100"><input type="hidden" name="imgUrl[]" id="hidden'+ a +'" /><a onclick="removeImg(this,' + a + ')" class="imgDelete">删除</a></div>');
+			}
+		}
+		//提交
+		function sub(){
+			var arr = [];
+			var img = [];
+			$("#spec_input_tab tr:gt(0)").each(function(index){
+				var o=new Object();
+				o.price=$(this).find("input[name='price[]']").val();
+				o.store=$(this).find("input[name='store[]']").val();
+				o.attrtext=$(this).find("input[name='att_text[]']").val();
+				o.attrvalue=$(this).find("input[name='att_value[]']").val();
+				arr.push(o);
+			});
+			$("#imgBox input").each(function(index){
+				var image = $(this).val();
+				//alert(img);
+				img.push(image);
+			});
+			
+			//goodId
+			var goodId = $("input[name='goodId']").val();
+			if(goodId==null||goodId==''){
+				goodId='0';
+			}
+			//goodName
+			var goodName = $("input[name='goodName']").val();
+			//goodNo
+			var goodNo = $("input[name='goodNo']").val();
+			//categoryId
+			var categoryId = $("#catList>option:selected").val();
+			//brandId
+			var brandId = $("#brandList>option:selected").val();
+			//goodSupplier
+			var goodSupplier = $("input[name='goodSupplier']").val();
+			//keywords
+			var keywords = $("input[name='keywords']").val();
+			//goodPrice
+			var goodPrice = $("input[name='goodPrice']").val();
+			//marketPrice
+			var marketPrice = $("input[name='marketPrice']").val();
+			//costPrice
+			var costPrice = $("input[name='costPrice']").val();
+			//goodCommission
+			var goodCommission = $("input[name='goodCommission']").val();
+			//goodWeight
+			var goodWeight = $("input[name='goodWeight']").val();
+			//shipFee
+			var shipFee = $(':radio[name="shipFee"]:checked').val();
+			//alert(shipFee);
+			if(shipFee=='module'){
+				shipFee='1';
+			}else{
+				shipFee='0';
+			}
+			//goodStore
+			var goodStore = $("input[name='goodStore']").val();
+			//goodIntegral
+			var goodIntegral = $("input[name='goodIntegral']").val();
+			//goodSort
+			var goodSort = $("input[name='goodSort']").val();
+			//goodContent
+			var goodContent = editortext;
+			//modelId
+			var modelId = $("#spec_type>option:selected").val();
+			//goodCoverImg
+			var goodCoverImg = $("input[name='goodCoverImg']").val();
+			//goodImages
+			var goodImages = $("input[name='goodImages']").val();
+			var isHot = 0;
+			if($("input[name='isHot']").is(":checked")){
+				isHot = 1;
+			}
+			var isNew = 0;
+			if($("input[name='isNew']").is(":checked")){
+				isNew = 1;
+			}
+			var isRecommend = 0;
+			if($("input[name='isRecommend']").is(":checked")){
+				isRecommend = 1;
+			}
+			//console.log($("form").serialize());
+			var t=new Object();
+			t.goodId=goodId,
+			t.goodName=goodName,
+			t.goodNo=goodNo,
+			t.categoryId=categoryId,
+			t.brandId=brandId,
+			t.goodSupplier=goodSupplier,
+			t.keywords=keywords,
+			t.goodPrice=goodPrice,
+			t.marketPrice=marketPrice,
+			t.costPrice=costPrice,
+			t.goodCommission=goodCommission,
+			t.goodWeight=goodWeight,
+			t.shipFee=shipFee,
+			t.goodStore=goodStore,
+			t.goodIntegral=goodIntegral,
+			t.goodSort=goodSort,
+			t.goodContent=goodContent,
+			t.modelId=modelId,
+			t.goodCoverImg=goodCoverImg, 
+			t.isHot=isHot, 
+			t.isNew=isNew, 
+			t.isRecommend=isRecommend, 
+			t.tests=arr;
+			t.imgUrl=img;
+			//console.log(JSON.stringify(t))
+			//alert(arr);
+			  $.ajax({
+		     	type: "POST",
+		        dataType: "json",
+		        url: "/Adminmall/Good/addgood" ,
+		        traditional: true,
+		        contentType: 'application/json',
+		        data: JSON.stringify(t),
+		        success: function (data) {
+		             //console.log(data);
+		             if (data.status == 1) {
+		            	 $.alertMessager(data.message,"success");
+		            	 setTimeout(function(){//两秒后跳转  
+	                         	location.reload();
+	                          },2000);
+		             }else{
+		            	 $.alertMessager(data.message,"danger");
+		             };
+		       },
+		       error : function() {
+		             //alert("异常！");
+		       }
+		    }); 
+		};
+    </script>
+</body>
+</html>

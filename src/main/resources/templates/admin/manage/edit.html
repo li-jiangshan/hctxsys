@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">管理员管理</li>
+		</ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                            <div class="row" >
+                                <div class="col-xs-12">
+                                    <form action="/Admin/Manage/editupdate" method="post" class="form-horizontal form form-builder">
+                                        <div class="form-type-list">
+                                            <div class="form-group hidden item_id ">
+                                                <label class="left control-label">ID：</label>
+                                                <div class="right">
+                                                    <input type="hidden" class="form-control input" name="id" th:value="${yskadminentity==null}?'0':${yskadminentity.id}">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="left control-label">角色：</label>
+                                                <div class="right">
+                                                        <select name="authId" class="form-control cui-select select" id="authId">
+                                                            <option value="">请选择：</option>
+                                                            <option th:each="group,groupStat : ${grouplist}" th:value="${group.id}" th:if="${group.id == yskadminentity?.authId}" th:text="${group.title}" selected="selected"></option>
+                                                            <option th:each="group,groupStat : ${grouplist}" th:value="${group.id}" th:unless="${group.id == yskadminentity?.authId}" th:text="${group.title}"></option>
+                                                        </select>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">昵称：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="nickname" id="nickname" th:value="${yskadminentity==null}?'':${yskadminentity.nickname}" placeholder="昵称" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">用户名：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="username" id="username" th:value="${yskadminentity==null}?'':${yskadminentity.username}" placeholder="用户名" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">密码：</label>
+                                                <div class="right">
+                                                    <input type="password" class="form-control input text" th:if="${yskadminentity == null}" name="password" placeholder="密码" id="password" >
+                                                    <input type="password" class="form-control input text" th:unless="${yskadminentity == null}" name="password" placeholder="留空则不做修改" id="password" >
+                                                </div>
+                                            </div>
+                                             <div class="form-group item_title ">
+                                                <label class="left control-label">确认密码：</label>
+                                                <div class="right">
+                                                    <input type="password" class="form-control input text" name="repassword" value="" placeholder="确认密码" id="repassword">
+                                                </div>
+                                            </div>
+                                            
+                                             <div class="form-group item_title ">
+                                                <label class="left control-label">手机：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input text" name="mobile" th:value="${yskadminentity==null}?'':${yskadminentity.mobile}" placeholder="手机" id="mobile">
+                                                </div>
+                                            </div>
+             
+                                        <div class="form-group"></div>
+                                        <div class="form-group bottom_button_list">
+                                            <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                            <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript" th:if="${yskadminentity == null}">
+	$('#update').click(function() {
+		if (required("角色", $("#authId").val()) == 1) {
+			$.alertMessager("请选择角色", "danger")
+			return false;
+		}
+		if (required("昵称", $("#nickname").val()) == 1) {
+			$.alertMessager("昵称不能为空", "danger")
+			return false;
+		}
+		if (usernamecheck("用户名", $("#username").val()) == 1) {
+			$.alertMessager("用户名只能输入数字和字母", "danger")
+			return false;
+		}
+		if(required("密码",$("#password").val()) == 1) {
+			$.alertMessager("密码不能为空", "danger")
+			return false;
+        }
+		if (required("确认密码", $("#repassword").val()) == 1) {
+			$.alertMessager("确认密码不能为空", "danger")
+			return false;
+		}
+		if(checkConfirm($("#password").val(),$("#repassword").val()) == 1) {
+            $.alertMessager("两次输入密码不一致","danger")
+            return false;
+		}
+		if (phone("手机", $("#mobile").val()) == 1) {
+			$.alertMessager("手机格式错误", "danger")
+			return false;
+		}
+	})
+</script>
+<script type="text/javascript" th:unless="${yskadminentity == null}">
+	$('#update').click(function() {
+		if (required("角色", $("#authId").val()) == 1) {
+			$.alertMessager("请选择角色", "danger")
+			return false;
+		}
+		if (required("昵称", $("#nickname").val()) == 1) {
+			$.alertMessager("昵称不能为空", "danger")
+			return false;
+		}
+		if (usernamecheck("用户名", $("#username").val()) == 1) {
+			$.alertMessager("用户名只能输入数字和字母", "danger")
+			return false;
+		}
+		if(checkConfirm($("#password").val(),$("#repassword").val()) == 1) {
+            $.alertMessager("两次输入密码不一致","danger")
+            return false;
+		}
+		if (phone("手机", $("#mobile").val()) == 1) {
+			$.alertMessager("手机格式错误", "danger")
+			return false;
+		}
+	})
+</script>
+</html>

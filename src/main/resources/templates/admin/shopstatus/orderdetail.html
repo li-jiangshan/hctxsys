@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <style type="text/css">
+        tr, td {
+            margin: 0 !important;
+            padding: 5px 5px !important;
+        }
+    </style>
+    <head th:replace="common/includ"/>
+    <head th:replace="common/layout"/>
+</head>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        <li class="text-muted">系统</li>
+        <li class="text-muted">平台审核</li>
+        <li class="text-muted">用户认证</li>
+        <li class="text-muted">审核</li>
+    </ul>
+
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="form-group"></div>
+                <div class="builder-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <form method="post"
+                                  class="form-horizontal form form-builder">
+                                <div class="form-type-list">
+                                    <div class="form-group hidden item_id ">
+                                        <label class="left control-label">ID：[[${info.id}]]</label>
+                                        <div class="right">
+                                            <input type="hidden" class="form-control input" name="id" th:value="${info.id}"/>
+                                            <input type="hidden" class="form-control input" name="uid" th:value="${info.uid}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">类型：</label>
+                                        <div class="right">
+                                            <span th:if="${info.userType==1}">企业用户</span>
+                                            <span th:if="${info.userType==0}">个人用户</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">用户：</label>
+                                        <div class="right">
+                                            [[${info.username}]]([[${info.mobile}]])
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">修改信息：</label>
+                                        <div class="right">
+                                            <span th:if="${info.updateType==1}">手机号码</span>
+                                            <span th:if="${info.updateType==2}">姓名</span>
+                                            <span th:if="${info.updateType==3}">企业名称</span>
+                                            <span th:if="${info.updateType==4}">发放积分额度</span>
+                                            修改为 <span style="color:red" th:unless="${info.updateType==4}">[[${info.newInfo}]]</span>
+                   <span style="color:red" th:if="${info.updateType==4}">可发放[[${info.countDistributionIntegral}]]次[[${info.maxDistributionIntegral}]]积分</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">说明信息：</label>
+                                        <div class="right">
+                                            [[${info.content}]]
+                                        </div>
+                                    </div>
+                                    <hr/>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">证件照片：</label>
+                                        <div class="right">
+                                            <a style="margin-right:5vmin" class="left" th:href="${info.img}">
+                                                <img style="width:100%" th:src="${info.img}" alt="">
+                                            </a>
+                                            <a th:if="${info.imgBack!=null}" style="margin-right:5vmin" class="left"
+                                               th:href="${info.imgBack}">
+                                                <img style="width:100%" th:src="${info.imgBack}" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div th:if="${info.status==0}">
+                                        <div class="form-group">
+                                            <label class="left control-label">备注说明：</label>
+                                            <div class="right">
+                                                <textarea id="content" class="form-control textarea" rows="5"
+                                                          name="reply"></textarea>
+                                                <span class="check-tips text-muted small">请在此输入拒绝理由</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group item_type ">
+                                            <label class="left control-label">
+                                                <span>是否通过：</span>
+                                            </label>
+                                            <div class="right">
+                                                <div class="radio-inline lyui-control lyui-radio">
+                                                    <label for="typemodule">
+                                                        <input type="radio" id="typemodule" class="radio" name="agree"
+                                                               value="1">
+                                                        <span class="lyui-control-indicator"></span>
+                                                        <span>通过</span>
+                                                    </label>
+                                                </div>
+                                                <div class="radio-inline lyui-control lyui-radio">
+                                                    <label for="typetheme">
+                                                        <input type="radio" id="typetheme" class="radio" name="agree"
+                                                               value="2">
+                                                        <span class="lyui-control-indicator"></span>
+                                                        <span>拒绝</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"></div>
+                                    <div class="form-group bottom_button_list">
+                                        <a  id="update" th:if="${info.status==0}" class="btn btn-primary"
+                                           type="button">确定</a>
+                                        <a class="btn btn-danger return"
+                                           onclick="javascript:history.back(-1);return false;">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $('#update').click(function () {
+        if($('input:checked').length==0) {
+            $.alertMessager("请选择状态","danger");
+            return;
+        }
+        if (required('', $('#content').val()) == 1 && $('input:checked').val() == '2') {//点拒绝按钮时
+            $.alertMessager("请输入拒绝理由", "danger");
+            return
+        }
+        $.ajax({
+            url:"/Admin/Shopstatus/orderdetail/update",
+            data:$('form').serialize(),
+            dataType:"json",
+            method:"POST",
+            success:function (data) {
+                if(data.status==200) {
+                    $.alertMessager(data.message,"success","",setTimeout(function () {
+                        location.href="/Admin/Shopstatus/orderlist";
+                    },2000))
+                }
+                else {
+                    $.alertMessager(data.message,"danger");
+                }
+            }
+        })
+    })
+</script>

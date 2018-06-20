@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+<script type="text/javascript" th:src="@{/admin/js/address.js}" ></script>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li class="text-muted">系统</li>
+        <li class="text-muted">会员管理</li>
+        <li class="text-muted">会员列表</li>
+        <li class="text-muted">设置代理</li>
+    </ul>
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="form-group"></div>
+                <div class="builder-container" >
+                    <div class="row" >
+                        <div class="col-xs-12">
+                            <form id="setArea" method="post" class="form-horizontal form form-builder">
+                                <div class="form-type-list">
+                                    <div class="form-group hidden item_id ">
+                                        <label class="left control-label">ID：</label>
+                                        <div class="right">
+                                            <input type="hidden" class="form-control input" name="userid" th:value="${user.userid}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">账号：</label>
+                                        <div class="right">
+                                            [[${user.account}]]
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">姓名：</label>
+                                        <div class="right">
+                                            [[${user.username}]]
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">手机：</label>
+                                        <div class="right">
+                                            [[${user.mobile}]]
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">区域代理：</label>
+                                        <div class="right">
+                                            <select id="levelType" style="width:20%;display: block" class="form-control left"  name="level"  >
+                                                <option value="0">请选择</option>
+                                                <option th:selected="${user.level==level.level}" th:each="level : ${levelList}" th:value="${level.level}" th:text="${level.levelName}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label class="left control-label">代理地址：</label>
+                                        <div class="right">
+
+                                            <select id="addressType" style="width:20%;display: block" class="form-control left"  name="areaType" onchange="area_select(this)" >
+                                                <option value="0">请选择</option>
+                                                <option value="1" th:selected="${user.areaType==1}">省级代理</option>
+                                                <option value="2" th:selected="${user.areaType==2}">市级代理</option>
+                                                <option value="3" th:selected="${user.areaType==3}">区、县级代理</option>
+                                            </select>
+
+                                            <select style="width:20%" class="form-control left" id="province" name="areaProvince" ></select>
+                                            <select style="width:20%;display: none" class="form-control left" id="city" name="areaCity" ></select>
+                                            <select style="width:20%;display: none" class="form-control left" id="district" name="areaDistrict" ></select>
+
+                                        </div>
+                                        <span class="check-tips text-muted small">设置区域代理，请选择对应区域代理，再设置代理地址</span>
+                                    </div>
+
+                                    <script type="text/javascript" th:inline="javascript">
+                                        var id=[[${user.userid}]];//用户ID
+                                        var pro=[[${user.areaProvince}]];//用户代理省
+                                        var city=[[${user.areaCity}]];//用户代理市
+                                        var district=[[${user.areaDistrict}]];//用户代理县
+                                        area_select(document.getElementById('addressType'))
+                                        function area_select(obj){//根据代理类型进行下拉框的显示隐藏
+                                            var val=obj.value;
+                                            if(val=='0'){
+                                                document.getElementById('province').style.display="none";
+                                                document.getElementById('city').style.display="none";
+                                                document.getElementById('district').style.display="none";
+                                            }
+                                            if(val=='1'){
+                                                document.getElementById('province').style.display="block";
+                                                document.getElementById('city').style.display="none";
+                                                document.getElementById('district').style.display="none";
+                                            }
+                                            if(val=='2'){
+                                                document.getElementById('province').style.display="block";
+                                                document.getElementById('city').style.display="block";
+                                                document.getElementById('district').style.display="none";
+                                            }
+                                            if(val=='3'){
+                                                document.getElementById('province').style.display="block";
+                                                document.getElementById('city').style.display="block";
+                                                document.getElementById('district').style.display="block";
+                                            }
+                                        }
+
+
+                                        addressInit('province', 'city', 'district',pro,city,district);//根据用户代理地址修改，如已存在默认地址则显示
+                                    </script>
+
+                                    <div class="form-group"></div>
+                                    <div class="form-group bottom_button_list">
+                                        <a id="confirm" class="btn btn-primary submit ">确定</a>
+                                        <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">返回</a>
+                                        <!--<a id="cancel" class="btn btn-danger return" >取消代理</a>-->
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="growl" style="top: 50px;left: 0;right:0;margin:0 auto;"></div>
+
+</body>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script th:inline="javascript">
+    $('#confirm').click(function () {
+        var levelValue=$('#levelType').val();//用户等级值
+        var addressValue=$('#addressType').val();//用户代理值
+        if(levelValue!="0"&&addressValue!="0") {//校验
+            var url="?";
+            $('select[style*="block"]').each(function (index,data) {//遍历所以显有的select拼接url
+                url+=($(data).attr("name")+"="+$(data).val()+"&");
+            })
+            var href="/Admin/User/setarea/update"+url.substr(0,url.length-1)+"&userid="+id;
+            $.ajax({
+                url:href,
+                method:"POST",
+                dataType:'json',
+                success:function (data) {
+                    if(data.status==200) {
+                        $.alertMessager("设置成功即将跳转","success")
+                        location.href = document.referrer
+                    }
+                }
+            })
+        }
+        else {
+           $.alertMessager("请输入区域代理和代理地址","danger");
+        }
+    })
+</script>
+

@@ -1,0 +1,196 @@
+*{margin:0;padding:0}
+li{list-style:none}
+img{vertical-align:top}
+
+.adddownhelptop{
+	background-image: url(../images/appdownloadhelp.png);
+	background-repeat:no-repeat;
+	background-size:100%;
+}
+.close-qiandao-layer-img{
+	color:#FFFFFF;
+	font-size:5vmin;
+	margin-left:30%;
+	margin-top: 4%;
+	width:40%;
+	height:10%;
+	background-image: url(../images/qiandao_btn.png);
+	background-repeat:no-repeat;
+	background-size:100%;
+	background-color: #FFFFFF;
+}
+.qiandao-warp{
+	background-image: url(../images/qiandao_background.png);
+	background-repeat:no-repeat;
+	background-size:100%;
+	padding-top: 35%;
+}
+/* 浠ヤ笂鍙悎骞� */
+.clear{clear:both}
+.clear:after{clear:both;display:table;content:''}
+/*.qiandao-sprits{background-image:url(../images/qiandao_sprits.png);background-size:100%;}*/
+.qiandao-tran{-webkit-transition:all .3s ease-out;-moz-transition:all .3s ease-out;-o-transition:all .3s ease-out;transition:all .3s ease-out;-ms-transition:all .3s ease-out}
+.qiandao-radius{-webkit-border-radius:5px;-moz-border-radius:5px;-o-border-radius:5px;-ms-border-radius:5px}
+.qiandap-box{margin:0 auto;background:url(../images/qd_bg.jpg);background-size: 100% 100%;    padding-top: 10%;    padding-bottom: 10%;}
+.qiandao-con{    margin: 0 auto;
+    width: 88%;
+    background-image: url(../images/qiandao_con.png);
+    background-size: 100% 100%;}
+.qiandao-left{float:left;width:100%}
+.qiandao-right{float: right;
+    width: 40%;
+    margin-right: 4%;
+    margin-bottom: 8%;}
+.current-date{float:left;padding-top:2vmin;padding-left:15%;color:#b25d06;font-size:4vmin}
+.qiandao-history{
+	margin-top:2vmin;
+	margin-bottom:1vmin;
+	margin-right:6%;
+	float: right;
+    width: 20%;
+    border-radius: 4px;
+    background-color: #F00000;
+    color: #fff;
+    text-align: center;
+    font-size: 2vmin;
+    line-height: 5vmin;
+    cursor: pointer;}
+.qiandao-history:hover{background-color:#F00000}
+.qiandao-top{}
+.just-qiandao{    width: 67%;
+    height: 12vmin;
+    float: right;
+    margin-top: 7%;
+    background-image: url(../images/qd.png);    background-size: 100%;
+}
+.qiandao-notic{color:#b25d06;text-align:center;font-size:18px}
+.qiandao-rule-list{margin-bottom:35px;color:#8d8ebb;font-size:1pc;line-height:26px}
+.qiandao-rule-list h4{font-weight:bolder;font-size:1pc}
+.qiandao-main{overflow: hidden;
+    padding: 6%;
+    padding-top: 0;}
+.qiandao-list{    margin-top: 10vmin;
+    background-image: url(../images/qiandao_day.png);
+    background-size: 100% 100%;
+    width: 100%;
+    height: 70vmin;}
+.qiandao-list li{    position: relative;
+    float: left;
+    margin: 0 2px 2px 0;
+    width: 13.48%;
+    height: 16%;
+}
+.qiandao-list li.date1{background-position:-430px 0}
+.qiandao-list li.date2{background-position:-516px 0}
+.qiandao-list li.date3{background-position:0 -86px}
+.qiandao-list li.date4{background-position:-86px -86px}
+.qiandao-list li.date5{background-position:-172px -86px}
+.qiandao-list li.date6{background-position:-258px -86px}
+.qiandao-list li.date7{background-position:-344px -86px}
+.qiandao-list li.date8{background-position:-430px -86px}
+.qiandao-list li.date9{background-position:-516px -86px}
+.qiandao-list li.date10{background-position:0 -172px}
+.qiandao-list li.date11{background-position:-86px -172px}
+.qiandao-list li.date12{background-position:-172px -172px}
+.qiandao-list li.date13{background-position:-258px -172px}
+.qiandao-list li.date14{background-position:-344px -172px}
+.qiandao-list li.date15{background-position:-430px -172px}
+.qiandao-list li.date16{background-position:-516px -172px}
+.qiandao-list li.date17{background-position:0 -258px}
+.qiandao-list li.date18{background-position:-86px -258px}
+.qiandao-list li.date19{background-position:-172px -258px}
+.qiandao-list li.date20{background-position:-258px -258px}
+.qiandao-list li.date21{background-position:-344px -258px}
+.qiandao-list li.date22{background-position:-430px -258px}
+.qiandao-list li.date23{background-position:-516px -258px}
+.qiandao-list li.date24{background-position:0 -344px}
+.qiandao-list li.date25{background-position:-86px -344px}
+.qiandao-list li.date26{background-position:-172px -344px}
+.qiandao-list li.date27{background-position:-258px -344px}
+.qiandao-list li.date28{background-position:-344px -344px}
+.qiandao-list li.date29{background-position:-430px -344px}
+.qiandao-list li.date30{background-position:-516px -344px}
+.qiandao-list li.date31{background-position:0 -430px}
+.qiandao-list li .qiandao-icon{    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: url(../images/qiandao_icon.png) no-repeat center center;
+    background-size: 80%;}
+.qiandao-list li.qiandao .qiandao-icon{display:block}
+.qiandao-layer{position:fixed;top:0;bottom:0;left:0;z-index:888;display:none;width:100%}
+.qiandao-layer-bg{width:100%;height:100%;background-color:#000;opacity:.55;filter:alpha(opacity=55)}
+.qiandao-layer-con{
+	position: absolute;
+    top: 20%;
+    left: 15%;
+    z-index: 999;
+    padding-top: 20%;
+    background:url(../images/qiandao_pop.png);
+	background-repeat:no-repeat;
+	background-size:100%;
+}
+.qiandao-layer-detail{    position: absolute;
+    top: 18%;
+    left: 5%;
+    z-index: 999;
+    padding-top: 30px;
+    border: 3px #33b23f solid;
+    border-radius: 5px;
+    background-color: #fff;}
+.qiandao-history-layer .qiandao-layer-detail{    width: 90%;
+    height: 100vmin;}
+.close-qiandao-layer{position:absolute;top:13px;right:13px;width:1pc;height:1pc;background-position:-228px -51px;background: url(../images/gb.png);background-size: 100%}
+.qiandao-history-inf{margin-top:25px;color:#666;text-align:center;font-size:14px;border-bottom: 1px solid #ddd}
+.qiandao-history-inf li{float:left;width:25%;    font-size: 3vmin;}
+.qiandao-history-inf li h4{    color: #33b23f;
+    font-size: 7vmin;
+    line-height: 12vmin;}
+.qiandao-history-table{    overflow: overlay;    height: 77vmin;}
+.qiandao-history-table table{width:100%;color:#666;text-align:center;font-size:1pc;border-spacing:0}
+.qiandao-history-table table th{width:33.3%;background-color:#f2f2f2;text-align:center;    line-height: 10vmin;
+}
+.qiandao-history-table td{width:33.3%;    line-height: 8vmin;
+    font-size: 3vmin}
+.qiandao-active .qiandao-layer-con{    width: 70%;
+    height: 100vmin;}
+.yiqiandao{margin:4%;color:#FF6600;font-size:4.5vmin;line-height:38px;text-align: center;}
+.qiandao-layer-con *{text-align: center;}
+.yiqiandao .yiqiandao-icon{    float: left;
+    width: 100%;
+    height: 2rem;
+    background: url(../images/qdcg.png) no-repeat center center;
+    background-size: 50%;
+    margin-right: 4%;}
+.qiandao-jiangli{position:relative;margin:45px auto;width:335px;height:170px;background-position:0 -146px}
+.qiandao-jiangli span{position:absolute;top:58px;left:50px;display:block;width:178px;height:106px;color:#ff7300;text-align:center;font-weight:bolder;font-size:30px;line-height:106px}
+.qiandao-jiangli span em{padding-left:5px;font-style:normal;font-size:1pc}
+.qiandao-share{display:block;margin:60px auto 0;width:318px;height:3pc;border-radius:5px;color:#fff;text-align:center;text-decoration:none;font-size:18px;line-height:3pc}
+.qiandao-share:hover{background-color:#3e9d46}
+
+.qiandao_img{width: 50%;float: left;margin-left: 4%;}
+.qiandao_img img{width: 30%;float: left;}
+.qiandao_img p{font-size: 4vmin;color: #369fda;}
+.qiandao_img p i{color: #f39a21;padding: 0 1%;font-size: 6vmin}
+
+.qdgz{
+	width:100%;
+	padding: 3% 6%;
+    font-size: 4vmin;
+    position: absolute;
+    margin-top: 5%;
+}
+.qdgz span{
+	width:100%;
+	color: #FF6600;
+	text-align:center;
+	display:block;
+}
+.huodongqu img{width: 100%}
+
+.guize{padding: 2%;width: 96%;}
+.guize h3{font-size: 5vmin;text-align: center;padding: 3% 0}
+.guize p{text-indent: 2em;line-height: 6vmin;color: #555}

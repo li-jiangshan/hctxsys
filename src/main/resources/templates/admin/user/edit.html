@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<style type="text/css">
+tr, td {
+	margin: 0 !important;
+	padding: 5px 5px !important;
+}
+</style>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+	 	style="overflow-y: scroll;">
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">会员管理</li>
+			<li class="text-muted">会员列表</li>
+			<li class="text-muted">修改</li>
+		</ul>
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+					<div class="form-group"></div>
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<form  method="post"
+									class="form-horizontal form form-builder">
+									<div class="form-type-list">
+										<div class="form-group hidden item_id ">
+											<label class="left control-label">ID：</label>
+											<div class="right">
+												<input type="hidden" class="form-control input" name="userid"
+													th:value="${userVo.userid}">
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">上级：</label>
+											<div class="right" th:text="${userVo.parentName}">lxy12345678</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">账号：</label>
+											<div class="right">
+												<input type="text" class="form-control input" name="account"
+													value="251776" placeholder="账号" th:value="${userVo.account}" readonly>
+											</div>
+										</div>
+										<div class="form-group item_title ">
+											<label class="left control-label">姓名：</label>
+											<div class="right">
+												<input type="text" class="form-control input" name="username"
+													value="" placeholder="用户名" th:value="${userVo.username}">
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">手机：</label>
+											<div class="right">
+												<input type="text" class="form-control input text"
+													name="mobile" id="mobile" placeholder="手机" th:value="${userVo.mobile}">
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">登录密码：</label>
+											<div class="right">
+												<input type="password" class="form-control input text"
+													name="loginPwd" id="loginPwd" placeholder="留空则不做修改">
+											</div>
+										</div>
+										<div class="form-group item_title ">
+											<label class="left control-label">确认登录密码：</label>
+											<div class="right">
+												<input type="password" class="form-control input text"
+													name="relogin_pwd" id="relogin_pwd"  placeholder="确认登录密码">
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">二级密码：</label>
+											<div class="right">
+												<input type="password" class="form-control input text"
+													name="safetyPwd" id="safetyPwd" placeholder="留空则不做修改">
+											</div>
+										</div>
+										<div class="form-group item_title ">
+											<label class="left control-label">确认二级密码：</label>
+											<div class="right">
+												<input type="password" class="form-control input text"
+													name="resafety_pwd" id="resafety_pwd" placeholder="确认二级密码">
+											</div>
+										</div>
+
+
+										<div class="form-group"></div>
+										<div class="form-group bottom_button_list">
+											<a id="update" class="btn btn-primary"
+												>确定</a> <a
+												class="btn btn-danger return"
+												onclick="javascript:history.back(-1);return false;">返回</a>
+										</div>
+									</div>
+								</form>
+								<br>
+								<hr>
+								<div class="form-type-list">
+									<div class="form-type-list">
+										<input type="hidden" name="order_id" value="57">
+										<div class="form-group item_title">
+											<label class="left control-label">认证信息</label>
+											<div style="width: 60%" class="right">
+												<table class="table table-bordered">
+													<tbody>
+														<tr>
+															<td><span style="color: #999">证件类型：</span>
+																<span th:if="${userVo.checkinfoEntity.idcardType}==0">大陆身份证</span>
+																<span th:if="${userVo.checkinfoEntity.idcardType}==1">非大陆身份证</span>
+															</td>
+															<td><span style="color: #999">身份证号：</span>[[${userVo.checkinfoEntity.idcard}]]</td>
+															<td><span style="color: #999">证件有效期：</span> [[${#dates.format(userVo.checkinfoEntity.idcarStartdate,'yyyy-MM-dd')}]]至[[${#dates.format(userVo.checkinfoEntity.idcarEndtdate,'yyyy-MM-dd')}]]</td>
+														</tr>
+														<tr>
+															<td><a th:href="@{${userVo.checkinfoEntity.idcardImgFace}}"> <img style="width: 50%" th:src="@{${userVo.checkinfoEntity.idcardImgFace}}"
+																	alt="">
+
+															</a><p style="text-align: center">正面照</p></td>
+															<td><a th:href="@{${userVo.checkinfoEntity.idcardImgBack}}"> <img style="width: 50%" th:src="@{${userVo.checkinfoEntity.idcardImgBack}}"
+																	alt="">
+
+															</a><p style="text-align: center">反面照</p></td>
+															<td><a th:href="@{${userVo.checkinfoEntity.idcardImgHand}}"> <img style="width: 50%" th:src="@{${userVo.checkinfoEntity.idcardImgHand}}"
+																	alt="">
+
+															</a><p style="text-align: center">手持照</p></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="growl" style="top: 50px;left: 0;right:0;margin:0 auto;"></div>
+</body>
+<script type="text/javascript"
+	src="/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript"
+	src="/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" th:src="@{/admin/js/validateJump.js}"></script>
+<script type="text/javascript">
+	$('.date').datetimepicker({
+		format : 'yyyy-mm-dd',
+		language : "zh-CN",
+		minView : 2,
+		autoclose : true,
+		todayBtn : 1, //是否显示今日按钮
+	});
+	$('#update').click(function () {//点击校验，成功发送请求
+        if(phone("手机",$("#mobile").val())==1) {
+            $.alertMessager("手机号码格式错误","danger")
+		    return null;
+		}
+		if(required('',$('#loginPwd').val())!=1) {
+            if(minlength('',$('#loginPwd').val(),6)==1||maxlength('',$('#loginPwd').val(),11)) {
+                $.alertMessager("登录密码必须为6-10位数","danger")
+                return null;
+            }
+        }
+        if(required('',$('#safetyPwd').val())!=1) {
+            if(minlength('',$('#safetyPwd').val(),6)==1||maxlength('',$('#safetyPwd').val(),11)) {
+                $.alertMessager("二级密码必须为6-10位数","danger")
+                return null;
+            }
+        }
+		if(checkConfirm($('#loginPwd').val(),$('#relogin_pwd').val())) {
+            $.alertMessager("登录密码不一致","danger")
+            return null;
+		}
+		if(checkConfirm($('#safetyPwd').val(),$('#resafety_pwd').val())) {
+            $.alertMessager("二级密码不一致","danger")
+            return null;
+         }
+		$.ajax({
+			url:'/Admin/User/edit/update',
+            method:"POST",
+			data:$('form').serialize(),
+			dataType:"json",
+			success:function (data) {
+				if(data.status==200) {
+				    $.alertMessager(data.message,"success");
+					location.href=document.referrer;
+				}
+				else {
+					$.alertMessager(data.message,"danger");
+				}
+            }
+		})
+    })
+</script>

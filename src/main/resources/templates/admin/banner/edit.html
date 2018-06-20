@@ -1,0 +1,170 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+	<head th:replace="common/includ" />
+	<head th:replace="common/layout" />
+	<script type="text/javascript" th:src="@{/admin/js/validateJump.js}"></script>
+	<script src="/admin/js/ajaxfileupload.js" type="text/javascript"></script>
+	<style type="text/css">
+		.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+	</style>
+</head>
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+            <li><i class="fa fa-map-marker"></i></li>
+            <li>系统</li>
+            <li>系统功能</li>
+            <li>广告</li>
+            <li class="text-muted">新增</li>
+        </ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                            <div class="row" >
+                                <div class="col-xs-12">
+                                    <form action="/Admin/Banner/update" method="post" class="form-horizontal form form-builder">
+                                        <div class="form-type-list">
+                                            <div class="form-group hidden item_id ">
+                                                <label class="left control-label">ID：</label>
+                                                <div class="right">
+                                                    <input type="hidden" class="form-control input" name="bannerId" th:value="${ads==null}?'0':${ads.bannerId}">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="left control-label">广告位置：</label>
+                                                <div class="right">
+                                                    <select name="bType" class="form-control cui-select select">
+                                                        <option value="">请选择：</option>
+                                                        <option th:selected="${ads ne null} And ${ads.bType eq 'mall_index_wap'}" value="mall_index_wap">商城首页轮播-(手机)</option>
+                                            			<option th:selected="${ads ne null} And ${ads.bType eq 'mall_index_pc'}" value="mall_index_pc">商城首页轮播(电脑端)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">广告名称：</label>
+                                                <div class="right">
+                                                    <input  type="text" class="form-control input" name="bName" th:value="${ads==null}?'':${ads.bName}" placeholder="名称" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">广告图片：</label>
+                                                <div class="right">
+                                                    <img id='showpic1' style="max-width:300px;max-height:300px;" th:src="${ads==null}?'':${ads.bImg}" alt="">
+                                                    <br />
+                                                      <a href="javascript:;" class="file">选择上传...
+    														<input type="file" name="file" id="pic1" onchange="ajaxFileUpload(this.id)" >
+													  </a>
+                                                    <br>
+                                                    <b style="color: #d6d6d6;font-size: 10px">图片尺寸最佳为(750*350)</b>
+                                                     <input type="hidden" th:value="${ads==null}?'':${ads.bImg}"  name="bImg" id="bImg" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">广告链接：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input text" name="bLink" placeholder="广告链接" th:value="${ads==null}?'':${ads.bLink}" >
+                                                </div>
+                                            </div>
+                                             <div class="form-group item_title ">
+                                                <label class="left control-label">广告排序：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input text" name="bOrder" th:value="${ads==null}?'':${ads.bOrder}" placeholder="默认排序" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')">
+                                                </div>
+                                            </div>
+             
+                                        <div class="form-group"></div>
+                                        <div class="form-group bottom_button_list">
+                                            <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder">确定</a>
+                                            <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>                   
+</div>
+<!-- <script type="text/javascript" src="/admin/libs/lyui/dist/js/lyui.min.js"></script>
+<script type="text/javascript" src="/admin/libs/lyui/dist/js/lyui.extend.min.js"></script> -->
+<script type="text/javascript">
+function ajaxFileUpload(id) {
+	var fileObj = document.getElementById(id)
+	var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+	var extention = document.getElementById(id).value.substring(
+			fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+	var browserVersion = window.navigator.userAgent.toUpperCase();
+	if (allowExtention.indexOf(extention) > -1) {
+		$.ajaxFileUpload({
+			url : '/testuploadimg', //用于文件上传的服务器端请求地址
+			contentType : "application/json; charset=utf-8",
+			secureuri : false, //是否需要安全协议，一般设置为false
+			cache : false,//防止缓存
+			fileElementId : id, //文件上传域的ID
+			dataType : 'JSON', //返回值类型 一般设置为json
+			success : function(data) //服务器成功响应处理函数
+			{
+				data = data.replace(/<pre.*?>/g, '');
+				data = data.replace(/<PRE.*?>/g, '');
+				data = data.replace("<PRE>", '');
+				data = data.replace("</PRE>", '');
+				data = data.replace("<pre>", '');
+				data = data.replace("</pre>", '');
+				var json = JSON.parse(data)
+				$("#show" + id).attr("src", json.path);
+				$("#bImg").attr("value", json.path);
+			},
+			error : function(e)//服务器响应失败处理函数
+			{
+				alert(e);
+			}
+		})
+	} else {
+		alert("仅支持" + allowExtention + "为后缀名的文件!");
+		fileObj.value = ""; //清空选中文件
+		if (browserVersion.indexOf("MSIE") > -1) {
+			fileObj.select();
+			document.selection.clear();
+		}
+	}
+	return false;
+}
+</script>
+</body>
+</html>

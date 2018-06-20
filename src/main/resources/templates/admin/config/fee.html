@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">分销设置</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+					<div class="builder-tabs builder-form-tabs">
+						<ul class="nav nav-tabs">
+							<li><a href="/Admin/Config/group">系统配置</a></li>
+							<li><a href="/Admin/Config/system">基本设置</a></li>
+							<li th:class="active"><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+					</div>
+					<div class="form-group"></div>
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<form action="/Admin/Config/feeupdate" method="post"
+									class="form-horizontal form form-builder">
+									<div class="form-type-list">
+										<div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">一级消费奖励(积分)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="buy_fee" th:value="${keysMap['buy_fee']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['buy_fee']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div>
+										<div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">二级消费奖励(积分)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="buy_fee_two" th:value="${keysMap['buy_fee_two']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['buy_fee_two']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div>
+										<div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">一级销售奖励(积分)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="sell_fee" th:value="${keysMap['sell_fee']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['sell_fee']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div>
+										<div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">二级销售奖励(积分)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="sell_fee_two" th:value="${keysMap['sell_fee_two']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['sell_fee_two']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div>
+										<!-- <hr />
+										<div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">特别奖励(积分)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="come_fee" th:value="${keysMap['come_fee']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['come_fee']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div> -->
+										<hr />
+										<!-- <div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">一级分销(华宝)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="one_fee" th:value="${keysMap['one_fee']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['one_fee']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div> -->
+										<!-- <div class="form-group item_config[WEB_SITE_TITLE] ">
+											<label class="left control-label">二级分销(华宝)：</label>
+											<div style="width: 200px" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="two_fee" th:value="${keysMap['two_fee']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['two_fee']}" /> <span
+													class="input-group-addon">%</span>
+											</div>
+										</div> -->
+										<!-- <div class="form-group item_config[WEB_SITE_TITLE] ">
+                                        <label class="left control-label">三级分销(华宝)：</label>
+                                        <div style="width:200px" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="three_fee" th:value="${keysMap['three_fee']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['three_fee']}" />
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                    </div> -->
+										<div class="form-group"></div>
+										<div class="form-group bottom_button_list">
+											<a class="btn btn-primary submit ajax-post" type="submit"
+												target-form="form-builder" id="update">确定</a> <a
+												class="btn btn-danger return"
+												onclick="javascript:history.back(-1);return false;">取消</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$('#update').click(function() {
+		if (numCheck("一级消费奖励(积分)", $("#buy_fee").val()) == 1) {
+			$.alertMessager("一级消费奖励(积分)格式错误", "danger");
+			return false;
+		}
+		if ($("#buy_fee").val()>100) {
+			$.alertMessager("一级消费奖励(积分)，请输入0-100数字", "danger")
+			return false;
+		}
+		if (numCheck("二级消费奖励(积分)", $("#buy_fee_two").val()) == 1) {
+			$.alertMessager("二级消费奖励(积分)格式错误", "danger")
+			return false;
+		}
+		if ($("#buy_fee_two").val()>100) {
+			$.alertMessager("二级消费奖励(积分)，请输入0-100数字", "danger")
+			return false;
+		}
+		if (numCheck("一级销售奖励(积分)", $("#sell_fee").val()) == 1) {
+			$.alertMessager("一级销售奖励(积分)格式错误", "danger")
+			return false;
+		}
+		if ($("#sell_fee").val()>100) {
+			$.alertMessager("一级销售奖励(积分)，请输入0-100数字", "danger")
+			return false;
+		}
+		if (numCheck("二级销售奖励(积分)", $("#sell_fee_two").val()) == 1) {
+			$.alertMessager("二级销售奖励(积分)格式错误", "danger")
+			return false;
+		}
+		if ($("#sell_fee_two").val()>100) {
+			$.alertMessager("二级销售奖励(积分)，请输入0-100数字", "danger")
+			return false;
+		}
+		/* if (numCheck("特别奖励(积分)", $("#come_fee").val()) == 1) {
+			$.alertMessager("特别奖励(积分)格式错误", "danger")
+			return false;
+		} */
+		/* if (numCheck("一级分销(华宝)", $("#one_fee").val()) == 1) {
+			$.alertMessager("一级分销(华宝)格式错误", "danger")
+			return false;
+		}
+		if (numCheck("二级分销(华宝)", $("#two_fee").val()) == 1) {
+			$.alertMessager("二级分销(华宝)格式错误", "danger")
+			return false;
+		}  */
+	});
+</script>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        <li class="text-muted">商城</li>
+        <li class="text-muted">商家管理</li>
+        <li class="text-muted">商家列表</li>
+    </ul>
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="form-group"></div>
+                <div class="builder-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <form action="" method="post" class="form-horizontal form form-builder">
+                                <div class="form-type-list">
+
+                                    <div class="form-type-list">
+                                        <input type="hidden" name="order_id" value="57">
+                                        <div class="form-group item_title">
+                                            <label class="left control-label">店铺信息</label>
+                                            <div style="width:60%" class="right">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="3"><span style="color:#999">店铺名称：</span>[[${shop.shopName}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span style="color:#999">店铺负责人：</span>[[${shop.responName}]]
+                                                        </td>
+                                                        <td><span style="color:#999">负责人手机：</span>[[${shop.responMobile}]]
+                                                        </td>
+                                                        <td><span style="color:#999">负责人邮箱：</span>[[${shop.responEmail}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3"><span style="color:#999">店铺所在地：</span>[[${shop.province}]]、[[${shop.city}]]、[[${shop.district}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3"><span style="color:#999">店铺详细地：</span>[[${shop.addresssDetail}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span style="color:#999">所属行业：</span>[[${shop.industryName}]]
+                                                        </td>
+                                                        <td colspan="2"><span style="color:#999">服务费系数：</span>[[${shop.fee}]]%
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-type-list">
+                                        <input type="hidden" name="order_id" value="57">
+                                        <div class="form-group item_title">
+                                            <label class="left control-label">会员信息</label>
+                                            <div style="width:60%" class="right">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><span style="color:#999">类型：</span>
+                                                            <span th:if="${shop.user.userType==0}">个人用户</span>
+                                                            <span th:if="${shop.user.userType==1}">企业用户</span>
+                                                        </td>
+                                                        <td><span style="color:#999">会员：</span>[[${shop.user.username}]]([[${shop.user.mobile}]])
+                                                        </td>
+
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${shop.user.userType==1}" class="form-type-list">
+                                        <input type="hidden" name="order_id" value="57">
+                                        <div class="form-group item_title">
+                                            <label class="left control-label">已认证信息</label>
+                                            <div style="width:60%" class="right">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><span style="color:#999">类型：</span>
+                                                            <span th:if="${shop.user.userType==1}">企业用户</span>
+                                                            <span th:if="${shop.user.userType==0}">个人用户</span>
+                                                        </td>
+                                                        <td><span style="color:#999">是否三证合一：</span>
+                                                            <span th:if="${shop.userCheckinfo.isThreeCard==0}">否</span>
+                                                            <span th:if="${shop.userCheckinfo.isThreeCard==1}">是</span>
+                                                        </td>
+                                                        <td><span style="color:#999">是否分公司：</span>
+                                                            <span th:if="${shop.userCheckinfo.isChildCompany==0}">否</span>
+                                                            <span th:if="${shop.userCheckinfo.isChildCompany==1}">是</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span style="color:#999">税务登记证：</span>[[${shop.userCheckinfo.taxNo}]]</td>
+                                                        <td><span style="color:#999">社会信用代码：</span>[[${shop.userCheckinfo.creditNo}]]
+                                                        </td>
+                                                        <td><span style="color:#999">组织机构证：</span>[[${shop.userCheckinfo.organizeNo}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span style="color:#999">法人：</span>[[${shop.userCheckinfo.legalName}]]
+                                                        </td>
+                                                        <td><span style="color:#999">公司类型：</span>[[${shop.userCheckinfo.companyType}]]
+                                                        </td>
+                                                        <td><span style="color:#999">经营负责人：</span>[[${shop.userCheckinfo.manageParent}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgFace}}">
+                                                                <img style="width:50%" th:src="@{${shop.userCheckinfo.idcardImgFace}}"
+                                                                     alt="">
+
+                                                            </a>
+                                                            <p style="text-align:center">正面照</p>
+                                                        </td>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgBack}}">
+                                                                <img style="width:50%"th:src="@{${shop.userCheckinfo.idcardImgBack}}"
+                                                                     alt="">
+
+                                                            </a>
+                                                            <p style="text-align:center">反面照</p>
+                                                        </td>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgHand}}">
+                                                                <img style="width:50%" th:src="@{${shop.userCheckinfo.idcardImgHand}}"
+                                                                     alt="">
+                                                            </a>
+                                                                <p style="text-align:center">手持照</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr th:if="${shop.userCheckinfo.companyLicenseImg!=null}">
+                                                        <td colspan="3">
+                                                            <a th:href="@{${shop.userCheckinfo.companyLicenseImg}}">
+                                                                <img style="width:33%" th:src="@{${shop.userCheckinfo.companyLicenseImg}}"
+                                                                     alt="">
+                                                            </a>
+                                                                <p style="text-align:center">营业执照</p>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${shop.user.userType==0}" class="form-type-list">
+                                        <input type="hidden" name="order_id" value="57">
+                                        <div class="form-group item_title">
+                                            <label class="left control-label">已认证信息</label>
+                                            <div style="width:60%" class="right">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><span style="color:#999">证件类型：</span>
+                                                            <span th:if="${shop.user.userType==1}">非大陆身份证</span>
+                                                            <span th:if="${shop.user.userType==0}">大陆身份证</span>
+                                                        </td>
+                                                        <td><span style="color:#999">身份证号：</span>[[${shop.userCheckinfo.idcard}]]</td>
+                                                        <td><span style="color:#999">证件有效期：</span>[[${shop.userCheckinfo.idcarStartdate}]]
+                                                            至 [[${shop.user.idcarEndtdate}]]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgFace}}">
+                                                                <img style="width:50%" th:src="@{${shop.userCheckinfo.idcardImgFace}}"
+                                                                     alt="">
+                                                            </a>
+                                                                <p style="text-align:center">正面照</p>
+                                                        </td>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgBack}}">
+                                                                <img style="width:50%" th:src="@{${shop.userCheckinfo.idcardImgBack}}"
+                                                                     alt="">
+                                                            </a>
+                                                                <p style="text-align:center">反面照</p>
+                                                        </td>
+                                                        <td>
+                                                            <a th:href="@{${shop.userCheckinfo.idcardImgHand}}">
+                                                                <img style="width:50%" th:src="@{${shop.userCheckinfo.idcardImgHand}}"
+                                                                     alt="">
+                                                            </a>
+                                                                <p style="text-align:center">手持照</p>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+
+                                    <div class="form-group"></div>
+                                    <div class="form-group bottom_button_list">
+                                        <a class="btn btn-danger return"
+                                           onclick="javascript:history.back(-1);return false;">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

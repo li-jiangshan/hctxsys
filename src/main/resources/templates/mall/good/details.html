@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache,no-store, must-revalidate">
+    <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <meta HTTP-EQUIV="expires" CONTENT="0">
+    <link rel="stylesheet" href="/home/wap/mall/css/style.css">
+    <link rel="stylesheet" href="/home/wap/mall/iconfont/iconfont.css">
+    <link rel="stylesheet" href="/home/wap/mall/css/ui-choose.css">
+    <link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+    <script src="/home/wap/mall/js/jquery-1.7.1.min.js"></script>
+    <script src="/home/wap/mall/js/jquery.touchSlider.js"></script>
+    <script src="/home/wap/mall/js/js.js"></script>
+    <script src="/home/layer_mobile/layer.js"></script>
+    <title>华彩天下</title>
+</head>
+<body>
+<style type="text/css">
+    .shuliang {
+        font-size: 4.5vmin;
+        margin: 10vmin 0;
+        display: list-item;
+    }
+</style>
+<!-- 轮播图 -->
+<div style="margin-top: 0vmin;" class="main-content ng-scope" id="main_content">
+    <div class="main_visual details">
+        <div class="flicking_con">
+            <a th:each="img,imgStat : ${list_img}" href="#"></a>
+        </div>
+        <div class="main_image">
+            <ul>
+                <li th:each="img,imgStat : ${list_img}"><span class="img_3"><img th:src="${img.imgUrl}"></span></li>
+            </ul>
+            <a href="javascript:;" id="btn_prev"></a> <a href="javascript:;"
+                                                         id="btn_next"></a>
+        </div>
+    </div>
+</div>
+
+<!-- 名称 价格 -->
+<div class="details_top">
+    <div class="details_bt">
+        <h3 th:text="${info.goodName}"></h3>
+        <span style="cursor:pointer;" onclick="share()"> <i class="iconfont">&#xe685;</i>
+				<p>分享</p>
+			</span>
+    </div>
+    <p class="many" th:text="${'￥' + info.goodPrice}">
+        <span th:if="${info.shipFee eq 1}">免运费</span>
+    </p>
+    <p class="dizhi">
+        <i th:text="${'重量：' + info.goodWeight/1000 + 'kg'}"></i>
+        <i style="text-align: center;" th:text="${'已出售' + info.goodSellNum + '件'}"></i>
+        <i style="text-align: right;" th:text="${'库存' + info.goodStore + '件'}"></i>
+    </p>
+<!--     <div class="details_jf" th:if="${info.goodIntegral != 0}">
+        <span>送</span>
+        <p style="display: inline-block;" th:text="${'购买该商品，可获得' + info.goodIntegral + '积分'}"></p>
+    </div> -->
+</div>
+
+<!-- 店铺 -->
+<div th:if="${info.goodType eq 1}" class="dianpu">
+    <div class="dianpu_left">
+        <div class="dp_logo">
+            <img th:if="${not #strings.isEmpty(shop_info.shopLogo)}" th:src="${shop_info.shopLogo}">
+            <img th:if="${#strings.isEmpty(shop_info.shopLogo)}" src="/home/wap/mall/images/dp.png">
+        </div>
+        <div class="dp_mc">
+            <h3 th:text="${shop_info.shopName}? ${shop_info.shopName} : ''"></h3>
+            <p>综合评价：5</p>
+        </div>
+    </div>
+    <div class="dianpu_right">
+        <ul>
+            <li>描述相符<span>5</span></li>
+            <li>服务态度<span>5</span></li>
+            <li>服务态度<span>5</span></li>
+        </ul>
+    </div>
+    <span class="anniuc" onclick="connent()"><a>联系卖家</a></span>
+    <span onclick="join()" class="anniuc">
+		<a>进入店铺</a></span>
+</div>
+
+<!-- 评论 -->
+<div class="details_pl">
+    <h3>
+        <a th:href="@{'/mall/good/goodcomment/good_id/' + ${info.goodId}}">
+            <p th:text="${'商品评价（' + info.goodComment + '）'}" style="display: inline-block;"></p>
+            <img src="/home/wap/mall/images/left.png"></a>
+    </h3>
+    <div class="pinglun">
+        <ul>
+            <li th:each="comment,commentStat : ${commentList}">
+                <div class="pinglun_top">
+                    <span class="tx"><img src="/home/wap/mall/images/tx.png"></span>
+                    <span class="mz" th:text="${comment.username}"></span>
+                    <span class="wx">
+						<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(comment.starAbility,comment.starAttitude),comment.starPrice))}"
+                             src="/home/wap/mall/images/wx.png">&nbsp;
+						</span>
+                </div>
+                <p th:text="${comment.content}"></p>
+                <p class="wz_b" th:if="${not #strings.isEmpty(comment.goodItem)}" th:text="${'参数：' + comment.goodItem}">
+                <p class="wz_b" th:if="${#strings.isEmpty(comment.goodItem)}">&nbsp;&nbsp;
+                    <span class="dateFormater" th:text="${comment.createTime}"></span>
+                </p>
+            </li>
+        </ul>
+        <span class="anniud" th:if="${comment_count != 0}">
+			<a th:href="@{'/mall/good/goodcomment/good_id/' + ${info.goodId}}">查看全部</a></span>
+    </div>
+</div>
+
+<!-- 猜你喜欢 -->
+<div class="details_pl cnxh">
+    <h3>
+        <a href="javascript:void(0)">猜你喜欢<img src="/home/wap/mall/images/left.png"></a>
+    </h3>
+    <ul>
+        <li th:each="relate,relateStat : ${relateList}"><a th:onclick="'goodId('+${relate.goodId}+')'">
+            <img th:src="${relate.goodCoverImg}">
+            <p th:text="${'￥' + relate.goodPrice}"></p>
+        </a></li>
+    </ul>
+</div>
+
+<!-- 产品详情 -->
+<div class="details_pl cpxq" style="margin-bottom: 15vmin;overflow-x: scroll;">
+    <h3>产品详情</h3>
+    <p th:utext="${info.goodContent}"></p>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    function connent() {
+        // app端拦截，联系卖家
+        var mobile = [[${shop_mobile}]];
+        if (isAndroid) {
+
+            myObj.contactSeller(mobile);
+        }
+        if (isiOS) {
+
+            var message = {
+                'methodName': 'connent',
+                'params': {
+                    'param0': mobile,
+                },
+                'callbackMethod': ''
+
+            };
+            window.webkit.messageHandlers.connentMessagehandler.postMessage(message);
+        }
+    }
+
+    function share() {
+        // app端拦截，分享
+        if (isAndroid) {
+            myObj.shareUrlMethod();
+        }
+        if (isiOS) {
+            var message = {
+                'methodName': 'share',
+                'params': {
+                    'param0': '',
+                },
+                'callbackMethod': ''
+
+            };
+            window.webkit.messageHandlers.shareMessagehandler.postMessage(message);
+        }
+    }
+
+    function join() {
+        // app端拦截，进入商铺
+        var sellerId = [[${sellerId}]];
+        if (isAndroid) {
+
+            myObj.toStoresActivity(sellerId);
+        }
+        if (isiOS) {
+            var message = {
+                'methodName': 'join',
+                'params': {
+                    'param0': '',
+                },
+                'callbackMethod': ''
+
+            };
+            window.webkit.messageHandlers.joinMessagehandler.postMessage(message);
+        }
+    }
+
+    function goodId(goodId) {
+        if (isAndroid) {
+            myObj.getGoodId(goodId);
+            location.href = "/mall/good/details/good_id/" + goodId;
+        }
+        
+         if (isiOS) {
+            var message = {
+                'methodName': 'getGoodId',
+                'params': {
+                    'param0': goodId,
+                },
+                'callbackMethod': ''
+
+            };
+            window.webkit.messageHandlers.goodIdMessagehandler.postMessage(message);
+        }
+    }
+
+    function changeDateFormat(value) {//日期格式化
+        var date = new Date();
+        date.setTime(value * 1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':'
+            + second;
+    }
+
+    $('.dateFormater').each(function (index, element) {
+        $(element).text(changeDateFormat($(element).text()))
+    })
+</script>
+</body>
+</html>

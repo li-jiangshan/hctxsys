@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">转盘概率配置</li>
+		</ul>
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="builder-tabs builder-form-tabs">
+                       <ul class="nav nav-tabs">
+							<li><a href="/Admin/Config/group">系统配置</a></li>
+							<li><a href="/Admin/Config/system">基本设置</a></li>
+							<li><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li th:class="active"><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                        <div class="row" >
+                            <div class="col-xs-12" >
+                                <div class="form-group">
+                                    <label class="left control-label">转盘概率配置</label>
+                                </div>
+
+                                <form action="/Admin/Config/turntableupdate" method="post" class="form-horizontal form form-builder">
+                                <div class="form-type-list" th:each="turntable,turntableStat : ${keysMap}" >
+								<input type="hidden" name="id" class="form-control" th:value="${turntable.id}" >
+                                   <!-- <div class="form-group item_config[WEB_SITE_TITLE] ">
+                                        <label class="left control-label">1000华宝：</label>
+                                        <div style="width:200px" class="input-group">
+                                            <input type="text" name="one" class="form-control" th:value="${turntable.one}" id="one" >
+                                            
+                                        </div>
+                                    </div> -->
+
+                                    <div class="form-group item_config[WEB_SITE_TITLE] ">
+                                        <label class="left control-label">500积分：</label>
+                                        <div style="width:200px" class="input-group">
+                                            <input type="text" name="two" class="form-control" th:value="${turntable.two}" id="two" >
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_config[WEB_SITE_TITLE] ">
+                                        <label class="left control-label">谢谢参与：</label>
+                                        <div style="width:200px" class="input-group">
+                                            <input type="text" name="three" class="form-control" th:value="${turntable.three}" id="three" >
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_config[WEB_SITE_TITLE] ">
+                                        <label class="left control-label">200积分：</label>
+                                        <div style="width:200px" class="input-group">
+                                            <input type="text" name="four" class="form-control" th:value="${turntable.four}" id="four" >
+                                            
+                                        </div>
+                                    </div>
+
+
+                                <div class="form-group"></div>
+                                <div class="form-group bottom_button_list">
+                                    <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                    <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript">
+	$("#update").bind("click", function() {
+		/* if (mask("1000华宝", $("#one").val()) == 1) {
+			$.alertMessager("1000华宝格式错误", "danger");
+			return false;
+		} */
+		if (mask("500积分", $("#two").val()) == 1) {
+			$.alertMessager("500积分格式错误", "danger")
+			return false;
+		}
+		if (mask("谢谢参与", $("#three").val()) == 1) {
+			$.alertMessager("谢谢参与格式错误", "danger")
+			return false;
+		}
+		if (mask("200积分", $("#four").val()) == 1) {
+			$.alertMessager("200积分格式错误", "danger")
+			return false;
+		}
+	});
+</script>
+</html>

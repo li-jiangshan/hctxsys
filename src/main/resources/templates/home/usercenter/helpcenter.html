@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/home/wap/home/css/component.css">
+<script src="/home/wap/mall/js/jquery-1.7.1.min.js"></script>
+<script src="/home/wap/mall/js/jquery.touchSlider.js"></script>
+<script src="/home/wap/mall/js/js.js"></script>
+<script src="/home/layer_mobile/layer.js"></script>
+<title>华彩天下</title>
+</head>
+<body>
+	<div class="zxzx bzzxa">
+		<img src="/home/wap/home/images/kf.jpg">
+		<div class="bzzx">
+			<h3 th:text="${'客服电话：' + serverTel}"></h3>
+			<p>客服时间：08:30-12:00</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13:30-18:00</p>
+			<p>需要帮助，联系在线客服</p>
+		</div>
+
+		<ul id="ulao">
+			<a th:each="help,helpStat : ${help_son}" th:href="@{'/home/usercenter/helpcenter/new_ids/' + ${help.id}}">
+				<li th:class="${help.id == pageId}?'currentao':''" th:text="${help.title}"></li>
+			</a>
+		</ul>
+		<div id="contentao">
+			<div class="show">
+				<div class="zxzx_bottom zxzxa bzzxb">
+					<ul>
+						<li th:each="helpdetail,helpdetailStat : ${helplist}">
+						<a th:href="@{'/home/news/newsdetail/news_id/' + ${helpdetail.newsId}}" th:text="${helpdetail.title}"></a>
+						<span class="dateFormater" th:text="${helpdetail.addtime}"></span></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script>
+			$('#ulao>li').click(
+					function() {
+						$(this).addClass('currentao').siblings().removeClass(
+								'currentao');
+						$('#contentao>div').eq($(this).index()).show()
+								.siblings().hide();
+					})
+
+			function changeDateFormat(value) {//日期格式化
+				var date = new Date();
+				date.setTime(value * 1000);
+				var y = date.getFullYear();
+				var m = date.getMonth() + 1;
+				m = m < 10 ? ('0' + m) : m;
+				var d = date.getDate();
+				d = d < 10 ? ('0' + d) : d;
+				var h = date.getHours();
+				h = h < 10 ? ('0' + h) : h;
+				return y + '-' + m + '-' + d;
+			}
+
+			$('.dateFormater').each(function(index, element) {
+				$(element).text(changeDateFormat($(element).text()))
+			})
+		</script>
+	</div>
+	<div style="padding-bottom: 10vmin; float: left; width: 100%"></div>
+</body>
+</html>

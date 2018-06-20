@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">商城</li>
+			<li class="text-muted">订单管理</li>
+			<li class="text-muted">编辑</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="builder formbuilder-box">
+				<div class="panel-body">
+					<form action="/Adminmall/Order/detail" method="post"
+						class="form-horizontal form form-builder"
+						enctype="multipart/form-data">
+						<div class="tab-content">
+							<input type="hidden" class="form-control input" name="orderId"
+								th:value="${orderId}">
+							<div class="col-xs-12">
+								<div style="height: 20px;"></div>
+								<div class="form-type-list">
+									<input type="hidden" name="order_id" value="{$info.order_id}">
+									<div class="form-group item_title">
+										<label class="left control-label">收货信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<td
+														th:utext="|<span style='color: #999'>姓名：</span>${yskorderentity.userName}|"></td>
+													<td
+														th:utext="|<span style='color: #999'>联系方式：</span>${yskorderentity.userMobile}|"></td>
+												</tr>
+												<tr>
+													<td colspan="2"
+														th:utext="|<span style='color: #999'>收货地址：</span>${yskorderentity.userProvince}、${yskorderentity.userCity}、${yskorderentity.userDistrict}、${yskorderentity.userAddress}|"></td>
+												</tr>
+												<tr>
+													<td colspan="2"
+														th:utext="|<span style='color: #999'>留言：</span>${yskorderentity.orderUserNote}|"></td>
+												</tr>
+											</table>
+
+										</div>
+									</div>
+								</div>
+								<div class="form-type-list">
+									<input type="hidden" name="order_id" value="{$info.order_id}">
+									<div class="form-group item_title">
+										<label class="left control-label">基本信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<td
+														th:utext="|<span style='color: #999'>订单ID：</span>${yskorderentity.orderId}|"></td>
+													<td
+														th:utext="|<span style='color: #999'>订单号：</span>${yskorderentity.orderNo}|"></td>
+												</tr>
+												<tr>
+													<td
+														th:utext="|<span style='color: #999'>订单总额：</span>${yskorderentity.orderTotalPrice}|"></td>
+													<td
+														th:utext="|<span style='color: #999'>会员：</span>${yskorderentity.userEntity.username}&nbsp;&nbsp;${yskorderentity.userEntity.mobile}|"></td>
+												</tr>
+
+											</table>
+
+										</div>
+									</div>
+								</div>
+
+								<div class="form-type-list">
+									<input type="hidden" name="order_id" value="{$info.order_id}">
+									<div class="form-group item_title">
+										<label class="left control-label">商品信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<th>商品</th>
+													<th>规格属性</th>
+													<th>数量</th>
+													<th>单价</th>
+													<th>小计</th>
+												</tr>
+												<tbody th:if="not ${#lists.isEmpty(goodlist)}">
+													<tr th:each="good,goodStat : ${goodlist}">
+														<td><a
+															th:href="@{'/Adminmall/Good/findById/'+${good.goodId}}">
+																<span
+																style="width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; display: inline-block;"
+																th:text="${good.goodName}"></span>
+														</a> <img style="width: 50px"
+															th:src="${good.goodCoverImg}" alt=""></td>
+														<td th:text="${good.attrText}"></td>
+														<td th:text="${good.goodNum}"></td>
+														<td th:text="${good.goodPrice}"></td>
+														<td th:text="${good.goodPrice}*${good.goodNum}"></td>
+													</tr>
+													<tr>
+														<td colspan="5" style="text-align: right;"
+															th:utext="|<span style='color: #999'>订单总额：</span>${yskorderentity.orderTotalPrice}|"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr />
+
+							<div class="form-group item_type " th:if="${yskorderentity.orderStatus} eq '0'">
+								<label class="left control-label"> <span>当前状态：</span>
+								</label>
+								<div class="right">
+									<span style="color: #2699ed;"
+										th:if="${yskorderentity.orderStatus} eq '0'">未支付</span> <span
+										style="color: #2699ed;"
+										th:if="${yskorderentity.orderStatus} eq '1'">已支付</span> <span
+										style="color: #2699ed;"
+										th:if="${yskorderentity.orderStatus} eq '2'">已发货</span> <span
+										style="color: #2699ed;"
+										th:if="${yskorderentity.orderStatus} eq '3'">已完成</span>
+								</div>
+							</div>
+
+							<div class="form-group item_type " th:if="${yskorderentity.orderStatus != 3}">
+								<label class="left control-label"> <span>订单状态：</span>
+								</label>
+								<div class="right">
+									<div class="radio-inline lyui-control lyui-radio"
+										th:if="${yskorderentity.orderStatus == 0}">
+										<label for="typemodule"> <input type="radio"
+											id="typemodule" class="radio" name="orderStatus" value="1">
+											<span class="lyui-control-indicator"></span> <span>已支付</span>
+										</label>
+									</div>
+									<div class="radio-inline lyui-control lyui-radio"
+										th:if="${yskorderentity.orderStatus == 1}">
+										<label for="typetheme"> <input type="radio"
+											id="typetheme" class="radio" name="orderStatus" value="2">
+											<span class="lyui-control-indicator"></span> <span>已发货</span>
+										</label>
+									</div>
+
+									<div class="radio-inline lyui-control lyui-radio" th:if="${yskorderentity.orderStatus == 2}">
+										<label for="three"> <input type="radio" id="three"
+											class="radio" name="orderStatus" value="3"> <span
+											class="lyui-control-indicator"></span> <span>已完成</span>
+										</label>
+									</div>
+
+								</div>
+							</div>
+							<div class="form-group bottom_button_list">
+								<a class="btn btn-primary submit ajax-post" type="submit"
+									id="btnSubmit" target-form="form"
+									th:if="${yskorderentity.orderStatus} lt '3'">保存</a> <a
+									class="btn btn-danger return"
+									onclick="javascript:history.back(-1);return false;">返回</a>
+							</div>
+							<div class="form-group"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

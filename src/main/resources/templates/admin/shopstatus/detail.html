@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        <li class="text-muted">系统</li>
+        <li class="text-muted">平台审核</li>
+        <li class="text-muted">用户认证</li>
+        <li class="text-muted">审核</li>
+    </ul>
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="form-group"></div>
+                <div class="builder-container" >
+                    <div class="row" >
+                        <div class="col-xs-12">
+                            <form class="form-horizontal form form-builder">
+                                <div class="form-type-list">
+                                    <div class="form-group hidden item_id ">
+                                        <label class="left control-label">ID：</label>
+                                        <div class="right">
+                                            <input type="hidden" class="form-control input" name="userid" th:value="${user.userid}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">类型：</label>
+                                        <div style="color:red" class="right">
+                                            <span th:if="${user.userType==0}">个人用户</span>
+                                            <span th:if="${user.userType==1}">企业用户</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">用户：</label>
+                                        <div class="right">
+                                           [[${user.username}]]([[${user.mobile}]])
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">所在地区：</label>
+                                        <div class="right">
+                                            [[${user.checkinfoEntity.province}]]、[[${user.checkinfoEntity.city}]]、[[${user.checkinfoEntity.district}]]
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                   <div th:if="${user.userType==1}"><!--企业用户信息-->
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">公司名称：</label>
+                                           <div class="right">
+                                               [[${user.username}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">是否三证合一：</label>
+                                           <div class="right">
+                                               <span th:if="${user.checkinfoEntity.isThreeCard==1}">是</span>
+                                               <span th:if="${user.checkinfoEntity.isThreeCard==0}">否</span>
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">是否分公司：</label>
+                                           <div class="right">
+                                               <span th:if="${user.checkinfoEntity.isChildCompany==1}">是</span>
+                                               <span th:if="${user.checkinfoEntity.isChildCompany==0}">否</span>
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">社会信用代码：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.creditNo}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">税务登记证：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.taxNo}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">组织机构证：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.organizeNo}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">法人：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.legalName}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">公司类型：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.companyType}]]
+                                           </div>
+                                       </div>
+                                       <div class="form-group item_title ">
+                                           <label class="left control-label">经营负责人：</label>
+                                           <div class="right">
+                                               [[${user.checkinfoEntity.manageParent}]]
+                                           </div>
+                                       </div>
+                                   </div>
+
+                                  <div th:if="${user.userType==0}"><!--个人用户信息-->
+                                      <div class="form-group item_title ">
+                                          <label class="left control-label">证件类型：</label>
+                                          <div class="right">
+                                              [[${user.checkinfoEntity.idcardType==1}?非大陆身份证:大陆身份证]]
+                                          </div>
+                                      </div>
+                                      <div class="form-group item_title ">
+                                          <label class="left control-label">身份证号：</label>
+                                          <div class="right">
+                                              [[${user.checkinfoEntity.idcard}]]
+                                          </div>
+                                      </div>
+                                      <div class="form-group item_title ">
+                                          <label class="left control-label">证件有效期：</label>
+                                          <div class="right">
+                                              [[${#dates.format(user.checkinfoEntity.idcarStartdate,'yyyy-MM-dd')}]] 至 [[${#dates.format(user.checkinfoEntity.idcarEndtdate,'yyyy-MM-dd')}]]
+                                          </div>
+                                      </div>
+                                  </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">证件照片：</label>
+                                        <div class="right">
+                                            <div class="left" style="margin-right: 5px">
+                                                <a th:href="${user.checkinfoEntity.idcardImgFace}">
+                                                    <img style="width:100%" th:src="${user.checkinfoEntity.idcardImgFace}" alt="">
+
+                                                </a>
+                                                <p style="text-align:center" >正面照</p>
+                                            </div>
+                                            <div class="left" style="margin-right: 5px">
+                                                <a th:href="${user.checkinfoEntity.idcardImgBack}">
+                                                    <img style="width:100%" th:src="${user.checkinfoEntity.idcardImgBack}" alt="">
+
+                                                </a>
+                                                <p style="text-align:center" >反面照</p>
+                                            </div>
+                                            <div class="left" style="margin-right: 5px">
+                                                <a  th:href="${user.checkinfoEntity.idcardImgHand}">
+                                                    <img style="width:100%" th:src="${user.checkinfoEntity.idcardImgHand}" alt="">
+
+                                                </a>
+                                                <p style="text-align:center" >手持照</p>
+                                            </div>
+
+                                            <div th:if="${user.checkinfoEntity.companyLicenseImg!=null}" class="left" style="margin-right: 5px">
+                                                <a  style="margin-right:5vmin" class="left" th:href="${user.checkinfoEntity.companyLicenseImg}">
+                                                    <img style="width:100%" th:src="${user.checkinfoEntity.companyLicenseImg}" alt="">
+
+                                                </a>
+                                                <p style="text-align:center" >营业执照</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div th:if="${(user.userType==0 and user.checkinfoEntity.isCheckUser==1) or (user.userType==1 and user.checkinfoEntity.isCheckCompany==1)}">
+                                        <div class="form-group ">
+                                            <label class="left control-label">回复信息：</label>
+                                            <div style="width:61.5%" class="input-group">
+                                                <input id="content" type="text" name="content" class="form-control">
+                                                <span class="check-tips text-muted small">回复内容、拒绝理由</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group item_type ">
+                                            <label class="left control-label">
+                                                <span>是否通过：</span>
+                                            </label>
+                                            <div class="right">
+                                                <div class="radio-inline lyui-control lyui-radio">
+                                                    <label for="typemodule">
+                                                        <input type="radio" id="typemodule" class="radio" name="agree" value="2">
+                                                        <span class="lyui-control-indicator"></span>
+                                                        <span>通过</span>
+                                                    </label>
+                                                </div>
+                                                <div class="radio-inline lyui-control lyui-radio">
+                                                    <label for="typetheme">
+                                                        <input type="radio" id="typetheme" class="radio" name="agree" value="3">
+                                                        <span class="lyui-control-indicator"></span>
+                                                        <span>拒绝</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group"></div>
+                                    <div class="form-group bottom_button_list">
+                                        <a id="update" th:if="${(user.userType==0 and user.checkinfoEntity.isCheckUser==1) or (user.userType==1 and user.checkinfoEntity.isCheckCompany==1)}" class="btn btn-primary submit " type="button">确定</a>
+                                        <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $('#update').click(function () {
+        if($('input:checked').length==0) {
+            $.alertMessager("请选择状态","danger");
+            return;
+        }
+        if (required('', $('#content').val()) == 1 && $('input:checked').val() == '3') {//点拒绝按钮时
+            $.alertMessager("请输入拒绝理由", "danger");
+            return
+        }
+        $.ajax({
+            url:"/Admin/Shopstatus/detail/update",
+            method:"POST",
+            data:$('form').serialize(),
+            dataType:"json",
+            success:function (data) {
+                if(data.status==200) {
+                    $.alertMessager(data.message,"success",'',setTimeout(function () {
+                        location.href="/Admin/Shopstatus/index";
+                    },2000));
+                }
+                else{
+                    $.alertMessager(data.message,"danger",'',setTimeout(function () {
+                        location.href="/Admin/Shopstatus/index";
+                    },2000));
+                }
+            }
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/home/wap/home/css/component.css">
+<title>华彩天下</title>
+</head>
+<style type="text/css">
+.zxzx_top ul li {
+	margin-right: 1%;
+}
+</style>
+<body>
+	<!-- 资讯中心 标题 -->
+	<div class="notice">
+		<div class="notice_left">
+			<img src="/home/wap/home/images/gg2.png">
+		</div>
+		<div class="notice_right zxzx">
+			<p>
+				资讯中心<a
+					th:href="@{'/home/news/newscenter/new_ids/' + ${menu_son[0].id}}"
+					style="display: initial;"><i>更多</i></a>
+			</p>
+		</div>
+	</div>
+
+	<div class="zxzx_top">
+		<ul>
+			<li th:each="menu,menuStat : ${menu_son}">
+				<a th:href="@{'/home/news/newscenter/new_ids/' + ${menu.id}}">
+					<img th:src="@{'/home/wap/home/images/zx' + ${menuStat.index+1} + '.jpg'}">
+					<p th:text="${menu.title}"></p>
+				</a>
+			</li>
+				<li>
+				<a th:href="@{'/home/usercenter/helpcenter/new_ids/' + ${help_son[0].id}}">
+					<img src="/home/wap/home/images/zx6.jpg">
+					<p>帮助中心</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="zxzx_bottom">
+		<ul>
+			<li th:class="${newtop.newtop eq 2}?'':'new'" th:each="newtop,newtopStat : ${newtoplist}">
+				<a th:href="@{'/home/news/newsdetail/news_id/' + ${newtop.newsId}}" th:text="${newtop.title}"></a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

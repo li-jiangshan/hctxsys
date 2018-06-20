@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>华彩天下</title>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+</head>
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">商学院</li>
+			<li class="text-muted">会议列表</li>
+			<li class="text-muted">添加商品</li>
+		</ul>
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="builder formbuilder-box">
+				<div class="panel-body">
+					<form method="post"
+						class="form-horizontal form form-builder"
+						enctype="multipart/form-data">
+						<ul class="nav-tabs nav">
+							<li class="active"><a href="#tab1" data-toggle="tab"
+								aria-expanded="true">新闻信息</a></li>
+						</ul>
+						<div class="tab-content">
+
+							<!-- 卡片1 -->
+							<div id="tab1" class="tab-pane active">
+								<div class="col-xs-12">
+									<div style="height: 20px;"></div>
+									<div class="form-type-list">
+										<!-- ajax修改，没有id,给个隐藏id -->
+										<input type="hidden" name="newsId" th:if="${info != null}" th:value="${info?.newsId}">
+										<input type="hidden" name="views" th:if="${info != null}" th:value="${info?.views}">
+										<input type="hidden" name="times" th:if="${info != null}" th:value="${info?.times}">
+										<div class="form-group item_title ">
+											<label class="left control-label">新闻标题：</label>
+											<div style="width: 60%" class="right">
+												<input type="text" class="form-control input" name="title" id="title"
+													th:value="${info?.title}" placeholder="新闻标题">
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">排序：</label>
+											<div style="width: 60%" class="right">
+												<input type="text" class="form-control input" name="px" id="px"
+													th:value="${info?.px}" placeholder="排序">
+											</div>
+										</div>
+
+										<div class="form-group item_title">
+											<label class="left control-label">新闻分类：</label>
+											<div style="width: 60%" class="right">
+												<select name="pid" class="form-control select">
+													<option th:each="type:${typeInfo}" th:value="${type.id}"
+													th:selected="${type.id eq selected}"
+														th:text="${type.title}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group item_ysj ">
+											<label class="left control-label"> <span>新闻属性：</span>
+											</label>
+											<div class="right">
+												<div class="checkbox-inline lyui-control lyui-checkbox">
+													<label class="checkbox-label">
+													<input type="radio" th:checked="${info?.newtop eq 1}" name="newtop" value="1">
+													<span class="lyui-control-indicator"></span> <span>最新</span>
+													</label>
+												</div>
+												<div class="checkbox-inline lyui-control lyui-checkbox">
+													<label class="checkbox-label">
+														<input type="radio" th:checked="${info?.newtop eq 2}" name="newtop" value="2">
+														<span class="lyui-control-indicator"></span> <span>置顶</span>
+													</label>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group item_ysj ">
+											<label class="left control-label"> <span>是否展示：</span>
+											</label>
+											<div class="right">
+												<div class="checkbox-inline lyui-control lyui-checkbox">
+													<label class="checkbox-label">
+													<input type="radio" th:checked="${info?.status eq 1}" name="status" value="1">
+													<span class="lyui-control-indicator"></span> <span>是</span>
+													</label>
+												</div>
+												<div class="checkbox-inline lyui-control lyui-checkbox">
+													<label class="checkbox-label">
+													<input type="radio" th:checked="${info?.status eq 2}" name="status" value="2">
+														<span class="lyui-control-indicator"></span> <span>否</span>
+													</label>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="left control-label">新闻内容：</label>
+											<div class="right">
+												<textarea style="min-height: 400px" class="form-control"
+													rows="5" id="editor" name="content" th:text="${info?.content}"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group bottom_button_list">
+								<a class="btn btn-primary" type="submit" onclick="confirm();">保存</a> <a class="btn btn-danger return"
+									onclick="javascript:history.back(-1);return false;">取消</a>
+							</div>
+							<div class="form-group"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		$(document).ajaxComplete(function(event, request, settings) {
+			var data = request.responseJSON;
+			if (data == undefined)//根据服务器端返回的数据判断
+			{
+				window.location = "/";
+			}
+		});
+		function confirm() {
+			if ($("#title").val() == "") {
+				$.alertMessager("请输入标题", "danger");
+			} else if ($("#px").val() == "") {
+				$.alertMessager("排序不能为空", "danger");
+			} else {
+				save();
+			}
+		}
+		function save() {
+			$.ajax({
+				type : "POST",
+				url : "/Admin/News/savenews",
+				traditional : true,
+				data : $('form').serialize(),
+				success : function(data) {
+					if (data.status == 200) {
+						$.alertMessager(data.message, "success");
+						setTimeout(function() {
+							location.href = document.referrer;
+						}, 2000);
+					} else {
+						$.alertMessager(data.message, "danger");
+					}
+					;
+				},
+				error : function() {
+					$.alertMessager("请求异常请稍后再试", "danger");
+				}
+			});
+		}
+
+		KindEditor.ready(function(K) {
+			window.editor = K.create('#editor', {
+				uploadJson : '/fileUpload',
+				fileManagerJson : '/fileManager',
+				allowFileManager : true,
+				afterBlur : function() {
+					this.sync();
+				}
+			});
+		});
+	</script>
+</body>
+</html>

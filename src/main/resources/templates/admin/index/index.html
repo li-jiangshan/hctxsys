@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<style type="text/css">
+tr, td {
+	margin: 0 !important;
+	padding: 5px 5px !important;
+}
+</style>
+<body>
+    <div id="main" class="col-xs-12 col-sm-9 main" style="padding-right: 0;">
+            <!-- 面包屑导航 -->
+            <ul class="breadcrumb">
+                <li><i class="fa fa-map-marker"></i></li>
+                <li class="text-muted">首页</li>
+            </ul>
+            
+        <!-- 多标签后台内容部分 -->
+        <div class="tab-content ct-tab-content" >
+            <!-- 首页 -->
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class="dashboard clearfix">
+                    <div class="col-xs-12 col-sm-6 col-lg-6 ct-update">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="update pull-right"></div>
+                                <i class="fa fa-cog"></i> 平台信息
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>今日新增会员</td>
+                                            <td>
+                                                <a title="查看" href="/Admin/User/index">
+                                                    [[${date_total}]]
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>总会员数</td>
+                                            <td>
+                                                <a title="查看" href="/Admin/User/index">
+                                                    [[${total}]]
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                           <td>前天平台总收入</td>
+                                           <td>[[${systemCostSum}]]</td>
+                                       </tr>
+                                       <tr>
+                                           <td>前天平台总积分</td>
+                                           <td>[[${userWealthDetailSum}]]</td>
+                                       </tr>
+                                        <tr>
+                                           <td></td>
+                                           <td></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-actions"></div>
+                                <i class="fa fa-users"></i> 商城信息
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <td>新增订单</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>新增用户</td>
+                                            <td>0</td>
+                                        </tr>
+                                       <tr>
+                                           <td></td>
+                                           <td></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 后台首页小工具 -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

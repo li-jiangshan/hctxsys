@@ -1,0 +1,116 @@
+<ul class="pagination" th:if="${tableResult.pageCount != 0}">
+	<!--当页面小于7页-->
+	<ul class="pagination" th:if="${tableResult.pageCount le 7}">
+		<li th:class="${tableResult.pageNumber eq 0}? 'disabled' : ''"><a
+			href="javascript:void(0)" th:if="${tableResult.pageNumber gt 0}"
+			th:attr="pageNum=${tableResult.pageNumber}-1"
+			onclick="onChangePage(this)">«</a> <a href="javascript:void(0)"
+			th:if="${tableResult.pageNumber==0}">«</a></li>
+		<li th:each="i:${#numbers.sequence(0,tableResult.pageCount-1)}"
+			th:class="${tableResult.pageNumber eq i}? 'active' : ''"><a
+			href="javascript:void(0)" th:pageNum="${i}"
+			onclick="onChangePage(this)" th:text="${i}+1"></a></li>
+		<li
+			th:class="${tableResult.pageNumber eq tableResult.pageCount-1}? 'disabled' : ''">
+			<a href="javascript:void(0)"
+			th:if="${tableResult.pageNumber!=tableResult.pageCount-1}"
+			onclick="onChangePage(this)"
+			th:attr="pageNum=${tableResult.pageNumber+1}">»</a> <a
+			href="javascript:void(0)"
+			th:if="${tableResult.pageNumber==tableResult.pageCount-1}">»</a>
+		</li>
+		<li><span class="rows" th:text="'共'+${tableResult.total}+'条记录'"></span></li>
+	</ul>
+	<!--当页面大于7-->
+	<ul class="pagination" th:if="${tableResult.pageCount gt 7}">
+		<!--上一页-->
+		<li th:class="${tableResult.pageNumber eq 0}? 'disabled' : ''"><a
+			href="javascript:void(0)" th:if="${tableResult.pageNumber gt 0}"
+			th:attr="pageNum=${tableResult.pageNumber}-1"
+			onclick="onChangePage(this)">«</a> <a href="javascript:void(0)"
+			th:if="${tableResult.pageNumber==0}">«</a></li>
+		<!--首页-->
+		<li th:class="${tableResult.pageNumber eq 0}? 'active' : ''"><a
+			href="javascript:void(0)" th:pageNum="0" onclick="onChangePage(this)"
+			th:text="1"></a></li>
+		<!-- 当前页面小于等于4 -->
+		<li th:class="${(tableResult.pageNumber + 1) eq i} ? 'active' : ''"
+			th:if="${(tableResult.pageNumber+1) le 4}"
+			th:each="i : ${#numbers.sequence(2,5)}"><a
+			href="javascript:void(0)" th:pageNum="${i}-1"
+			onclick="onChangePage(this)" th:text="${i}"></a></li>
+		<li class="disabled" th:if="${(tableResult.pageNumber+1) le 4}">
+			<a href="javascript:void(0)">...</a>
+		</li>
+		<!-- 最后一页与当前页面之差，小于等于3 -->
+		<li class="disabled"
+			th:if="${(tableResult.pageCount-(tableResult.pageNumber + 1)) le 3}">
+			<a href="javascript:void(0)">...</a>
+		</li>
+		<li
+			th:each="i : ${#numbers.sequence(tableResult.pageCount-4, tableResult.pageCount-1)}"
+			th:class="${(tableResult.pageNumber + 1) eq i} ? 'active' : ''"
+			th:if="${(tableResult.pageCount-(tableResult.pageNumber + 1)) le 3}">
+			<a href="javascript:void(0)" onclick="onChangePage(this)"
+			th:pageNum="${i} - 1" th:text="${i}"></a>
+		</li>
+		<!-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+		<li class="disabled"
+			th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}">
+			<a href="javascript:void(0)">...</a>
+		</li>
+		<li
+			th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}">
+			<a href="javascript:void(0)" th:pageNum="${tableResult.pageNumber}-1"
+			th:text="${tableResult.pageNumber}" onclick="onChangePage(this)"></a>
+		</li>
+		<li class="active"
+			th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}">
+			<a href="javascript:void(0)" th:pageNum="${tableResult.pageNumber}"
+			th:text="${tableResult.pageNumber}+1"></a>
+		</li>
+		<li
+			th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}">
+			<a href="javascript:void(0)" onclick="onChangePage(this)"
+			th:pageNum="${tableResult.pageNumber}+1"
+			th:text="${tableResult.pageNumber}+2"></a>
+		</li>
+		<li class="disabled"
+			th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}">
+			<a href="javascript:void(0)">...</a>
+		</li>
+		<!--最后一页-->
+		<li
+			th:class="${(tableResult.pageNumber + 1) eq tableResult.pageCount} ? 'active' : ''">
+			<a href="javascript:void(0)" th:pageNum="${tableResult.pageCount-1}"
+			onclick="onChangePage(this)" th:text="${tableResult.pageCount}"></a>
+		</li>
+		<!--下一页-->
+		<li
+			th:class="${tableResult.pageNumber eq tableResult.pageCount-1}? 'disabled' : ''">
+			<a href="javascript:void(0)"
+			th:if="${tableResult.pageNumber!=tableResult.pageCount-1}"
+			onclick="onChangePage(this)"
+			th:attr="pageNum=${tableResult.pageNumber+1}">»</a> <a
+			href="javascript:void(0)"
+			th:if="${tableResult.pageNumber==tableResult.pageCount-1}">»</a>
+		</li>
+		<li><span class="rows" th:text="'共'+${tableResult.total}+'条记录'"></span></li>
+	</ul>
+</ul>
+<script type="text/javascript" th:inline="javascript">
+
+	function onChangePage(event) {
+		var href = location.href;
+		var index = href.indexOf("pageNumber")
+		if (index == -1) {
+			href += "?pageNumber=0&pageSize=10";
+		}
+		index = href.indexOf("pageNumber");
+		var index2 = href.indexOf("&");
+		var prefix = href.substr(0, index);
+		var end = href.substr(index2, href.length);
+		href = prefix + "pageNumber=" + $(event).attr("pageNum") + end;
+		location.href = href;
+	}
+</script>

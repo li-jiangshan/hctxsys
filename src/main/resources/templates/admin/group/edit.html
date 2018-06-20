@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+       <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+           <li class="text-muted">系统功能</li>
+			<li class="text-muted">角色管理</li>
+		</ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+                <div class="builder formbuilder-box">
+                  <div class="panel-body">
+                    <ul class="nav-tabs nav">
+                        <li class="active" ><a href="#tab1" data-toggle="tab" aria-expanded="true">角色信息</a></li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab" aria-expanded="false">系统权限</a>
+                        </li>                
+                    </ul>
+                          <form th:action="@{/Admin/Group/editupdate}" method="post" class="form-horizontal form form-builder" enctype="multipart/form-data">
+                        <div class="tab-content" >
+                            <!-- 卡片1 -->
+                            <div id="tab1" class="tab-pane active" >
+                                <div class="col-xs-12">
+                                
+                                        <div class="form-type-list">
+                                            <div class="form-group hidden item_id ">
+                                                <label class="left control-label">ID：</label>
+                                                <div class="right">
+                                                    <input type="hidden" class="form-control input" name="id" th:value="${yskgroupentity==null}?'0':${yskgroupentity.id}">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">角色名：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="title" th:value="${yskgroupentity==null}?'':${yskgroupentity.title}" placeholder="角色名" id="title" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group item_title ">
+                                                <label class="left control-label">排序：</label>
+                                                <div class="right">
+                                                    <input type="text" class="form-control input" name="sort" th:value="${yskgroupentity==null}?'':${yskgroupentity.sort}" placeholder="排序" id="sort" maxlength="3" >
+                                                </div>
+                                            </div>
+                                    </div>
+                                    
+
+                                </div> 
+                            </div>
+                         <!-- 卡片2 -->
+                            <div id="tab2" class="tab-pane">
+                                <div class="form-group"></div>
+                                <div class="form-group">
+                                    <div class="auth">
+                                        <div th:if="${toplist.size() gt 0}"
+									th:each="top,topStat : ${toplist}" th:class="${topStat.count-1}">
+                                            <div class="cui-control cui-checkbox">
+                                                <label class="checkbox-label checkbox-inline">
+                                                    <input type="checkbox" name="menuAuthId" th:if="${#lists.contains(menuId,top.id)}" th:data-module-name="${topStat.count-1}" th:value="${top.id}" checked="checked">
+                                                    <input type="checkbox" name="menuAuthId" th:unless="${#lists.contains(menuId,top.id)}" th:data-module-name="${topStat.count-1}" th:value="${top.id}" >
+                                                    <span class="cui-control-indicator"></span>
+                                                    <span th:text=" ${top.name} "></span>
+                                                </label>
+                                                <div th:class="'auth'+${top.id}" style="padding-left: 25px;margin-top: 10px;">
+                                                <div th:each="first,firstStat : ${firstmenulist}" th:if="${top.id == first.pid}" >
+                                                        <label class="checkbox-label checkbox-inline" >
+                                                            <input type="checkbox" name="menuAuthId" th:data-module-name="${topStat.count-1}"  th:if="${#lists.contains(menuId,first.id)}" th:value="${first.id}" checked="checked">
+                                                            <input type="checkbox" name="menuAuthId" th:data-module-name="${topStat.count-1}"  th:unless="${#lists.contains(menuId,first.id)}" th:value="${first.id}">
+                                                            <span class="cui-control-indicator"></span>
+                                                            <span th:text=" ${first.name} "></span>
+                                                        </label>
+                                                        <div th:class="'auth'+${first.id}" style="padding-left: 25px;margin-top: 10px;">
+                                                                <label class="checkbox-label checkbox-inline" th:each="second,secondStat : ${secondmenulist}" th:if="${first.id == second.pid && first.pid == second.gid}">
+                                                                    <input type="checkbox" name="menuAuthId" th:data-module-name="${topStat.count-1}" th:if="${#lists.contains(menuId,second.id)}" th:value="${second.id}" checked="checked">
+                                                                    <input type="checkbox" name="menuAuthId" th:data-module-name="${topStat.count-1}" th:unless="${#lists.contains(menuId,second.id)}" th:value="${second.id}">
+                                                                    <span class="cui-control-indicator"></span>
+                                                                    <span th:text=" ${second.name} "></span>
+                                                                </label>
+                                                        </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group"></div>
+                            </div>
+
+                            <div class="form-group"></div>
+                            <div class="form-group bottom_button_list">
+                                <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                <a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+    $('.auth input[type="checkbox"]').on('change',function(){
+        //遍历选中当前权限的子权限
+        $('.'+$(this).attr('data-module-name')+' .auth'+$(this).val()).find('input').prop('checked',this.checked);
+        if(this.checked){
+            $(this).parents('div[class^="auth"]').prev('label').find('input').prop('checked',true);
+        } else {
+        	if($(this).parents('div[class^="auth"]:eq(0)').find('input:checked').length == 0){
+        		$(this).parents('div[class^="auth"]:eq(0)').prev('label').find('input').prop('checked',false);
+        		if($(this).parents('div[class^="auth"]:eq(0)').parent().siblings('div').children("label").find('input:checked').length == 0){
+        			$(this).parents('div[class^="auth"]').prev('label').find('input').prop('checked',false);
+        		}
+        	}
+        }
+    });
+});
+</script>
+<script type="text/javascript">
+	$('#update').click(function() {
+		if (required("角色名", $("#title").val()) == 1) {
+			$.alertMessager("角色名不能为空", "danger")
+			return false;
+		}
+		if (mask('排序', $('#sort').val()) == 1) {
+			$.alertMessager("排序格式错误", "danger")
+			return false;
+		}
+	})
+</script>
+</html>

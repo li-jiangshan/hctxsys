@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/home/wap/mall/css/style.css">
+<link rel="stylesheet" href="/home/wap/mall/iconfont/iconfont.css">
+<link rel="stylesheet" href="/home/wap/mall/css/ui-choose.css">
+<link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+<script src="/home/wap/mall/js/jquery-1.7.1.min.js"></script>
+<script src="/home/wap/mall/js/jquery.touchSlider.js"></script>
+<script src="/home/wap/mall/js/js.js"></script>
+<script src="/home/layer_mobile/layer.js"></script>
+<title>华彩天下</title>
+</head>
+<body>
+	<ul id="ulas" style="margin-top: 0vmin;">
+		<li class="currentas">全部</li>
+		<li>好评</li>
+		<li>中评</li>
+		<li>差评</li>
+	</ul>
+	<div id="contentas">
+		<div class="show">
+			<div class="pinglun">
+				<ul>
+					<li th:each="all,allStat : ${list.all}">
+						<div class="pinglun_top">
+							<span class="tx"><img src="/home/wap/mall/images/tx.png"></span><span
+								class="mz" th:text="${all.username}"></span> <span class="wx">
+								<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(all.starAbility,all.starAttitude),all.starPrice))}" src="/home/wap/mall/images/wx.png">&nbsp;
+						</div>
+						<p th:text="${all.content}"></p>
+						<p class="wz_b" th:if="${not #strings.isEmpty(all.goodItem)}" th:text="${'参数：' + all.goodItem}">
+						<p class="wz_b" th:if="${#strings.isEmpty(all.goodItem)}">&nbsp;&nbsp;
+						<span class="dateFormater" th:text="${all.createTime}"></span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="das">
+			<div class="pinglun">
+				<ul>
+					<li th:each="high,highStat : ${list.high}">
+						<div class="pinglun_top">
+							<span class="tx"><img src="/home/wap/mall/images/tx.png"></span> <span
+								class="mz" th:text="${high.username}"></span> <span class="wx">
+								<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(high.starAbility,high.starAttitude),high.starPrice))}" src="/home/wap/mall/images/wx.png">&nbsp;
+						</div>
+						<p th:text="${high.content}"></p>
+						<p class="wz_b" th:if="${not #strings.isEmpty(high.goodItem)}" th:text="${'参数：' + high.goodItem}">
+						<p class="wz_b" th:if="${#strings.isEmpty(high.goodItem)}">&nbsp;&nbsp;
+						<span class="dateFormater" th:text="${high.createTime}"></span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="das">
+			<div class="pinglun">
+				<ul>
+					<li th:each="middle,middleStat : ${list.middle}">
+						<div class="pinglun_top">
+							<span class="tx"><img src="/home/wap/mall/images/tx.png"></span> <span
+								class="mz" th:text="${middle.username}"></span> <span class="wx">
+								<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(middle.starAbility,middle.starAttitude),middle.starPrice))}" src="/home/wap/mall/images/wx.png">&nbsp;
+						</div>
+						<p th:text="${middle.content}"></p>
+						<p class="wz_b" th:if="${not #strings.isEmpty(middle.goodItem)}" th:text="${'参数：' + middle.goodItem}">
+						<p class="wz_b" th:if="${#strings.isEmpty(middle.goodItem)}">&nbsp;&nbsp;
+						<span class="dateFormater" th:text="${middle.createTime}"></span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="das">
+			<div class="pinglun">
+				<ul>
+					<li th:each="low,lowStat : ${list.low}">
+						<div class="pinglun_top">
+							<span class="tx"><img src="/home/wap/mall/images/tx.png"></span> <span
+								class="mz" th:text="${low.username}"></span> <span class="wx">
+								<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(low.starAbility,low.starAttitude),low.starPrice))}" src="/home/wap/mall/images/wx.png">&nbsp;
+						</div>
+						<p th:text="${low.content}"></p>
+						<p class="wz_b" th:if="${not #strings.isEmpty(low.goodItem)}" th:text="${'参数：' + low.goodItem}">
+						<p class="wz_b" th:if="${#strings.isEmpty(low.goodItem)}">&nbsp;&nbsp;
+						<span class="dateFormater" th:text="${low.createTime}"></span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		$('#ulas>li').click(function() {
+			$(this).addClass('currentas').siblings().removeClass('currentas');
+			$('#contentas>div').eq($(this).index()).show().siblings().hide();
+
+		})
+		function changeDateFormat(value) {//日期格式化
+			var date = new Date();
+			date.setTime(value * 1000);
+			var y = date.getFullYear();
+			var m = date.getMonth() + 1;
+			m = m < 10 ? ('0' + m) : m;
+			var d = date.getDate();
+			d = d < 10 ? ('0' + d) : d;
+			var h = date.getHours();
+			h = h < 10 ? ('0' + h) : h;
+			var minute = date.getMinutes();
+			var second = date.getSeconds();
+			minute = minute < 10 ? ('0' + minute) : minute;
+			second = second < 10 ? ('0' + second) : second;
+			return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':'
+					+ second;
+		}
+
+		$('.dateFormater').each(function(index, element) {
+			$(element).text(changeDateFormat($(element).text()))
+		})
+	</script>
+</body>
+</html>

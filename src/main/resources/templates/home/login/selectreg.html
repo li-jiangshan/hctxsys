@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<meta charset="UTF-8">
+<script src="/admin/libs/jquery/1.x/jquery.min.js"></script>
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+<title>华彩天下</title>
+</head>
+<div class="register">
+	<a th:href="@{'/home/login/register/pid/' + ${pid}}">
+		<div class="bg_white">
+			<img src="/home/wap/home/images/zc-gr-logo.png">
+			<p>个人注册</p>
+		</div>
+	</a> <a th:href="@{'/home/login/companyregister/pid/' + ${pid}}">
+		<div class="bg_white">
+			<img src="/home/wap/home/images/zc-qy-logo.png">
+			<p>企业注册</p>
+		</div>
+	</a>
+</div>
+
+<style>
+.bg_white {
+	border: 3px dashed #e8e8e8;
+	padding: 2%;
+	margin: 4%;
+	text-align: center;
+}
+
+.bg_white img {
+	width: 25%
+}
+
+.bg_white p {
+	color: #4794de;
+	font-size: 5vmin
+}
+</style>
+</body>
+</html>

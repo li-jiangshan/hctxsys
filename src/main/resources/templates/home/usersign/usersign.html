@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+	<style type="text/css">
+		body{
+			background: #FFFFFF;
+		}
+		.qiandao-list li{
+			text-align: center;
+			font-size: 5vmin;
+			font-weight: bold;
+			color: #ad560e;
+			width:10.4vmin;
+			height:10.4vmin;
+			line-height:10.4vmin;
+			margin-top: 0.8vmin;
+		}
+		.zzc{position: fixed;width: 100%;height:100%;top:0;background-color: rgba(0, 0, 0, 0.71);z-index: 100}
+		
+		@-webkit-keyframes fadeInOut {
+			0% {
+				opacity:0;
+			 }
+			100% {
+				opacity:1;
+			}
+		}
+		
+		
+		.tswzaa { 
+			position: fixed; 
+			-webkit-animation-name: fadeInOut;
+			-webkit-animation-timing-function: ease-in-out;
+			-webkit-animation-duration: 1s;
+		
+			top: 43%;
+			left: 18%;
+			width: 60%;
+			border-radius: 1vmin;
+			text-align: center;
+			background: #fff;
+			color: #f97102;
+			font-size: 3.5vmin;
+			font-weight: bold;
+			z-index: 1000;
+			padding: 5% 2%;line-height: 6vmin}
+		.tswzaa p{ padding-top: 5%;border-top: 1px solid #ddd;margin-top: 5%;color: #969696}
+		
+		.qiandao_index_info{width: 92%;float: left;margin-left: 4%;margin-bottom:3vmin;margin-top:3vmin;}
+		.qiandao_index_info p{font-size: 3.5vmin;color: #f1f1f1;text-align:center}
+		.qiandao_index_info p i{font-style: inherit}
+	</style>
+	<script type="text/javascript" th:src="@{/home/layer_mobile/layer.js}"></script>
+	<script type="text/javascript" th:src="@{/home/common/js/home_index.js}"></script>
+	<script type="text/javascript" th:src="@{/home/wap/home/js/jquery-1.10.2.min.js}"></script>
+	<link rel="stylesheet" th:href="@{/home/layer_mobile/need/layer.css}">
+	<link rel="stylesheet" th:href="@{/home/wap/home/css/qiandao_style.css}">
+	<link rel="stylesheet" th:href="@{/home/wap/home/css/style.css}">
+	<script> 
+		function closeSignDetail(){
+			$("#js-qiandao-history").click();
+		}
+		$(function() {
+			var widthUl = $('#js-qiandao-main').width(); 
+			// li的宽度和高度  
+			var widthLi = (widthUl - 7)/7;   
+			if(widthLi < 45){  
+				$('#js-qiandao-list').css('marginTop','40px');	
+			}else if(widthLi > 45 && widthLi < 50){  
+				$('#js-qiandao-list').css('marginTop','50px');	
+			}  
+			var signFun = function() {
+				var day_str = $('#daystr').val();
+				var dateArray =day_str.split(",");// 已经签到的天  
+				if(day_str==''){
+				  dateArray=[];
+				}
+				// var oo =dateArray[0];
+				// alert(day_str);
+				var $dateBox = $("#js-qiandao-list"),  
+					$currentDate = $(".current-date"),  
+					$qiandaoBnt = $("#js-just-qiandao"),  
+					_html = '',  
+					_handle = true,  
+					myDate = new Date();  
+				// $currentDate.text(myDate.getFullYear() + '年' + parseInt(myDate.getMonth() + 1) + '月' + myDate.getDate() + '日');  
+			  
+				var monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1).getDay();  
+		  
+				var d = new Date(myDate.getFullYear(), parseInt(myDate.getMonth() + 1), 0);  
+				var totalDay = d.getDate(); //获取当前月的天数  
+		  
+				for (var i = 0; i < 42; i++) {  
+					_html += ' <li><div class="qiandao-icon"></div></li>'  
+				}  
+		
+				$dateBox.html(_html) //生成日历网格  
+				var $dateLi = $dateBox.find("li");  
+				for (var i = 0; i < totalDay; i++) {  
+					$dateLi.eq(i + monthFirst).addClass("date" + parseInt(i + 1)).attr('data-num',parseInt(i + 1));  
+					for (var j = 0; j < dateArray.length; j++) {  
+						if ((i + 1) == dateArray[j]) {
+							$dateBox.find("li[data-num='"+(i+1)+"']").addClass("qiandao");  
+							// $dateLi.eq(i).addClass("qiandao");  
+						}  
+					}  
+				} //生成当月的日历且含已签到  
+					  
+				for(var i = 1; i < 42; i++){  
+					var liNum = $dateLi.eq(i).attr('data-num');  
+					if(liNum != 'undefined' && liNum != '' && liNum != null){ 
+						$('.date'+liNum).append(liNum);   
+					}	 
+				} //	嵌入天  
+			  
+				// 没有天的li背景变色  
+				for(var i = 0; i < $dateLi.length; i++){  
+					if(i < monthFirst || i>(totalDay+monthFirst-1)){  
+						$dateLi.eq(i).css('background','#eee');  
+					}	 
+				}
+			  
+				$(".date" + myDate.getDate()).addClass('able-qiandao');  
+		  
+				$dateBox.on("click", "li", function() {  
+						if ($(this).hasClass('able-qiandao') && _handle) {  
+							$(this).addClass('qiandao');  
+							qiandaoFun();  
+						}  
+					}) //签到  
+		 
+				$qiandaoBnt.on("click", function() {  
+					if (_handle) {  
+						qiandaoFun();  
+					}  
+				}); //签到  
+			  
+				function qiandaoFun() {  
+					//var url="{:url('/home/usersign/signAdd/uid/" + $("#uid").val() + "')}";
+					var url="/home/usersign/signAdd/uid/" + $("#uid").val();
+					var data={'com_id':1};
+					$.post(url,data,function(mes){
+						if(mes.code == 0){
+							$qiandaoBnt.addClass('actived'); 
+							$('#thisLianDay').text(mes.data.lianDay);
+							$('#thisIntegral').text("+" + mes.data.thisIntegral);
+							
+							$('#indexLianDay').text(mes.data.lianDay);
+							$('#myLianDay').text(mes.data.lianDay);
+							$('#indexIntegral').text(mes.data.Integral);
+							$('#myTotalDay').text(mes.data.totalDay);
+							$('#mySignTotal').text(mes.data.signTotal);
+							$('#myJfDaysign').text(mes.data.JfDaysign);
+							$('#dayDetailList tbody').append("<tr>"
+									+ "<td>" + mes.data.dayDetail.addtime + "</td>"
+									+ "<td>" + mes.data.dayDetail.Integral + "</td>"
+									+ "<td>积分</td>"
+									+ "</tr>");
+							
+							
+							openLayer("qiandao-active", qianDao); 
+						}else{
+							msg_alert(mes.message);
+						}
+					}); 
+					
+				}
+			  
+				function qianDao() {  
+					$(".date" + myDate.getDate()).addClass('qiandao');  
+				}
+			}();  
+			
+			function openLayer(a, Fun) {  
+				$('.' + a).fadeIn(Fun)  
+			} //打开弹窗  
+			var closeLayer = function() {  
+				$(".close-qiandao-layer-img").on("click", function() {  
+					$(this).parents(".qiandao-layer").fadeOut()  
+				})
+				$(".close-qiandao-layer").on("click" , function() {  
+					$(this).parents(".qiandao-layer").fadeOut()  
+				})
+			}() //关闭弹窗  
+			  
+			$("#js-qiandao-history").on("click", function() {  
+				openLayer("qiandao-history-layer", myFun);  
+		  
+				function myFun() {  
+					console.log(1)  
+				} //打开弹窗返回函数  
+			})
+			//$('.qiandao-icon').css('width',widthLi+'px').css('height',widthLi+'px');  
+		})
+	</script>
+	<title>签到</title>
+	</head>
+	<body>
+		<div class="qiandao-warp">
+			<div>
+				<div class="qiandao_index_info">
+				   <p>已连续签到<i id="indexLianDay" th:text=${lianDay}></i>天</p>
+				   <p>本月共获得<i id="indexIntegral" th:text=${Integral}></i>积分</p>
+				</div>
+				<div class="qiandao-con clear">
+					<div class="qiandao-left">
+						<div class="qiandao-left-top clear">
+							<div class="current-date"  th:text=${nowDate}></div>
+							<div class="qiandao-history qiandao-tran qiandao-radius" id="js-just-qiandao">马上签到</div>
+						</div>
+						<div class="qiandao-main" id="js-qiandao-main">
+							<ul class="qiandao-list" id="js-qiandao-list"> </ul>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id='daystr' th:value=${day}>
+		<input type="hidden" id='uid' th:value=${uid}>
+		<!-- <input type="hidden" id='daymun' value="{$qd_info['totalday']}"> -->
+		 <!-- 查看签到规则 -->
+			<div style="padding: 3% 3%;" class="qdgz">
+				<span>每签到一次获得10个积分,连续签到7天</span>
+				<span>得70+30=100个积分</span>
+				<div id="js-qiandao-history" style="display:none">我的签到</div>
+			</div>
+		<!-- 我的签到 layer start -->
+		<div class="qiandao-layer qiandao-history-layer">
+			<div class="qiandao-layer-detail qiandao-radius">
+				<a href="javascript:;" class="close-qiandao-layer qiandao-sprits"></a>
+				<ul class="qiandao-history-inf clear">
+					<li>
+						<p>连续签到</p>
+						<h4 id= "myLianDay" th:text="${lianDay}"></h4>
+					</li>
+					<li>
+						<p>本月签到</p>
+						<h4 id= "myTotalDay" th:text="${totalDay}"></h4>
+					</li>
+					<li>
+						<p>总共签到数</p>
+						<h4 id= "mySignTotal" th:text="${signTotal}"></h4>
+					</li>
+					<li>
+						<p>签到累计奖励</p>
+						<h4 id="myJfDaysign" th:text="${JfDaysign}"></h4>
+					</li>
+				</ul>
+				<div class="qiandao-history-table">
+					<table>
+						<thead>
+							<tr>
+								<th>签到日期</th>
+								<th>奖励</th>
+							   <th>说明</th>
+							</tr>
+						</thead>
+						</table>
+						<table id="dayDetailList">
+							<tbody>
+								<tr th:each="dayDetail : ${dayDetailList}">
+									<td th:text="${dayDetail.addtime}"></td>
+									<td th:text="${dayDetail.Integral}">积分</td>
+									<td>积分</td>
+								</tr>
+							</tbody>
+						</table>
+					
+				</div>
+			</div>
+			<div class="qiandao-layer-bg"></div>
+		</div>
+		<!-- 我的签到 layer end -->
+		<!-- 签到 layer start -->
+		<div class="qiandao-layer qiandao-active">
+			<div class="qiandao-layer-con qiandao-radius">
+				<div class="yiqiandao clear">
+					<p style="margin-bottom: 30%;">您已连续签到<span id='thisLianDay' th:text=${lianDay}></span>天</p>
+					<p>本次获得<span id='thisIntegral' style="color:#FF0000;"></span>积分</p>
+				</div>
+				<span style="color:#FF0000;font-size:3vmin;display:block;">连续签到7天可额外获得30积分</span>
+				<div class="close-qiandao-layer-img">知道咯</div>
+			</div>
+			<div class="qiandao-layer-bg"></div>
+		</div>
+		<!-- 签到 layer end -->
+	
+		<div class="re_meg">
+		<!--弹框S-->
+		</div>
+		<!--弹框E-->
+		<script type="text/javascript">
+		   $('.dede').click(function(){
+				message('操作成功','');
+		   })
+		
+			function message(meg,url){
+				$('.re_meg').html(' ');
+				if(url=='' || url ==null)
+					url='';
+				var strs = str_html(meg,url);
+				$('.re_meg').html(strs);
+			}
+		
+			function clce(url){
+				$('.re_meg').html(' ');
+				if(typeof(url) == undefined || url=='' || url==null){
+					return false;
+				}
+				window.location.href=url;
+				
+		   }
+			function str_html(msg,url){
+				var _html='';
+				  _html+='<div class="tswzaa" >'+msg+'<p id="cloce"  class="cloce" onclick=\'clce("'+url+'")\'>确定</p></div><div class="zzc"></div>';
+				  return _html;
+			}
+		</script>
+	</body>
+</html>

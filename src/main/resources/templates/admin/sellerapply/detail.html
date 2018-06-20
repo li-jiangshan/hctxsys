@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">平台审核</li>
+			<li class="text-muted">商家申请</li>
+			<li class="text-muted">审核</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+					<div class="form-group"></div>
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<form action="/admin/sellerapply/setdatastatus"
+									method="post" class="form-horizontal form form-builder">
+									<div class="form-type-list">
+										<div class="form-group hidden item_id ">
+											<label class="left control-label">ID：</label>
+											<div class="right">
+												<input type="hidden" class="form-control input" name="id"
+													th:value="${id}">
+												<input type="hidden" class="form-control input" name="shopJ"
+													th:value="${null!=sellerApply.shopJ}?${sellerApply.shopJ}:''">
+												<input type="hidden" class="form-control input" name="shopW"
+													th:value="${null!=sellerApply.shopW}?${sellerApply.shopW}:''">
+											</div>
+										</div>
+
+										<div class="form-type-list">
+											<input type="hidden" name="order_id" value="57">
+											<div class="form-group item_title">
+												<label class="left control-label">入驻联系信息</label>
+												<div style="width: 60%" class="right">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td th:utext="|<span style='color: #999'>姓名：</span>${sellerApply.conName}|"></td>
+																<td th:utext="|<span style='color: #999'>手机：</span>${sellerApply.conMobile}|"></td>
+																<td th:utext="|<span style='color: #999'>邮箱：</span>${sellerApply.conEmail}|"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-type-list">
+											<input type="hidden" name="order_id" value="57">
+											<div class="form-group item_title">
+												<label class="left control-label">店铺信息</label>
+												<div style="width: 60%" class="right">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td colspan="3" th:utext="|<span style='color: #999'>店铺名称：</span>${sellerApply.shopName}|"></td>
+															</tr>
+															<tr>
+																<td th:utext="|<span style='color: #999'>店铺负责人：</span>${sellerApply.responName}|"></td>
+																<td th:utext="|<span style='color: #999'>负责人手机：</span>${sellerApply.responMobile}|"></td>
+																<td th:utext="|<span style='color: #999'>负责人邮箱：</span>${sellerApply.responEmail}|"></td>
+															</tr>
+															<tr>
+																<td colspan="3" th:utext="|<span style='color: #999'>店铺所在地：</span>${sellerApply.province}、${sellerApply.city}、${sellerApply.district}|"></td>
+															</tr>
+															<tr>
+																<td colspan="3" th:utext="|<span style='color: #999'>店铺详细地：</span>${sellerApply.addresssDetail}|"></td>
+															</tr>
+															<tr>
+																<td colspan="3" th:utext="|<span style='color: #999'>所属行业：</span>${sellerApply.industryName}|"></td>
+																<!-- <td colspan="2" th:utext="|<span style='color: #999'>服务费系数：</span>${sellerApply.fee}%|"></td> -->
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="form-type-list">
+											<input type="hidden" name="order_id" value="57">
+											<div class="form-group item_title">
+												<label class="left control-label">会员信息</label>
+												<div style="width: 60%" class="right">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td th:utext="${sellerApply.userinfo.userType==1}?|<span style='color: #999'>类型：</span>企业用户|:|<span style='color: #999'>类型：</span>个人用户|"></td>
+																<td th:utext="|<span style='color: #999'>会员：</span>${sellerApply.username}(${sellerApply.mobile})|"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-type-list" th:if="${sellerApply.userinfo.userType==1}">
+											<input type="hidden" name="order_id" value="57">
+											<div class="form-group item_title">
+												<label class="left control-label">已认证信息</label>
+												<div style="width: 60%" class="right">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td th:utext="${sellerApply.userinfo.userType==1}?|<span style='color: #999'>类型：</span>企业用户|:|<span style='color: #999'>类型：</span>个人用户|"></td>
+																<td th:utext="${sellerApply.userinfo.isThreeCard==1}?|<span style='color: #999'>是否三证合一：</span>是|:|<span style='color: #999'>是否三证合一：</span>否|"></td>
+																<td th:utext="${sellerApply.userinfo.isChildCompany==1}?|<span style='color: #999'>是否分公司：</span>是|:|<span style='color: #999'>是否分公司：</span>否|"></td>
+															</tr>
+															<tr>
+																<td th:utext="|<span style='color: #999'>税务登记证：</span>${sellerApply.userinfo.taxNo}|"></td>
+																<td th:utext="|<span style='color: #999'>社会信用代码：</span>${sellerApply.userinfo.creditNo}|"></td>
+																<td th:utext="|<span style='color: #999'>组织机构证：</span>${sellerApply.userinfo.organizeNo}|"></td>
+															</tr>
+															<tr>
+																<td th:utext="|<span style='color: #999'>法人：</span>${sellerApply.userinfo.legalName}|"></td>
+																<td th:utext="|<span style='color: #999'>公司类型：</span>${sellerApply.userinfo.companyType}|"></td>
+																<td th:utext="|<span style='color: #999'>经营负责人：</span>${sellerApply.userinfo.manageParent}|"></td>
+															</tr>
+															<tr>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgFace}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgFace}}"
+																		alt="">	
+																</a><p style="text-align: center">正面照</p></td>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgBack}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgBack}}"
+																		alt="">	
+																</a><p style="text-align: center">反面照</p></td>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgHand}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgHand}}"
+																		alt="">
+																</a><p style="text-align: center">手持照</p></td>
+															</tr>
+															<tr th:if="${sellerApply.userinfo.companyLicenseImg!=null}">
+																<td colspan="3"><a
+																	th:href="@{${sellerApply.userinfo.companyLicenseImg}}">
+																		<img style="width: 33%"
+																		th:src="@{${sellerApply.userinfo.companyLicenseImg}}"
+																		alt="">
+																</a><p style="text-align: center">营业执照</p></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										
+										<div class="form-type-list" th:if="${sellerApply.userinfo.userType!=1}">
+											<input type="hidden" name="order_id" value="57">
+											<div class="form-group item_title">
+												<label class="left control-label">已认证信息</label>
+												<div style="width: 60%" class="right">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td th:utext="${sellerApply.userinfo.idcardType==1}?|<span style='color: #999'>证件类型：</span>非大陆身份证|:|<span style='color: #999'>证件类型：</span>大陆身份证|"></td>
+																<td th:utext="|<span style='color: #999'>身份证号：</span>${sellerApply.userinfo.idcard}|"></td>
+																<td th:utext="|<span style='color: #999'>证件有效期：</span>${sellerApply.userinfo.idcarStartdate}至${sellerApply.userinfo.idcarEndtdate}|"></td>
+															</tr>
+															<tr>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgFace}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgFace}}"
+																		alt="">
+																		<p style="text-align: center">正面照</p>
+																</a></td>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgBack}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgBack}}"
+																		alt="">
+																		<p style="text-align: center">反面照</p>
+																</a></td>
+																<td><a
+																	th:href="@{${sellerApply.userinfo.idcardImgHand}}">
+																		<img style="width: 100%"
+																		th:src="@{${sellerApply.userinfo.idcardImgHand}}"
+																		alt="">
+																		<p style="text-align: center">手持照</p>
+																</a></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+
+										<hr>
+								            <div class="form-group" th:if="${sellerApply.status==0}">
+                                                <label class="left control-label">回复信息：</label>
+                                                <div style="width:61.5%" class="input-group">
+                                                    <input type="text" name="content" class="form-control" >
+                                                    <span class="check-tips text-muted small">回复内容、拒绝理由</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group item_type" th:if="${sellerApply.status==0}">
+                                                <label class="left control-label">
+                                                    <span>是否通过：</span>
+                                                </label>
+                                                <div class="right">
+                                                    <div class="radio-inline lyui-control lyui-radio">
+                                                        <label for="typemodule">
+                                                            <input type="radio" id="typemodule" class="radio" name="agree" value="1"> 
+                                                            <span class="lyui-control-indicator"></span>
+                                                            <span>通过</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline lyui-control lyui-radio">
+                                                        <label for="typetheme">
+                                                            <input type="radio" id="typetheme" class="radio" name="agree" value="2"> 
+                                                            <span class="lyui-control-indicator"></span>
+                                                            <span>拒绝</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+										<div class="form-group"></div>
+										<div class="form-group bottom_button_list">
+											<!-- <a th:if="${sellerApply.status==0}" class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder">确定</a> -->
+											<a th:if="${sellerApply.status==0}" class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder">确定</a>
+											<a class="btn btn-danger return"
+												onclick="javascript:history.back(-1);return false;">返回</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<!-- <script src="/admin/libs/jquery/1.x/jquery.min.js"></script>
+<script src="/plugin/kindeditor-min.js"></script>
+<script src="/plugin/lang/zh_CN.js"></script>
+<script src="/admin/layer/layer.js"></script>
+<script src="/admin/js/upload.js"></script>
+<script src="/admin/js/index.js"></script>
+<script
+	src="/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script
+	src="/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/admin/libs/lyui/dist/js/lyui.min.js"></script>
+<script src="/admin/js/admin.js"></script>
+<script src="/admin/libs/lyui/dist/js/lyui.extend.min.js"></script> -->
+
+</html>

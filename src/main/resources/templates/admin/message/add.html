@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">反馈管理</li>
+			<li class="text-muted">发布消息</li>
+			<li class="text-muted">添加商品</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="builder formbuilder-box">
+				<div class="panel-body">
+					<form action="/admin/message/save" method="post"
+						class="form-horizontal form form-builder"
+						enctype="multipart/form-data">
+						<ul class="nav-tabs nav">
+							<li class="active"><a href="#tab1" data-toggle="tab"
+								aria-expanded="true">公告信息</a></li>
+						</ul>
+						<div class="tab-content">
+
+							<!-- 卡片1 -->
+							<div id="tab1" class="tab-pane active">
+								<div class="col-xs-12">
+									<div style="height: 20px;"></div>
+									<div class="form-type-list">
+										<!-- ajax修改，没有id,给个隐藏id -->
+										<input type="hidden" name="id">
+										<div class="form-group item_title">
+											<label class="left control-label">分类：</label>
+											<div style="width: 60%" class="right">
+												<select name="type" class="form-control select">
+													<option value="0" selected="selected">请选择</option>
+													<option value="1">通知消息</option>
+													<option value="2">交易信息</option>
+													<option value="3">活动信息</option>
+													<option value="4">资产信息</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">指定会员：</label>
+											<div style="width: 60%" class="right">
+												<input type="text" class="form-control input" name="mobile"
+												 placeholder="输入会员手机号">
+												<p style="color: #909090">不指定则向所有会员发送</p>
+											</div>
+										</div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">标题：</label>
+											<div style="width: 60%" class="right">
+												<input type="text" class="form-control input" name="title"
+													 placeholder="标题">
+
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="left control-label">内容：</label>
+											<div class="right">
+												<textarea style="min-height: 100px" class="form-control"
+													rows="3" name="content"></textarea>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+
+							<div class="form-group bottom_button_list">
+								<a class="btn btn-primary submit ajax-post" type="submit"
+									target-form="form">保存</a> <a class="btn btn-danger return"
+									onclick="javascript:history.back(-1);return false;">取消</a>
+							</div>
+							<div class="form-group"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+
+<script
+	src="/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script
+	src="/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+</html>

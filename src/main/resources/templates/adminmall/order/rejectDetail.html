@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">商城</li>
+			<li class="text-muted">订单管理</li>
+			<li class="text-muted">编辑</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="builder formbuilder-box">
+				<div class="panel-body">
+					<form action="/Adminmall/Order/detail" method="post"
+						class="form-horizontal form form-builder"
+						enctype="multipart/form-data">
+						<div class="tab-content">
+							<input type="hidden" id="rejectedNo" name="rejectedNo"
+								th:value="${info.rejectedNo}">
+							<div class="col-xs-12">
+								<div style="height: 20px;"></div>
+								<div class="form-type-list">
+									<input type="hidden" name="order_id" value="{$info.order_id}">
+									<div class="form-group item_title">
+										<label class="left control-label">买家信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<td><span style="color: #999">姓名：</span>[[${order.userName}]]</td>
+													<td><span style="color: #999">联系方式：</span>[[${order.userMobile}]]</td>
+												</tr>
+												<tr>
+													<td colspan="2"><span style="color: #999">收货地址：</span>[[${order.userProvince}]]、[[${order.userCity}]]、[[${order.userDistrict}]]、[[${order.userAddress}]]</td>
+												</tr>
+												<tr>
+													<td><span style="color: #999">物流单号：</span>[[${order.orderTransportCode}]]</td>
+													<td><span style="color: #999">物流名称：</span>[[${order.orderTransportName}]]</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="form-type-list">
+
+									<div class="form-group item_title">
+										<label class="left control-label">基本信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<td><span style="color: #999">订单ID：</span>[[${order.orderId}]]</td>
+													<td><span style="color: #999">订单号：</span>[[${order.orderNo}]]</td>
+												</tr>
+												<tr>
+													<td><span style="color: #999">订单总额：</span>[[${order.orderTotalPrice}]]</td>
+													<td><span style="color: #999">会员：</span>[[${user.username}]]
+														&nbsp;&nbsp;[[${user.mobile}]]</td>
+												</tr>
+											</table>
+
+										</div>
+									</div>
+								</div>
+
+								<div class="form-type-list">
+
+									<div class="form-group item_title">
+										<label class="left control-label">退货信息</label>
+										<div style="width: 60%" class="right">
+											<table class="table table-bordered">
+												<tr>
+													<th>商品</th>
+													<th>规格属性</th>
+													<th>数量</th>
+													<th>单价</th>
+													<th>小计</th>
+												</tr>
+												<tbody style="border-top: 1px solid #ddd;">
+													<tr>
+														<td><a> <span
+																style="width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; display: inline-block;">[[${detail.goodName}]]</span>
+														</a> <img style="width: 50px"
+															th:src="@{${detail.goodCoverImg}}" alt=""></td>
+														<td>[[${detail.attrText}]]</td>
+														<td>[[${detail.goodNum}]]</td>
+														<td>[[${detail.goodPrice}]]</td>
+														<td>[[${detail.goodPrice*detail.goodNum}]]</td>
+													</tr>
+													<tr>
+														<td colspan="1" style="text-align: left;"><span
+															style="color: #999">退货理由：</span>[[${info.rejectedReason}]]</td>
+														<td colspan="4" style="text-align: left;"><span
+															class="dateFormater" th:text="${info.createTime}"
+															style="color: #999">申请退款时间：</span></td>
+													</tr>
+													<tr>
+														<td colspan="1" style="text-align: left;"><span
+															style="color: #999">申请退款数量：</span>[[${info.rejectedNum}]]</td>
+														<td colspan="4" style="text-align: left;"><span
+															style="color: #999">申请退款金额：</span>[[${info.rejectedPrice}]]</td>
+													</tr>
+													<tr>
+														<td colspan="5" style="text-align: left;"><span
+															style="color: #999;">退货凭证：</span><img
+															th:if="${info.rejectedImg != null}"
+															style="vertical-align: middle;"
+															th:src="${info.rejectedImg}" width="100" height="100"
+															alt="" /><img th:if="${info.rejectedImg2 != null}"
+															style="margin-left: 20px; vertical-align: middle;"
+															th:src="${info.rejectedImg2}" width="100" height="100"
+															alt="" /><img th:if="${info.rejectedImg3 != null}"
+															style="margin-left: 20px; vertical-align: middle;"
+															th:src="${info.rejectedImg3}" width="100" height="100"
+															alt="" /></td>
+													</tr>
+													<tr>
+														<td colspan="5" style="text-align: left;"><span
+															style="color: #999">拒绝理由：</span><input id="reject"
+															name="reject" th:value="${info.orderStatusReason}" placeholder="建议与买家电话联系，请输入拒绝理由和商家联系电话"
+															style="min-width: 500px; width: auto; border-radius: 4px; border: 1px solid #c8cccf; color: #6a6f77;"
+															type="text"></td>
+													</tr>
+													<tr>
+														<td colspan="1" style="text-align: left;"><span
+															style="color: #999">商家收件人：</span><input id="rejectedName"
+															name="rejectedName" th:value="${info.rejectedName}"
+															style="width: auto; border-radius: 4px; border: 1px solid #c8cccf; color: #6a6f77;"
+															type="text"></td>
+														<td colspan="4" style="text-align: left;"><span
+															style="color: #999">收件人电话：</span><input
+															id="rejectedPhone" name="rejectedPhone"
+															th:value="${info.rejectedPhone}"
+															style="width: auto; border-radius: 4px; border: 1px solid #c8cccf; color: #6a6f77;"
+															type="text"></td>
+													</tr>
+													<tr>
+														<td colspan="5" style="text-align: left;"><span
+															style="color: #999">收货地址：</span><input
+															id="receivingAddress" name="receivingAddress"
+															th:value="${info.receivingAddress}"
+															style="min-width: 500px; width: auto; border-radius: 4px; border: 1px solid #c8cccf; color: #6a6f77;"
+															type="text"></td>
+													</tr>
+													<tr th:if="${info.orderStatus gt 2}">
+														<td colspan="1" style="text-align: left;"><span
+															style="color: #999">退货快递单号：</span>[[${info.logisticsNo}]]</td>
+														<td colspan="4" style="text-align: left;"><span
+															style="color: #999">联系电话：</span>[[${info.logisticsMobile}]]</td>
+													</tr>
+													<tr th:if="${info.orderStatus gt 2}">
+														<td colspan="5" style="text-align: left;"><span
+															style="color: #999;">物流图片：</span><img
+															th:if="${info.logisticsImg != null}"
+															style="vertical-align: middle;"
+															th:src="'/hctx' + ${info.logisticsImg}" width="100"
+															height="100" alt="" /></td>
+													</tr>
+													<tr th:if="${info.orderStatus eq 6}">
+														<td colspan="5" style="text-align: left;"><span
+															style="color: #999">退款时间：</span>[[${info.logisticsNo}]]</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr />
+
+							<div class="form-group item_type ">
+								<label class="left control-label"
+									th:switch="${info.orderStatus}"> 当前状态：<span th:case='0'
+									style="color: #2699ed;">审批中</span> <span th:case='1'
+									style="color: #2699ed;">通过</span> <span th:case='2'
+									style="color: #2699ed;">拒绝</span><span th:case='3'
+									style="color: #2699ed;">退货中</span><span th:case='4'
+									style="color: #2699ed;">已退货</span><span th:case='5'
+									style="color: #2699ed;">已退款</span><span th:case='6'
+									style="color: #2699ed;">已取消</span>
+								</label>
+								<div class="right"></div>
+							</div>
+
+							<div class="form-group bottom_button_list">
+								<input th:if="${info.orderStatus eq 0}"
+									style="width: 60px; cursor: pointer;" onclick="agreeRejected()"
+									class="btn btn-primary" value="同意"> <input
+									type="button" th:if="${info.orderStatus eq 0}"
+									class="btn btn-primary"
+									style="width: 60px; margin-left: 5px; cursor: pointer;"
+									onclick="rejectReason()" value="拒绝"> <input
+									type="button" th:if="${info.orderStatus eq 3}"
+									class="btn btn-primary"
+									style="margin-left: 5px; cursor: pointer;"
+									onclick="confirmOrder()" value="确认收货"> <input
+									type="button" th:if="${info.orderStatus eq 4}"
+									class="btn btn-primary"
+									style="width: 60px; margin-left: 5px; cursor: pointer;"
+									onclick="returnMoney()" value="退款"> <a
+									class="btn btn-danger return" style="cursor: pointer;"
+									onclick="javascript:history.back(-1);return false;">返回</a>
+							</div>
+							<div class="form-group"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+function changeDateFormat(value) {//日期格式化
+	var date = new Date();
+	date.setTime(value * 1000);
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	var h = date.getHours();
+	h = h < 10 ? ('0' + h) : h;
+	var minute = date.getMinutes();
+	var second = date.getSeconds();
+	minute = minute < 10 ? ('0' + minute) : minute;
+	second = second < 10 ? ('0' + second) : second;
+	return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+}
+
+$('.dateFormater').each(function(index, element) {
+	$(element).text(changeDateFormat($(element).text()))
+})
+	function rejectReason() {
+		var orderStatusReason = $("#reject").val();
+		var rejectId= [[${info.rejectedId}]];
+		if (orderStatusReason != '') {
+			$.ajax({
+				type : "POST",
+				url : "/Adminmall/Order/index/reject",
+				data : {
+					"rejectId":rejectId,
+					"orderStatusReason":orderStatusReason
+				},
+				success : function(data) {
+					if (data == "success") {
+						alert("已拒绝");
+						window.location.href="/Adminmall/Order/index/order/reject";
+					} else {
+						alert("系统异常请稍后再试");
+					}
+				},
+				error : function() {
+					alert("系统异常请稍后再试");
+				}
+			});
+		} else {
+			alert("请输入拒绝退货理由");
+		}
+	}
+	function agreeRejected() {
+		var sMobile = $("#rejectedPhone").val();
+		if(!(/^[1][3,4,5,7,8][0-9]{9}$/.test(sMobile))){
+			alert("请输入正确的手机号");
+			return;
+		}
+		if ($("#rejectedName").val() == '') {
+			alert("请输入收件人");
+			return
+		}
+		if ($("#receivingAddress").val() == '') {
+			alert("请输入收货地址");
+			return
+		}
+		var rejectId= [[${info.rejectedId}]];
+		$.ajax({
+			type : "POST",
+			url : "/Adminmall/Order/index/agree",
+			data : {
+				"rejectId":rejectId,
+				"rejectedName":$("#rejectedName").val(),
+				"receivingAddress":$("#receivingAddress").val(),
+				"rejectedPhone":$("#rejectedPhone").val()
+			},
+			success : function(data) {
+				if (data == "success") {
+					alert("已同意");
+					window.location.href="/Adminmall/Order/index/order/reject";
+				} else {
+					alert("系统异常请稍后再试");
+				}
+			},
+			error : function() {
+				alert("系统异常请稍后再试");
+			}
+		});
+	}
+	
+	function confirmOrder() {
+		var rejectId= [[${info.rejectedId}]];
+		$.ajax({
+			type : "POST",
+			url : "/Adminmall/Order/index/confirmGoods",
+			data : {
+				"rejectId":rejectId
+			},
+			success : function(data) {
+				if (data == "success") {
+					alert("已收货");
+					window.location.href="/Adminmall/Order/index/order/reject";
+				} else {
+					alert("系统异常请稍后再试");
+				}
+			},
+			error : function() {
+				alert("系统异常请稍后再试");
+			}
+		});
+	}
+	
+	function returnMoney() {
+		var rejectedNo= $("#rejectedNo").val();
+		$.ajax({
+			type : "POST",
+			url : "/Adminmall/refund/rejectedNo",
+			data : {
+				"rejectedNo":rejectedNo
+			},
+			success : function(data) {
+				if (data.code == 1) {
+					alert(data.message);
+					window.location.href="/Adminmall/Order/index/order/reject";
+				} else {
+					alert(data.message);
+				}
+			},
+			error : function() {
+				alert("系统异常请稍后再试");
+			}
+		});
+	}
+	</script>
+</html>

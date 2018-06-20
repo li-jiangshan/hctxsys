@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>华彩天下</title>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+</head>
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">商学院</li>
+			<li class="text-muted">会议列表</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+					<div class="form-group"></div>
+
+					<!-- 顶部工具栏按钮 -->
+					<div class="builder-toolbar">
+						<div class="row">
+							<!-- 工具栏按钮 -->
+							<div class="col-xs-12 col-sm-8 button-list clearfix">
+								<div class="form-group">
+									<a title="返回" class="btn btn-primary-outline btn-pill"
+										th:href="@{/Admin/News/student}">返回</a>&nbsp;
+								</div>
+							</div>
+
+							<!-- 搜索框 -->
+							<div class="col-xs-12 col-sm-4 clearfix">
+								<form class="form" method="get" action="">
+									<div class="form-group">
+										<div class="input-group search-form">
+											<input type="text" id="keyword" name="keyword"
+												class="search-input form-control"
+												th:value="${tableResult.keyword}" placeholder="请输入关键字">
+											<span class="input-group-btn"><a
+												class="btn btn-default search-detail" onclick="searchNews()"><i
+													class="fa fa-search"></i></a></span>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- 数据列表 -->
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="builder-table">
+									<div class="panel panel-default table-responsive">
+										<table class="table table-bordered table-striped table-hover">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>姓名</th>
+													<th>手机</th>
+													<th>备注</th>
+													<th>报名时间</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:if="${tableResult.rows.size() gt 0}" th:each="row,rowStat : ${tableResult.rows}">
+													<td th:text="${row.id}"></td>
+													<td th:text="${row.name}"></td>
+													<td th:text="${row.mobile}"></td>
+													<td th:text="${row.content}"></td>
+													<td class="dateFormater" th:text="${row.createTime}"></td>
+													<td><a name="delete" title="删除"
+														class="label label-danger-outline label-pill"
+														model="Admin" th:onclick="'javascript:deleteDetail('+${row.id}+')'">删除</a>
+													</td>
+												</tr>
+												<tr th:if="${tableResult.rows.size() eq 0}" class="builder-data-empty">
+													<td class="text-center empty-info" colspan="20"><i
+														class="fa fa-database"></i> 暂时没有数据<br></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<ul th:replace="/common/page">
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="pid" name="pid" th:value="${pid}">">
+	<script type="text/javascript">
+		function deleteDetail(id) {
+			if(confirm('确认要执行该操作吗？')) {
+				$.ajax({
+					type : "POST",
+					url : "/Admin/News/deletedetail",
+					data : {'id': JSON.stringify(id)},
+					success : function(data) {
+						if (data.status == 200) {
+							$.alertMessager(data.message, "success");
+							setTimeout(function() {
+								location.href = '/Admin/News/zuopin/id/' + $('#pid').val() + '?pageNumber=0&pageSize=10';
+							}, 2000);
+						} else {
+							$.alertMessager(data.message, "danger");
+						}
+						;
+					},
+					error : function() {
+						$.alertMessager("请求异常请稍后再试", "danger");
+					}
+				});
+			};
+		}
+		//搜索功能
+		function searchNews() {
+			var keyword = $('#keyword').val();
+			var href = '/Admin/News/zuopin/id/' + $('#pid').val() + '?pageNumber=0&pageSize=10';
+			href += "&keyword=" + keyword;
+			location.href = href;
+		}
+		//回车搜索
+		$(document).on('keydown', '.search-input', function(e) {
+			if (e.keyCode === 13) {
+				$(this).closest('form').find('.search-detail').click();
+				return false;
+			}
+		});
+		function changeDateFormat(value) {//日期格式化
+			var date = new Date();
+			date.setTime(value * 1000);
+			var y = date.getFullYear();
+			var m = date.getMonth() + 1;
+			m = m < 10 ? ('0' + m) : m;
+			var d = date.getDate();
+			d = d < 10 ? ('0' + d) : d;
+			var h = date.getHours();
+			h = h < 10 ? ('0' + h) : h;
+			var minute = date.getMinutes();
+			var second = date.getSeconds();
+			minute = minute < 10 ? ('0' + minute) : minute;
+			second = second < 10 ? ('0' + second) : second;
+			return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
+		}
+
+		$('.dateFormater').each(function(index, element) {
+			$(element).text(changeDateFormat($(element).text()))
+		})
+	</script>
+</body>
+</html>

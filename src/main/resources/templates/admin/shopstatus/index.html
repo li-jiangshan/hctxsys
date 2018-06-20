@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <style type="text/css">
+        tr, td {
+            margin: 0 !important;
+            padding: 5px 5px !important;
+        }
+    </style>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        <li class="text-muted">系统</li>
+        <li class="text-muted">平台审核</li>
+        <li class="text-muted">用户认证</li>
+    </ul>
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="builder-tabs builder-form-tabs">
+                    <ul class="nav nav-tabs">
+                        <li th:class="${status==null}?'active':''" name="type" value="1"  >
+                        <a href="/Admin/Shopstatus/index">待审核</a>
+                        </li>
+                        <li th:class="${status=='2'}?'active':''">
+                        <a href="/Admin/Shopstatus/index/type/2">已通过</a>
+                        </li>
+                        <li th:class="${status=='3'}?'active':''">
+                        <a href="/Admin/Shopstatus/index/type/3">已拒绝</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-group"></div>
+                <div class="builder-container" >
+                    <div class="form-group"></div>
+
+                    <div class="builder-toolbar">
+                        <div class="row">
+                            <!-- 工具栏按钮 -->
+                            <!--  <div class="col-xs-12 col-sm-8 button-list clearfix">
+                                        <div class="form-group">
+                                            <a title="新增" class="btn btn-primary-outline btn-pill" href="/admin/user/add.html">新增</a>&nbsp;
+                                        </div>
+                                    </div> -->
+
+                            <!-- 搜索框 -->
+                            <div class="col-xs-12 col-sm-12 clearfix">
+                                <form class="form">
+                                    <div class="form-group right">
+                                        <div style="float:left;width:120px;margin-right:20px" class="">
+                                            <select id="userType" name="user_type" class="form-control lyui-select select">
+                                                <option value="">等级：</option>
+                                                <option th:selected="${tableResult.level==0}" value="0">个人用户</option>
+                                                <option th:selected="${tableResult.level==1}" value="1">企业用户</option>
+                                            </select>
+                                        </div>
+
+                                        <div style="float:left;width:150px;margin-right:20px" class="">
+                                            <input id="beginDate" type="text" name="date_start" class="search-input form-control date" th:value="${tableResult.beginDate}" placeholder="开始日期">
+                                        </div>
+                                        <div style="float:left;width:150px;margin-right:20px" class="">
+                                            <input id="endDate" type="text" name="date_end" class="search-input form-control date" th:value="${tableResult.endDate}" placeholder="结束日期">
+                                        </div>
+
+                                        <div style="float:left;width:120px;margin-right:20px" class="">
+                                            <select id="type" name="querytype" class="form-control lyui-select select">
+                                                <option th:selected="${tableResult.type=='username'}" value="username">姓名</option>
+                                                <option th:selected="${tableResult.type=='mobile'}"value="mobile">手机号</option>
+                                            </select>
+                                        </div>
+
+                                        <div style="width:250px" class="input-group search-form">
+                                            <input id="typeText" type="text" name="keyword" class="search-input form-control" th:value="${tableResult.typeText}" placeholder="输入搜索内容">
+                                            <span class="input-group-btn"><a onclick="searchInfo()" class="btn btn-default"><i class="fa fa-search"></i></a></span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 数据列表 -->
+                    <div class="builder-container">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="builder-table">
+                                    <div class="panel panel-default table-responsive">
+                                        <table id="userTable" class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>UID</th>
+                                                <th>类型</th>
+                                                <th>用户</th>
+                                                <th>城市</th>
+                                                <th>时间</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="user:${tableResult.rows}">
+                                                <td th:text="${user.userid}"></td>
+                                                <td th:if="${user.userType==1}">企业用户</td>
+                                                <td th:if="${user.userType==0}">个人用户</td>
+                                                <td>[[${user.username}]]([[${user.mobile}]])</td>
+                                                <td >[[${user.checkinfoEntity.province}]]、[[${user.checkinfoEntity.city}]]、[[${user.checkinfoEntity.district}]]</td>
+                                                <td class="dateFormater">[[${user.checkinfoEntity.createTime}]]</td>
+                                                <td>
+                                                    <span th:if="${user.userType==1}">
+                                                        <span th:if="${user.checkinfoEntity.isCheckCompany==1}">待审核</span>
+                                                        <span th:if="${user.checkinfoEntity.isCheckCompany==2}">已通过</span>
+                                                        <span th:if="${user.checkinfoEntity.isCheckCompany==3}">已拒绝</span>
+                                                    </span>
+                                                    <span th:if="${user.userType==0}">
+                                                        <span th:if="${user.checkinfoEntity.isCheckUser==1}">待审核</span>
+                                                        <span th:if="${user.checkinfoEntity.isCheckUser==2}">已通过</span>
+                                                        <span th:if="${user.checkinfoEntity.isCheckUser==3}">已拒绝</span>
+                                                    </span>
+
+                                                </td>
+                                                <td>
+                                                    <a name="edit" title="查看详情" class="label label-primary-outline label-pill" th:href="'/Admin/Shopstatus/detail/uid/'+${user.userid}">详情</a>
+                                                </td>
+                                            </tr>
+                                            <tr th:if="${tableResult.pageCount==0}" class="builder-data-empty">
+                                                <td class="text-center empty-info" colspan="20">
+                                                    <i class="fa fa-database"></i> 暂时没有数据<br>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <ul class="pagination" th:if="${tableResult.pageCount!=0}">
+                                        <!--当页面小于7页-->
+                                        <ul class="pagination" th:if="${tableResult.pageCount le 7}">
+                                            <li th:class="${tableResult.pageNumber eq 0}? 'disabled' : ''">
+                                                <a th:if="${tableResult.pageNumber gt 0}" th:attr="pageNum=${tableResult.pageNumber}-1" onclick="onChangePage(this)" href="javascript:void(0)">«</a>
+                                                <a th:if="${tableResult.pageNumber==0}" href="javascript:void(0)">«</a>
+                                            </li>
+                                            <li th:each="i:${#numbers.sequence(0,tableResult.pageCount-1)}"  th:class="${tableResult.pageNumber eq i}? 'active' : ''">
+                                                <a th:pageNum="${i}" onclick="onChangePage(this)" href="javascript:void(0)" th:text="${i}+1"></a>
+                                            </li>
+                                            <li th:class="${tableResult.pageNumber eq tableResult.pageCount-1}? 'disabled' : ''">
+                                                <a th:if="${tableResult.pageNumber!=tableResult.pageCount-1}" onclick="onChangePage(this)" href="javascript:void(0)" th:attr="pageNum=${tableResult.pageNumber+1}">»</a>
+                                                <a href="javascript:void(0)" th:if="${tableResult.pageNumber==tableResult.pageCount-1}">»</a>
+                                            </li>
+                                        </ul>
+                                        <!--当页面大于7-->
+                                        <ul class="pagination" th:if="${tableResult.pageCount gt 7}">
+                                            <!--上一页-->
+                                            <li th:class="${tableResult.pageNumber eq 0}? 'disabled' : ''">
+                                                <a th:if="${tableResult.pageNumber gt 0}" th:attr="pageNum=${tableResult.pageNumber}-1" onclick="onChangePage(this)" href="javascript:void(0)">«</a>
+                                                <a th:if="${tableResult.pageNumber==0}" href="javascript:void(0)">«</a>
+                                            </li>
+                                            <!--首页-->
+                                            <li  th:class="${tableResult.pageNumber eq 0}? 'active' : ''">
+                                                <a th:pageNum="0" onclick="onChangePage(this)" href="javascript:void(0)" th:text="1"></a>
+                                            </li>
+                                            <!-- 当前页面小于等于4 -->
+                                            <li th:class="${(tableResult.pageNumber + 1) eq i} ? 'active' : ''" th:if="${(tableResult.pageNumber+1) le 4}" th:each="i : ${#numbers.sequence(2,5)}"  >
+                                                <a th:pageNum="${i}-1" onclick="onChangePage(this)" href="javascript:void(0)" th:text="${i}"></a>
+                                            </li>
+                                            <li class="disabled" th:if="${(tableResult.pageNumber+1) le 4}" >
+                                                <a href="javascript:void(0)">...</a>
+                                            </li>
+                                            <!-- 最后一页与当前页面之差，小于等于3 -->
+                                            <li class="disabled" th:if="${(tableResult.pageCount-(tableResult.pageNumber + 1)) le 3}" >
+                                                <a href="javascript:void(0)">...</a>
+                                            </li>
+                                            <li th:each="i : ${#numbers.sequence(tableResult.pageCount-4, tableResult.pageCount-1)}" th:class="${(tableResult.pageNumber + 1) eq i} ? 'active' : ''" th:if="${(tableResult.pageCount-(tableResult.pageNumber + 1)) le 3}" >
+                                                <a onclick="onChangePage(this)" th:pageNum="${i} - 1" th:text="${i}" href="javascript:void(0)" ></a>
+                                            </li>
+                                            <!-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+                                            <li class="disabled" th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}" >
+                                                <a href="javascript:void(0)">...</a>
+                                            </li>
+                                            <li th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}"  >
+                                                <a th:pageNum="${tableResult.pageNumber}-1" th:text="${tableResult.pageNumber}" href="javascript:void(0)" onclick="onChangePage(this)"></a>
+                                            </li>
+                                            <li class="active"  th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}"  >
+                                                <a th:pageNum="${tableResult.pageNumber}" th:text="${tableResult.pageNumber}+1" href="javascript:void(0)"></a>
+                                            </li>
+                                            <li   th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}"  >
+                                                <a onclick="onChangePage(this)" th:pageNum="${tableResult.pageNumber}+1" href="javascript:void(0)" th:text="${tableResult.pageNumber}+2"></a>
+                                            </li>
+                                            <li class="disabled"  th:if="${((tableResult.pageNumber + 1) gt 4) && ((tableResult.pageCount-(tableResult.pageNumber + 1)) gt 3 )}"  >
+                                                <a href="javascript:void(0)">...</a>
+                                            </li>
+                                            <!--最后一页-->
+                                            <li  th:class="${(tableResult.pageNumber + 1) eq tableResult.pageCount} ? 'active' : ''" >
+                                                <a th:pageNum="${tableResult.pageCount-1}" onclick="onChangePage(this)" href="javascript:void(0)" th:text="${tableResult.pageCount}"></a>
+                                            </li>
+                                            <!--下一页-->
+                                            <li th:class="${tableResult.pageNumber eq tableResult.pageCount-1}? 'disabled' : ''">
+                                                <a th:if="${tableResult.pageNumber!=tableResult.pageCount-1}" onclick="onChangePage(this)" href="javascript:void(0)" th:attr="pageNum=${tableResult.pageNumber+1}">»</a>
+                                                <a href="javascript:void(0)" th:if="${tableResult.pageNumber==tableResult.pageCount-1}">»</a>
+                                            </li>
+                                            <li><span class="rows" th:text="'共'+${tableResult.total}+'条记录'">共 133 条记录</span></li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    function searchInfo() {//搜索按钮功能
+        var level=$('#userType').val();//获取搜索参数
+        var beginDate=$('#beginDate').val();
+        var endDate=$('#endDate').val()
+        var type=$('#type').val();
+        var typeText=$('#typeText').val();//获取搜索参数
+        var href=location.href;//获取
+        var index=href.indexOf("?");
+        if(index!=-1) {
+            href=href.substr(0,index);
+        }
+        href+="?pageNumber=0&pageSize=10&level="+level+"&beginDate="+beginDate+"&endDate="+endDate+"&type="+type+"&typeText="+typeText;
+        location.href=href;
+    }
+    function onChangePage(event) {//点击分页钮跳转
+        var href=location.href;//获取
+        var index= href.indexOf("pageNumber")
+        if(index==-1) {
+            href+="?pageNumber=0&pageSize=10";
+        }
+        index=href.indexOf("pageNumber");
+        var index2=href.indexOf("&");
+        var prefix=href.substr(0,index);//获取pageNumber前的文本
+        var end=href.substr(index2,href.length);//获取&后的文本
+        href=prefix+"pageNumber="+$(event).attr("pageNum")+end;//重写url
+        location.href=href;
+    }
+    function changeDateFormat(value) {//日期格式化
+        var date = new Date();
+        date.setTime(value * 1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+    }
+
+    $('.dateFormater').each(function (index, element) {
+        $(this).text(changeDateFormat($(this).text()))
+    })
+</script>
+<script type="text/javascript">
+    $('.date').datetimepicker({//日期插件
+        format: 'yyyy-mm-dd',
+        language: "zh-CN",
+        minView: 2,
+        autoclose: true,
+        todayBtn: 1, //是否显示今日按钮
+    })
+    $("body").keydown(function() {
+        if (event.keyCode == "13") {//keyCode=13是回车键
+            searchInfo();
+        }
+    });
+</script>

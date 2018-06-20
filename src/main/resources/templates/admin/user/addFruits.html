@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <head th:replace="common/includ" />
+    <head th:replace="common/layout" />
+</head>
+<body>
+<div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        <li class="text-muted">系统</li>
+        <li class="text-muted">会员管理</li>
+        <li class="text-muted">会员列表</li>
+        <li class="text-muted">财富</li>
+    </ul>
+    <!-- 主体内容区域 -->
+    <div class="tab-content ct-tab-content">
+        <div class="panel-body">
+            <div class="builder formbuilder-box">
+                <div class="form-group"></div>
+                <div class="builder-container" >
+                    <div class="row" >
+                        <div class="col-xs-12">
+                            <form method="post" class="form-horizontal form form-builder">
+                                <div class="form-type-list">
+                                    <div class="form-group hidden item_id ">
+                                        <label class="left control-label">ID：</label>
+                                        <div class="right">
+                                            <input type="hidden" class="form-control input" th:value="${user.userid}" name="userid" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">账号：</label>
+                                        <div class="right">
+                                            [[${user.account}]]
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">姓名：</label>
+                                        <div class="right">
+                                            [[${user.username}]]
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">手机：</label>
+                                        <div class="right">
+                                            [[${user.mobile}]]
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">金额：</label>
+                                        <div class="right">
+                                            <label style="width:200px" >[[${user.wealthEntity.money}]]</label>
+                                            <input style="height: 35px;" type="text" name="num" value="" placeholder="请输入金额">
+                                            <a class="btn btn-primary submit" field="money" data="add"  onclick="UpdateNum(this,true)" >增加</a>
+                                            <a class="btn btn-danger return" field="money" data="dec"  onclick="UpdateNum(this,false)" >扣减</a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_title ">
+                                        <label class="left control-label">积分：</label>
+                                        <div class="right">
+                                            <label style="width:200px" >[[${user.wealthEntity.integral}]] </label>
+                                            <input style="height: 35px;" type="text" name="num" value="" placeholder="请输入金额">
+                                            <a class="btn btn-primary submit" field="integral" data="add" onclick="UpdateNum(this,true)" >增加</a>
+                                            <a class="btn btn-danger return" field="integral" data="dec"  onclick="UpdateNum(this,false)" >扣减</a>
+                                        </div>
+                                    </div>
+                                    <!--<div class="form-group item_title ">-->
+                                        <!--<label class="left control-label">华宝：</label>-->
+                                        <!--<div class="right">-->
+                                            <!--<label style="width:200px" >[[${user.wealthEntity.huabao}]] </label>-->
+                                            <!--<input style="height: 35px;" type="text" name="num" value="" placeholder="请输入金额">-->
+                                            <!--<a class="btn btn-primary submit" field="huabao" data="add"  onclick="UpdateNum(this,true)" >增加</a>-->
+                                            <!--<a class="btn btn-danger return" field="huabao" data="dec"  onclick="UpdateNum(this,false)" >扣减</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+
+                                    <div class="form-group"></div>
+                                    <div class="form-group bottom_button_list">
+                                        <a id="back" class="btn btn-danger return" >返回</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"
+        th:src="@{/admin/libs/jquery/1.x/jquery.cookie.js}"></script>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript"
+        th:src="@{/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/validateJump.js}"></script>
+<script type="text/javascript">
+    var url=$.cookie("url");//从cookied读取url
+    if(typeof(url)=="undefined"||url=="null") {//如果cookie不存在，则将列表url赋予cookie
+        url=document.referrer;
+        $.cookie("url",url,{path:'/Admin/User/'});
+    }
+    $('#back').click(function () {//返回时将cookie中的url设成null
+       $.cookie("url",null,{path:'/Admin/User/'});
+       location.href=url;//返回列表页并刷新数据
+    })
+    function checkValue(value,pattern) {//正则校验
+        if(pattern.test(value)) return true;
+        else return false;
+    }
+    function UpdateNum(obj,flag){
+        var type=$(obj).attr('data');
+        var field=$(obj).attr('field');
+        var uid=$("input[name='userid']").val();
+        var num=$(obj).parent('div').find("input[name='num']").val();
+        if(required('',num)){//非空判断
+            $.alertMessager('请输入一个数值', 'danger');
+            return;
+        }
+        if(checkNum(num)) {//判断正浮点数
+            $.alertMessager('请输入正确的数值', 'danger');
+            return;
+        }
+        if(!flag) {//扣减判断非负
+            var sum=parseFloat($(obj).parent().find('label').text());
+            var n=parseFloat(num);
+            if(sum-n<0) {
+                $.alertMessager("扣减不允许超过拥有数",'danger');
+                return
+            }
+        }
+        $.ajax({
+            dataType: "json",
+            url: "/Admin/User/wealth/updateFruits",
+            data:{"userid":uid,"type":type,"field":field.substring(0,1).toUpperCase()+field.substring(1),"num":num},
+            type:'POST',
+            success:function(data){
+                if (data.status == 200) {
+                    $.alertMessager(data.message, 'success','',setTimeout(function(){location.replace(location.href);},1000));
+                } else {
+                    $.alertMessager(data.message, 'danger');
+                }
+            },
+            error: function(e) {
+                if (e.responseText) {
+                    alert(e.responseText);
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/libs/lyui/dist/css/lyui.min.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/libs/lyui/dist/css/lyui.extend.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/admin/css/admin.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/admin/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	href="/admin/libs/datetimepicker/css/datetimepicker.css">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/libs/datetimepicker/css/dropdown.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/layer/skin/default/layer.css?v=3.0.11110}">
+</head>
+<body>
+</body>
+<script type="text/javascript"
+	th:src="@{/admin/libs/jquery/1.x/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/admin/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/upload.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/index.js}"></script>
+<script type="text/javascript"
+	th:src="@{/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script type="text/javascript"
+	th:src="@{/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+
+<script type="text/javascript" src="/admin/js/admin.js"></script>
+<script type="text/javascript"
+	th:src="@{/admin/libs/lyui/dist/js/lyui.extend.min.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/ajaxfileupload.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/validateJump.js}"></script>
+
+<!-- KindEditor插件集成 -->
+<script charset="utf-8" src="/kindeditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="/kindeditor/lang/zh-CN.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+	function lockUser(obj) {
+		var userid = $(obj).attr("userid");
+		var flag = confirm("确认要执行此操作吗");
+		if (flag) {
+			$.ajax({
+				url : '/admin/user/setstatus/status/forbid/ids/' + userid,
+				dataType : 'json',
+				success : function(data) {
+					if (data.status == 200) {
+						location.reload(true);
+					} else {
+						alert(data.message);
+					}
+				}
+			})
+		}
+	}
+	function searchInfo() {//搜索按钮功能
+		var level = $('#level').val();//获取搜索参数
+		var beginDate = $('#beginDate').val();
+		var endDate = $('#endDate').val()
+		var type = $('#type').val();
+		var typeText = $('#typeText').val();//获取搜索参数
+		var href = '/admin/user/index?pageNumber=0&pageSize=10';//初始化
+		href += "&level=" + level + "&beginDate=" + beginDate + "&endDate="
+				+ endDate + "&type=" + type + "&typeText=" + typeText;
+		location.href = href;
+	}
+	function onChangePage(event) {//点击分页钮跳转
+		var href = location.href;//获取
+		var index = href.indexOf("pageNumber")
+		if (index == -1) {
+			href += "?pageNumber=0&pageSize=10";
+		}
+		index = href.indexOf("pageNumber");
+		var index2 = href.indexOf("&");
+		var prefix = href.substr(0, index);//获取pageNumber前的文本
+		var end = href.substr(index2, href.length);//获取&后的文本
+		href = prefix + "pageNumber=" + $(event).attr("pageNum") + end;//重写url
+		console.log(href)
+		location.href = href;
+	}
+
+	/*
+	webuploader上传文件公共方法
+	upurl:后台controller
+	upnum:可以上传文件数量
+	*/
+	function webuploaderImg(upurl) {
+		layer.open({
+			type : 2,
+			title : '上传图片',
+			shadeClose : true,
+			shade : false,
+			maxmin : true, //开启最大化最小化按钮
+			area : [ '50%', '60%' ],
+			content : upurl
+		});
+	}
+</script>

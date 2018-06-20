@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">基本设置</li>
+		</ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="builder-tabs builder-form-tabs">
+                       <ul class="nav nav-tabs">
+							<li><a href="/Admin/Config/group">系统配置</a></li>
+							<li th:class="active"><a href="/Admin/Config/system">基本设置</a></li>
+							<li><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                        <div class="row" >
+                            <div class="col-xs-12" >
+                                <form action="/Admin/Config/systemupdate" method="post" class="form-horizontal form form-builder" enctype="multipart/form-data">
+                                <div class="form-type-list">
+                                    <span style="color:#777" >公司收款账户,用于会员线下充值，通过线下转账到公司账户</span>
+                                    <div class="form-group ">
+                                        <label class="left control-label">公司收款账户名称：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="company_account_name" th:value="${keysMap['company_account_name']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['company_account_name']}" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="left control-label">公司收款账户开户行：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="company_account_bank" th:value="${keysMap['company_account_bank']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['company_account_bank']}" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="left control-label">公司收款银行卡号：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="company_account_no" th:value="${keysMap['company_account_no']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['company_account_no']}" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group "></div>
+                                    <!-- <div class="form-group ">
+                                        <label class="left control-label">会员注册赠送积分：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="reg_integral" th:value="${keysMap['reg_integral']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['reg_integral']}" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group item_config[TOGGLE_WEB_SITE] ">
+                                        <label class="left control-label">
+                                            <span>邀请注册开关：</span>
+                                        </label>
+                                        <div class="right">
+                                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+                                                <label style="position: relative;" th:if="${keysMap['close_reg']} eq '1'">
+                                                    <input id="_date_1" type="checkbox" checked="checked">
+                                                    <span style="color: #999;">关闭后不能邀请注册</span>
+                                                    <input id="_date_1_input" type="hidden" name="nameShuzu" th:value="${keysMap['close_reg']}">
+                                                    <input type="hidden" name="configId" th:value="${idsMap['close_reg']}" />
+                                                </label>
+                                                <label style="position: relative;" th:if="${keysMap['close_reg']} eq '0'">
+                                                    <input id="_date_1" type="checkbox">
+                                                    <span style="color: #999;">关闭后不能邀请注册</span>
+                                                    <input id="_date_1_input" type="hidden" name="nameShuzu" th:value="${keysMap['close_reg']}">
+                                                    <input type="hidden" name="configId" th:value="${idsMap['close_reg']}" />
+                                                </label>
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    $(document).on('click', '#_date_1', function() {
+                                                        var ch = $(this).is(':checked');
+                                                        if (ch == true) {
+                                                            $('#_date_1_input').val('1');
+                                                        } else {
+                                                            $('#_date_1_input').val('0');
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="left control-label">邀请人获得积分：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="parent_integral" th:value="${keysMap['parent_integral']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['parent_integral']}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label class="left control-label">默认库存：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="good_default" th:value="${keysMap['good_default']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['good_default']}" />
+                                            <span class="check-tips text-muted small">添加商品的默认库存</span>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="form-group ">
+                                        <label class="left control-label">库存预警：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="good_less" th:value="${keysMap['good_less']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['good_less']}" />
+                                            <span class="check-tips text-muted small">当商品库存少于库存预警数，将在商品列表页库存显示红色</span>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-group ">
+                                        <label class="left control-label">单笔最大提现额度：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="money_max" th:value="${keysMap['money_max']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_max']}" />
+                                            <span class="check-tips text-muted small">单笔最大提现额度，超出不能提现</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="left control-label">每天提现次数：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="money_date_count" th:value="${keysMap['money_date_count']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_date_count']}" />
+                                            <span class="check-tips text-muted small">每天最多可提现多少次,设置0不限制次数</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="left control-label">提现倍数：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <input type="text" name="nameShuzu" class="form-control" id="money_beishu" th:value="${keysMap['money_beishu']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_beishu']}" />
+                                            <span class="check-tips text-muted small">如填100，每次只能提100的倍数</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group ">
+                                        <label class="left control-label">提现手续费：</label>
+                                        <div style="width:61.5%" class="input-group">
+                                            <p>T+0 工作日 手续费 
+                                            <input type="text" name="nameShuzu" id="money_fee_one" th:value="${keysMap['money_fee_one']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_fee_one']}" />
+                                            %</p>
+                                            <p>T+1 工作日 手续费 
+                                            <input type="text" name="nameShuzu" id="money_fee_three" th:value="${keysMap['money_fee_three']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_fee_three']}" />
+                                            %</p>
+                                            <p>T+3 工作日 手续费 
+                                            <input type="text" name="nameShuzu" id="money_fee_five" th:value="${keysMap['money_fee_five']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_fee_five']}" />
+                                            %</p>
+                                            <p>T+7 工作日 手续费 
+                                            <input type="text" name="nameShuzu" id="money_fee_seven" th:value="${keysMap['money_fee_seven']}">
+                                            <input type="hidden" name="configId" th:value="${idsMap['money_fee_seven']}" />
+                                            %</p>
+                                            
+                                        </div>
+                                    </div> -->
+
+                                <div class="form-group"></div>
+                                <div class="form-group bottom_button_list">
+                                    <a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript">
+	$('#update').click(function() {
+		if (required("公司收款账户名称", $("#company_account_name").val()) == 1) {
+			$.alertMessager("公司收款账户名称不能为空", "danger")
+			return false;
+		}
+		if (required('公司收款账户开户行', $('#company_account_bank').val()) == 1) {
+			$.alertMessager("公司收款账户开户行不能为空", "danger")
+			return false;
+		}
+		if (required('公司收款银行卡号', $('#company_account_no').val()) == 1) {
+			$.alertMessager("公司收款银行卡号不能为空", "danger")
+			return false;
+		}
+		/* if (mask('会员注册赠送积分', $('#reg_integral').val()) == 1) {
+			$.alertMessager("会员注册赠送积分格式错误", "danger")
+			return false;
+		}
+		if (mask('邀请人获得积分', $('#parent_integral').val()) == 1) {
+			$.alertMessager("邀请人获得积分格式错误", "danger")
+			return false;
+		}
+		if (mask('默认库存', $('#good_default').val()) == 1) {
+			$.alertMessager("默认库存格式错误", "danger")
+			return false;
+		} */
+		if (mask('库存预警', $('#good_less').val()) == 1) {
+			$.alertMessager("库存预警格式错误", "danger")
+			return false;
+		}
+		if (mask("单笔最大提现额度", $("#money_max").val()) == 1) {
+			$.alertMessager("单笔最大提现额度格式错误", "danger")
+			return false;
+		}
+		if (mask("每天提现次数", $("#money_date_count").val()) == 1) {
+			$.alertMessager("每天提现次数格式错误", "danger")
+			return false;
+		}
+		if (mask("提现倍数", $("#money_beishu").val()) == 1) {
+			$.alertMessager("提现倍数格式错误", "danger")
+			return false;
+		}
+		/* if (mask("T+0提现手续费", $("#money_fee_one").val()) == 1) {
+			$.alertMessager("T+0提现手续费格式错误", "danger")
+			return false;
+		}
+		if (mask("T+1提现手续费", $("#money_fee_three").val()) == 1) {
+			$.alertMessager("T+1提现手续费格式错误", "danger")
+			return false;
+		}
+		if (mask("T+3提现手续费", $("#money_fee_five").val()) == 1) {
+			$.alertMessager("T+3提现手续费格式错误", "danger")
+			return false;
+		}
+		if (mask("T+7提现手续费", $("#money_fee_seven").val()) == 1) {
+			$.alertMessager("T+7提现手续费格式错误", "danger")
+			return false;
+		} */
+	})
+</script>
+</html>

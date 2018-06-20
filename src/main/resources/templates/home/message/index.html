@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+<script src="/admin/libs/jquery/1.x/jquery.min.js"></script>
+<title>华彩天下</title>
+</head>
+<body>
+	<div style="margin-top: 0vmin;" class="xiaoxi_main">
+		<ul>
+			<li th:each="msg,msgStat : ${msgList}">
+			<a th:href="@{'/home/message/detail/id/' + ${msg.id}}">
+					<div class="xiaoxi_left">
+						<img th:src="@{'/home/wap/home/images/xx' + ${msg.type} + '.jpg'}">
+						<span th:if="${msg.status eq 0 && msg.uid != 0}" id="xx_diana">&nbsp;</span>
+						<span th:if="${msg.uid eq 0 && mid_arr.indexOf(msg.id.toString()) eq -1}"
+							id="xx_diana">&nbsp;</span>
+					</div>
+					<div th:switch="${msg.type}" class="xiaoxi_right">
+						<h3 th:case="1">
+							通知消息 <span class="dateFormater" th:text=${msg.createTime}></span>
+						</h3>
+						<h3 th:case="2">
+							交易信息 <span class="dateFormater" th:text=${msg.createTime}></span>
+						</h3>
+						<h3 th:case="3">
+							活动信息 <span class="dateFormater" th:text=${msg.createTime}></span>
+						</h3>
+						<h3 th:case="4">
+							资产信息 <span class="dateFormater" th:text=${msg.createTime}></span>
+						</h3>
+						<p th:text="${msg.title}"></p>
+					</div>
+			</a>
+			</li>
+		</ul>
+	</div>
+</body>
+<script>
+	function changeDateFormat(value) {//日期格式化
+		var date = new Date();
+		date.setTime(value * 1000);
+		var y = date.getFullYear();
+		var m = date.getMonth() + 1;
+		m = m < 10 ? ('0' + m) : m;
+		var d = date.getDate();
+		d = d < 10 ? ('0' + d) : d;
+		var h = date.getHours();
+		h = h < 10 ? ('0' + h) : h;
+		return y + '-' + m + '-' + d;
+	}
+	$('.dateFormater').each(function(index, element) {
+		$(element).text(changeDateFormat($(element).text()))
+	})
+</script>
+</html>

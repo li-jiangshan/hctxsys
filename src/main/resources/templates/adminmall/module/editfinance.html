@@ -1,0 +1,374 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<script src="/admin/js/ajaxfileupload.js" type="text/javascript"></script>
+<script src="/admin/js/uploadImg2.js"></script>
+<style type="text/css">
+.file {
+	position: relative;
+	display: inline-block;
+	background: #2699ED;
+	border: 1px solid #99D3F5;
+	border-radius:;
+	padding: 4px 12px;
+	overflow: hidden;
+	color: #FFFFFF;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+.shang {
+	position: relative;
+	display: inline-block;
+	background: #2699ED;
+	border: 1px solid #99D3F5;
+	border-radius:;
+	padding: 4px 12px;
+	overflow: hidden;
+	color: #FFFFFF;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+.filepi {
+	position: relative;
+	display: inline-block;
+	border-radius:;
+	padding: 0px 0px;
+	overflow: hidden;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+.file input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+
+.filepi input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+
+.file:hover {
+	background: #117FCF;
+	border-color: #78C3F3;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.filepi:hover {
+	text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li>商城</li>
+			<li>咨询管理</li>
+			<li>金融</li>
+			<li class="text-muted">金融管理</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="builder formbuilder-box">
+				<div class="panel-body">
+					<form action="/Adminmall/Module/editfinance" method="post"
+						class="form-horizontal form form-builder"
+						enctype="multipart/form-data">
+
+						<div class="tab-content">
+							<div id="tab1" class="tab-pane active">
+								<div class="col-xs-12">
+									<div style="height: 20px;"></div>
+									<div class="form-type-list">
+										<input type="hidden" name="moduleId" th:value="${finance.moduleId}">
+										<div class="form-group item_title ">
+											<label class="left control-label">金融标题：</label>
+											<div style="width: 60%" class="right">
+												<input type="text" class="form-control input"
+													 name="title" th:value="${finance.title}" placeholder="金融标题">
+											</div>
+										</div>
+										
+										 <div class="form-group item_title">
+                                                <label class="left control-label">金融类型分类：</label>
+                                                <div style="width:20%" class="right">
+                                                    <select name="typeId" class="form-control select">
+                                                        <option th:selected="${type.typeId==finance.typeId}?selected" th:each="type,typeStart : ${typelist}" th:value="${type.typeId}">[[${type.typeName}]]</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+										<div class="form-group ">
+                                        <label class="left control-label">区域：</label>
+                                        <div class="right">
+                                            <select style="width:20%" class="form-control left" id="province" name="province"></select>
+                                            <select style="width:20%;display: none" class="form-control left" id="city" name="city" ></select>
+                                            <select style="width:20%;display: none" class="form-control left" id="district" name="district" ></select>
+                                        </div>
+                                    </div>
+
+										<div class="form-group item_title ">
+											<label class="left control-label">内容：</label>
+											<div style="width: 80%" class="right">
+												
+												<input  type="text" class="form-control input"
+													name="content" th:value="${finance.content}" placeholder="内容">
+											</div>
+										</div>
+
+										 
+                                            
+                                           
+                                            
+										
+										<div class="form-group item_title ">
+											<label class="left control-label">联系人姓名：</label>
+											<div style="width: 20%" class="right">
+												<input type="text" class="form-control input"
+													name="contact" th:value="${finance.contact}" placeholder="联系人姓名">
+											</div>
+										</div>
+										
+										<div class="form-group item_title ">
+											<label class="left control-label">联系人电话：</label>
+											<div style="width: 30%" class="right">
+												<input type="text" class="form-control input"
+													name="phone" th:value="${finance.phone}" placeholder="联系人电话" onkeyup="value=value.replace(/[^\d]/g,'')">
+											</div>
+										</div>
+										
+
+										<div class="form-group">
+											<label class="left control-label">封面：</label>
+											<div style="width: 60%" class="right">
+												<input type="hidden" id="coverimg" name="coverimg"
+													th:value="${finance.coverimg}" class="type-file-text">
+												<div
+													style="width: 20%; height: 100px; border: 1px solid #ccc; text-align: center">
+													<img
+														style="max-width: 100%; max-height: 100%; display: block;"
+														id="showpic1" th:src="${finance.coverimg}" alt="">
+												</div>
+												<a href="javascript:void(0);" class="file">选择上传... <input
+													type="file" name="file" id="pic1"
+													onchange="ajaxFileUpload(this.id)">
+												</a>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="left control-label">金融图集：</label>
+											<div style="width: 60%" class="right">
+												<div class="tab-pane" id="tab_goods_images">
+													<table class="table table-bordered">
+														<tbody>
+															<tr>
+																<td>
+																
+																 <span id="imglist" th:attr="moduleId=${finance.moduleId}">
+	                                                             	</span>
+																
+																<span id="imgBox"></span>
+																	<div class="goods_xc"
+																		style="width: 100px; text-align: center; margin: 5px; display: inline-block;"
+																		id="inputBox">
+																		<input type="hidden" name="coverimgImages" value="0">
+																		<a href="javascript:void(0);" class="filepi"> <img
+																			src="/admin/images/add-button.jpg" width="100"
+																			height="100" /> <input type="file" name="file"
+																			title="" id="file" multiple="multiple"
+																			accept="image/png,image/jpg,image/gif,image/JPEG" />
+																		</a> <br> <input type="button" value="上传 " id="btn"
+																			class="shang">
+																	</div></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										
+										  <div class="form-group item_title ">
+											<label class="left control-label">详细内容：</label>
+											<div style="width: 80%" class="right">
+												<textarea style="height: 200px;width: 800px" th:if="${finance.detailContent==null}" type="text" class="form-control input"
+													name="detailContent" value="" placeholder="描述"></textarea>
+												<textarea style="height: 200px;width: 800px" th:if="${finance.detailContent!=null}" type="text" class="form-control input"
+													name="detailContent" placeholder="详细内容">[[${finance.detailContent}]]</textarea>
+											</div>
+										</div>
+										
+										
+										
+									</div>
+								</div>
+
+								<div class="form-group bottom_button_list">
+									<a class="btn btn-primary submit ajax-post" type="submit"
+										target-form="form-builder">保存</a> 
+										<a class="btn btn-danger return"
+										onclick="javascript:history.back(-1);return false;">取消</a>
+								</div>
+								<div class="form-group"></div>
+							</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/admin/js/address.js}" ></script>
+	
+	<script th:inline="javascript">
+	 	var pro=[[${finance.province}]];//用户代理省
+	    var city=[[${finance.city}]];//用户代理市
+	    var district=[[${finance.district}]];//用户代理县
+	    document.getElementById('province').style.display="block";
+	    document.getElementById('city').style.display="block";
+	    document.getElementById('district').style.display="block";
+	    addressInit('province', 'city', 'district',pro,city,district);//根据用户代理地址修改，如已存在默认地址则显示
+	    
+	   /*  var imgs=[[${imgs}]];
+	    for(var i=0;i<imgs.length;i++){
+	    	$(imgBox).append("<div class='imgContainer' style='width:100px; text-align:center; margin: 5px; display:inline-block;'>"+
+	    	"<img th:src='"+imgs[i].imgUrl+"' onclick='imgDisplay(this)' width='100' height='100'><input type='hidden' name='imgUrl[]' id='hidden0'><a onclick='removeImg(this,0)' class='imgDelete'>删除</a></div>");
+	    } */
+	    
+	    
+	</script>
+	
+	
+	<script type="text/javascript">
+	
+	$(function() {
+    	$("#imglist").html("");
+    	var moduleId = $('#imglist').attr('moduleId');
+    	var url = "/Adminmall/Module/financeImgs/"+moduleId;
+    	  $.ajax({  
+             url: url, 
+             dataType:"json",
+             success: function (data) { 
+              for(var a = 0; a < data.length; a++) {
+            	  $("#imglist").append('<div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">'
+            	  					  +'<input type="hidden" name="imgUrl[]" value="'+data[a].imgUrl+'">'
+            	  					  +'<a href="'+data[a].imgUrl+'" onclick="" target="_blank">'
+            	  					  +'<img src="'+data[a].imgUrl+'" width="100" height="100"></a><br>'
+            	  					  +'<a href="javascript:void(0)" data="'+data[a].id+'" onclick="delimg(this)">删除</a></div>');
+              		}
+             },  
+             error: function (XMLHttpRequest, textStatus, errorThrown) {  
+                 alert("error");  
+             }  
+         }); 
+    });
+		
+	function delimg(a){
+		$(a).parent().remove();
+	}	
+	
+		var editortext;
+		KindEditor.ready(function(K) {
+			window.editor = K.create('#editor', {
+				uploadJson : '/fileUpload',
+				fileManagerJson : '/fileManager',
+				allowFileManager : true,
+				afterBlur : function() {
+					this.sync();
+					editortext = $("#editor").val();
+				}
+			});
+		});
+		
+
+		function ajaxFileUpload(id) {
+			var fileObj = document.getElementById(id)
+			var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+			var extention = document.getElementById(id).value.substring(
+					fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+			var browserVersion = window.navigator.userAgent.toUpperCase();
+			if (allowExtention.indexOf(extention) > -1) {
+				$.ajaxFileUpload({
+					url : '/testuploadimg', //用于文件上传的服务器端请求地址
+					contentType : "application/json; charset=utf-8",
+					secureuri : false, //是否需要安全协议，一般设置为false
+					cache : false,//防止缓存
+					fileElementId : id, //文件上传域的ID
+					dataType : 'JSON', //返回值类型 一般设置为json
+					success : function(data) //服务器成功响应处理函数
+					{
+						data = data.replace(/<pre.*?>/g, '');
+						data = data.replace(/<PRE.*?>/g, '');
+						data = data.replace("<PRE>", '');
+						data = data.replace("</PRE>", '');
+						data = data.replace("<pre>", '');
+						data = data.replace("</pre>", '');
+						var json = JSON.parse(data);
+						$("#show" + id).attr("src", json.path);
+						$("#coverimg").attr("value", json.path);
+					},
+					error : function(e)//服务器响应失败处理函数
+					{
+						alert(e);
+					}
+				});
+			} else {
+				alert("仅支持" + allowExtention + "为后缀名的文件!");
+				fileObj.value = ""; //清空选中文件
+				if (browserVersion.indexOf("MSIE") > -1) {
+					fileObj.select();
+					document.selection.clear();
+				}
+			}
+			return false;
+		}
+
+		//批量上传图片js
+		imgUpload({
+			inputId : 'file', //input框id
+			imgBox : 'imgBox', //图片容器id
+			buttonId : 'btn', //提交按钮id
+			upUrl : '/uploadImg', //提交地址
+			data : 'file', //参数名
+			num : "10"//最多上传图片个数
+		})
+
+		//图片展示
+		function addNewContent(obj) {
+			$(imgBox).html("");
+			for (var a = 0; a < imgSrc.length; a++) {
+				var oldBox = $(obj).html();
+				$(obj).html(oldBox
+										+ '<div class="imgContainer" style="width:100px; text-align:center; margin: 5px; display:inline-block;"><img title='
+										+ imgName[a]
+										+ ' alt='
+										+ imgName[a]
+										+ ' src='
+										+ imgSrc[a]
+										+ ' onclick="imgDisplay(this)" width="100" height="100"><input type="hidden" name="imgUrl[]" id="hidden'+ a +'" /><a onclick="removeImg(this,'
+										+ a
+										+ ')" class="imgDelete">删除</a></div>');
+			}
+		}
+		
+	</script>
+</body>
+</html>

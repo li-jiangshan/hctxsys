@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+	<title>详情</title>
+	<style type="text/css">
+		.sxy2_bottom ul li{
+			width: 90% !important;
+	    	float: none !important;
+		}
+		.sxy2_bottom input{
+			width: 80%;
+			border: 1px solid #ccc;
+			height:10vmin;
+		};
+	</style>
+	<script type="text/javascript" src="/home/wap/home/js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="/home/layer_mobile/layer.js"></script>
+	<script type="text/javascript" src="/home/common/js/home_index.js"></script>
+	<link rel="stylesheet" href="/home/wap/home/css/style.css">
+	<link rel="stylesheet" href="/home/layer_mobile/need/layer.css">
+</head>
+<body>
+	<div class="sxy2">
+		<div class="sxy2_top">
+			<img th:src=${image}>
+			<p>标题：<span style="color: #00b7f1" th:text=${name}></span></p>
+			<p>地区：<span th:text=${addres}></span></p>
+			<p>时间：<span th:text=${age}></span></p>
+			<div class="sxy2_jj" th:utext=${content}>
+			</div>
+		</div>
+		<div class="sxy2_bottom">
+			<form class="postfrom" name="signup">
+			<h3>我要报名</h3>
+			<ul>
+				<li>
+					姓 名：<input type="text" name="name" placeholder="请输入姓名" >
+				</li>
+				<li>
+					手 机：<input type="number" name="mobile" placeholder="请输入手机"  >
+				</li>
+				<li>
+					备 注：
+				</li>
+				<li>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<textarea rows="3" name="content" style="height:20vmin;width: 80%;border: 1px solid #ccc;" placeholder=""></textarea>
+				</li>
+				<li>
+					<div style="width:60%;margin: auto;" >
+						<span style="height:10vmin;" id="anniu" onclick="signUp()"> 发表</span>
+					</div>
+					
+				</li>
+				<li style="height:10vmin" >
+					<input type="hidden" name="pid" th:value=${pid} >
+					<input type="hidden" name="uid" th:value=${uid} >
+				</li>
+			</ul>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	function signUp(){
+		var post_data = $("form[name='signup']").serializeObject();
+		$.ajax({
+			type : "POST",
+			url : "/api/school/signUp",
+			data : JSON.stringify(post_data),
+			contentType : "application/json",
+			dataType : "json",
+			success : function(data) {
+				msg_alert(data.message);
+			}
+		});
+	}
+		
+	
+	
+	
+	$.fn.serializeObject = function() {
+		var o = {};
+		var a = this.serializeArray();
+		$.each(a, function() {
+			if (o[this.name]) {
+				if (!o[this.name].push) {
+					o[this.name] = [ o[this.name] ];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
+	};
+	</script>
+</body>
+</html>

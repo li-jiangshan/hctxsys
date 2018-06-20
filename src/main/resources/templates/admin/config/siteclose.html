@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">网站开关</li>
+		</ul>
+
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="builder-tabs builder-form-tabs">
+                        <ul class="nav nav-tabs">
+							<li><a href="/Admin/Config/group">系统配置</a></li>
+							<li><a href="/Admin/Config/system">基本设置</a></li>
+							<li><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li th:class="active"><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                        <div class="row" >
+                            <div class="col-xs-12" >
+                                <form action="/Admin/Config/sitecloseupdate" method="post" class="form-horizontal form form-builder form0">
+                                <div class="form-type-list">
+
+                                   <div class="form-group ">
+                                        <label class="left control-label">网站开关：</label>
+                                        <div class="right">
+                                            <div class="radio-inline cui-control cui-radio">
+                                                <label for="config[ADMIN_TABS]0" th:if="${keysMap['TOGGLE_WEB_SITE']} eq '0'" >
+                                                    <input type="radio" id="config[ADMIN_TABS]0" class="radio" name="nameShuzu" value="0" checked="true"> 
+                                                    <span class="cui-control-indicator"></span>
+                                                    <span>关闭</span>
+                                               </label>
+                                               <label for="config[ADMIN_TABS]0" th:if="${keysMap['TOGGLE_WEB_SITE']} eq '1'" >
+                                                    <input type="radio" id="config[ADMIN_TABS]0" class="radio" name="nameShuzu" value="0"> 
+                                                    <span class="cui-control-indicator"></span>
+                                                    <span>关闭</span>
+                                               </label>
+                                            </div>
+                                            <div class="radio-inline cui-control cui-radio">
+                                                    <label for="config[ADMIN_TABS]1" th:if="${keysMap['TOGGLE_WEB_SITE']} eq '1'">
+                                                        <input type="radio" id="config[ADMIN_TABS]1" class="radio" name="nameShuzu" value="1" checked="true" > 
+                                                        <span class="cui-control-indicator"></span>
+                                                        <span>开启</span>
+                                                    </label>
+                                                     <label for="config[ADMIN_TABS]1" th:if="${keysMap['TOGGLE_WEB_SITE']} eq '0'">
+                                                        <input type="radio" id="config[ADMIN_TABS]1" class="radio" name="nameShuzu" value="1" > 
+                                                        <span class="cui-control-indicator"></span>
+                                                        <span>开启</span>
+                                                    </label>
+                                            </div>        
+                                        </div>
+                                    </div>
+
+                                <div class="form-group item_config[WEB_SITE_DESCRIPTION] ">
+                                    <label class="left control-label">关闭说明：</label>
+                                    <div class="right">
+                                        <textarea class="form-control textarea" rows="5" name="tip" th:text="${tipMap['TOGGLE_WEB_SITE']}"></textarea>
+                                        <input type="hidden" name="configId"
+													th:value="${idsMap['TOGGLE_WEB_SITE']}" /> 
+                                        <span class="check-tips text-muted small">说明网站关闭原因</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group"></div>
+                                <div class="form-group bottom_button_list">
+                                    <a class="btn btn-primary submit ajax-post" type="submit" target-form="form0">保存</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>                   
+</div>
+</body>
+</html>

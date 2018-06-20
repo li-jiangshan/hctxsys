@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<style type="text/css">
+.file {
+	position: relative;
+	display: inline-block;
+	background: #D0EEFF;
+	border: 1px solid #99D3F5;
+	border-radius: 4px;
+	padding: 4px 12px;
+	overflow: hidden;
+	color: #1E88C7;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+}
+
+.file input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+
+.filepi input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+
+.file:hover {
+	background: #AADFFD;
+	border-color: #78C3F3;
+	color: #004974;
+	text-decoration: none;
+}
+
+.filepi:hover {
+	text-decoration: none;
+}
+</style>
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">系统配置</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+					<div class="builder-tabs builder-form-tabs">
+						<ul class="nav nav-tabs">
+							<li th:class="active"><a href="/Admin/Config/group">系统配置</a></li>
+							<li><a href="/Admin/Config/system">基本设置</a></li>
+							<li><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+					</div>
+					<div class="form-group"></div>
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<form action="/Admin/Config/baseupdate" method="post"
+									class="form-horizontal form form-builder"
+									enctype="multipart/form-data">
+
+
+									<div class="form-type-list">
+										<!-- th:each="a,keys : ${keysMap}" -->
+										<div class="form-group ">
+											<label class="left control-label">网站logo：</label>
+											<div style="width: 61.5%" class="input-group">
+												<!-- 	<notempty name="info['WEB_SITE_LOGO']"> <img
+													id='cover_img' style="max-width: 100px; max-heignt: 100px"
+													src="{$info['WEB_SITE_LOGO']}" alt=""> </notempty>
+												<br /> -->
+												<div style="width: 100px; height: 100px; text-align: center">
+													<img id="showpic1" alt=""
+														th:src="${keysMap['WEB_SITE_LOGO']}"
+														style="max-width: 100px; max-heignt: 100px" />
+
+												</div>
+
+												<a href="javascript:;" class="file">选择上传... <input
+													type="file" name="file" id="pic1"
+													onchange="ajaxFileUpload(this.id)">
+                                                </a>
+                                                <input type="hidden" name="nameShuzu" id="hiddenpic1"
+													th:value="${keysMap['WEB_SITE_LOGO']}" /> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_LOGO']}" />
+                                                <br>
+                                                <b style="color: #d6d6d6;font-size: 10px">图片尺寸最佳为1比1比例(300*300,200*200)</b>
+											</div>
+										</div>
+
+										<div class="form-group ">
+											<label class="left control-label">网站名称：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" class="form-control" name="nameShuzu"
+													id="WEB_SITE_NAME" th:value="${keysMap['WEB_SITE_NAME']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_NAME']}" />
+											</div>
+										</div>
+
+										<div class="form-group ">
+											<label class="left control-label">网站标题：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_SITE_TITLE" th:value="${keysMap['WEB_SITE_TITLE']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_TITLE']}" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="left control-label">网站描述：</label>
+											<div class="right">
+												<textarea class="form-control textarea" rows="5"
+													id="WEB_SITE_DESCRIPTION" name="nameShuzu" th:inline="text"
+													th:text="${keysMap['WEB_SITE_DESCRIPTION']}"></textarea>
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_DESCRIPTION']}" /> <span
+													class="check-tips text-muted small">网站描述</span>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="left control-label">网站关键字：</label>
+											<div class="right">
+												<textarea class="form-control textarea" rows="5"
+													id="WEB_SITE_KEYWORD" name="nameShuzu"
+													th:text="${keysMap['WEB_SITE_KEYWORD']}"></textarea>
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_KEYWORD']}" /> <span
+													class="check-tips text-muted small">网站关键字</span>
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">网站备案号：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_SITE_ICP" th:value="${keysMap['WEB_SITE_ICP']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_SITE_ICP']}" />
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">联系电话：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_TEL" th:value="${keysMap['WEB_TEL']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['WEB_TEL']}" />
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">联系手机：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_MOBILE" th:value="${keysMap['WEB_MOBILE']}">
+												<input type="hidden" name="configId"
+													th:value="${idsMap['WEB_MOBILE']}" />
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">平台客服QQ1：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_QQ1" th:value="${keysMap['WEB_QQ1']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['WEB_QQ1']}" />
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">平台客服QQ2：</label>
+											<div style="width: 61.5%" class="input-group">
+												<input type="text" name="nameShuzu" class="form-control"
+													id="WEB_QQ2" th:value="${keysMap['WEB_QQ2']}"> <input
+													type="hidden" name="configId"
+													th:value="${idsMap['WEB_QQ2']}" />
+											</div>
+										</div>
+										<div class="form-group ">
+											<label class="left control-label">平台客服微信：</label>
+											<div style="width: 61.5%" class="input-group">
+												<!-- <notempty name="info['WEB_WX']"> <img id="wx_img"
+													style="max-width: 100px; max-heignt: 100px"
+													src="{$info['WEB_WX']}" alt=""> </notempty>
+												<br /> -->
+												<div style="width: 100px; height: 100px; text-align: center">
+													<img id="showpic2" alt="" th:src="${keysMap['WEB_WX']}"
+														style="max-width: 100px; max-heignt: 100px" />
+												</div>
+
+												<a href="javascript:;" class="file">选择上传... <input
+													type="file" name="file" id="pic2"
+													onchange="ajaxFileUpload(this.id)">
+												</a> <input type="hidden" name="nameShuzu" id="hiddenpic2"
+													th:value="${keysMap['WEB_WX']}" /> <input type="hidden"
+													name="configId" th:value="${idsMap['WEB_WX']}" />
+											</div>
+										</div>
+										<div class="form-group"></div>
+										<div class="form-group bottom_button_list">
+											<a class="btn btn-primary submit ajax-post" type="submit"
+												target-form="form-builder" id="update">确定</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	function ajaxFileUpload(id) {
+		var fileObj = document.getElementById(id)
+		var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+		var extention = document.getElementById(id).value.substring(
+				fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+		var browserVersion = window.navigator.userAgent.toUpperCase();
+		if (allowExtention.indexOf(extention) > -1) {
+			$.ajaxFileUpload({
+				url : '/testuploadimg', //用于文件上传的服务器端请求地址
+				contentType : "application/json; charset=utf-8",
+				secureuri : false, //是否需要安全协议，一般设置为false
+				cache : false,//防止缓存
+				fileElementId : id, //文件上传域的ID
+				dataType : 'JSON', //返回值类型 一般设置为json
+				success : function(data) //服务器成功响应处理函数
+				{
+					data = data.replace(/<pre.*?>/g, '');
+					data = data.replace(/<PRE.*?>/g, '');
+					data = data.replace("<PRE>", '');
+					data = data.replace("</PRE>", '');
+					data = data.replace("<pre>", '');
+					data = data.replace("</pre>", '');
+					var json = JSON.parse(data)
+					$("#show" + id).attr("src", json.path);
+					$("#hidden" + id).attr("value", json.path);
+				},
+				error : function(e)//服务器响应失败处理函数
+				{
+					alert(e);
+				}
+			})
+		} else {
+			alert("仅支持" + allowExtention + "为后缀名的文件!");
+			fileObj.value = ""; //清空选中文件
+			if (browserVersion.indexOf("MSIE") > -1) {
+				fileObj.select();
+				document.selection.clear();
+			}
+		}
+		return false;
+	}
+
+	$('#update').click(function() {
+		if (required("网站logo", $("#hiddenpic1").val()) == 1) {
+			$.alertMessager("网站logo不能为空", "danger")
+			return false;
+		}
+		if (required('网站名称', $('#WEB_SITE_NAME').val()) == 1) {
+			$.alertMessager("网站名称不能为空", "danger")
+			return false;
+		}
+		if (required('网站标题', $('#WEB_SITE_TITLE').val()) == 1) {
+			$.alertMessager("网站标题不能为空", "danger")
+			return false;
+		}
+		if (required('网站描述', $('#WEB_SITE_DESCRIPTION').val()) == 1) {
+			$.alertMessager("网站描述不能为空", "danger")
+			return false;
+		}
+		if (required('网站关键字', $('#WEB_SITE_KEYWORD').val()) == 1) {
+			$.alertMessager("网站关键字不能为空", "danger")
+			return false;
+		}
+		if (required('网站备案号', $('#WEB_SITE_ICP').val()) == 1) {
+			$.alertMessager("网站备案号不能为空", "danger")
+			return false;
+		}
+		if (required('联系电话', $('#WEB_TEL').val()) == 1) {
+			$.alertMessager("联系电话不能为空", "danger")
+			return false;
+		}
+		if (phone("联系手机", $("#WEB_MOBILE").val()) == 1) {
+			$.alertMessager("联系手机不能为空", "danger")
+			return false;
+		}
+		if (qq("平台客服QQ1", $("#WEB_QQ1").val()) == 1) {
+			$.alertMessager("平台客服QQ1格式错误", "danger")
+			return false;
+		}
+		if (qq("平台客服QQ2", $("#WEB_QQ2").val()) == 1) {
+			$.alertMessager("平台客服QQ2格式错误", "danger")
+			return false;
+		}
+		if (required("平台客服微信", $("#hiddenpic2").val()) == 1) {
+			$.alertMessager("平台客服微信不能为空", "danger")
+			return false;
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+	<div id="main" class="col-xs-12 col-sm-9 main"
+		style="overflow-y: scroll;">
+		<!-- 面包屑导航 -->
+		<ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+			<li class="text-muted">反馈管理</li>
+			<li class="text-muted">发布消息</li>
+		</ul>
+
+		<!-- 主体内容区域 -->
+		<div class="tab-content ct-tab-content">
+			<div class="panel-body">
+				<div class="builder formbuilder-box">
+
+					<div class="form-group"></div>
+
+					<!-- 顶部工具栏按钮 -->
+					<div class="builder-toolbar">
+						<div class="row">
+							<!-- 工具栏按钮 -->
+							<div class="col-xs-12 col-sm-8 button-list clearfix">
+								<div class="form-group">
+									<a title="发布" class="btn btn-primary-outline btn-pill"
+										href="/admin/message/add">发布</a>&nbsp;
+								</div>
+							</div>
+
+							<!-- 搜索框 -->
+							<div class="col-xs-12 col-sm-4 clearfix">
+                                    <form class="form" method="get">
+                                        <div class="form-group">
+                                            <div class="input-group search-form">
+                                            	<input type="hidden" name = "pageNumber" id = "pageNumber" value = "0">
+                                                <input type="hidden" name = "pageSize" id = "pageSize" value = "10">
+                                                <input type="text" name="typeText" id="typeText" class="search-input form-control" placeholder="请输入标题" th:value="${keyword}">
+                                                <span class="input-group-btn" onclick="searchByKeyword()"><a class="btn btn-default search-btn"><i class="fa fa-search"></i></a></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+						</div>
+					</div>
+
+					<!-- 数据列表 -->
+					<div class="builder-container">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="builder-table">
+									<div class="panel panel-default table-responsive">
+										<table class="table table-bordered table-striped table-hover">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>指定会员</th>
+													<th>标题</th>
+													<th>分类</th>
+													<th>时间</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody th:if="not ${#lists.isEmpty(messageList)}">
+													<tr th:each="message,messageStat : ${messageList}">
+														<td th:text="${message.id}"></td>
+                                                        <td th:text="${message.mobile}"></td>
+                                                        <td><p style="width: 208px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0;padding: 0;" th:text="${message.title}"></p></td>
+                                                       <td th:switch="${message.type}">
+															<span th:case='1' >通知消息</span>
+															<span th:case='2' >交易信息</span>
+															<span th:case='3' >活动信息</span>
+															<span th:case='4' >资产信息</span>
+														</td>
+                                                        <td class="dateFormater" th:text="${message.createTime}"></td>
+                                                        <td>
+                                                        	  <a name="addnews" title="编辑" class="label label-primary-outline label-pill" th:href="@{'/admin/message/add/ids/'+${message.id}}">编辑</a>
+                                                                <a name="delete" title="删除" class="label label-danger-outline label-pill ajax-get confirm" model="Admin" th:href="@{'/admin/message/delete/ids/'+${message.id}}">删除</a>
+                                                        </td>
+													</tr>
+												</tbody>
+											
+											
+											<tbody th:if="${#lists.isEmpty(messageList)}">
+													<tr class="builder-data-empty">
+														<td class="text-center empty-info" colspan="20"><i
+															class="fa fa-database"></i> 暂时没有数据<br></td>
+													</tr>
+												</tbody>
+										</table>
+									</div>
+									<ul class="pagination" th:if="${pageCount!=0}">
+                                    <!--当页面小于7页-->
+                                    <ul class="pagination"  th:if="${pageCount le 7}">
+                                        <li th:class="${page eq 0}? 'disabled' : ''">
+                                            <a href="javascript:void(0)" th:if="${page gt 0}" th:attr="pageNum=${page}-1" onclick="onChangePage(this)" >«</a>
+                                            <a href="javascript:void(0)" th:if="${page==0}" >«</a>
+                                        </li>
+                                        <li th:each="i:${#numbers.sequence(0,pageCount-1)}"  th:class="${page eq i}? 'active' : ''">
+                                            <a href="javascript:void(0)" th:pageNum="${i}" onclick="onChangePage(this)"  th:text="${i}+1"></a>
+                                        </li>
+                                        <li th:class="${page eq pageCount-1}? 'disabled' : ''">
+                                            <a href="javascript:void(0)" th:if="${page!=pageCount-1}" onclick="onChangePage(this)"  th:attr="pageNum=${page+1}">»</a>
+                                            <a href="javascript:void(0)" th:if="${page==pageCount-1}">»</a>
+                                        </li>
+                                        <li><span class="rows" th:text="'共'+${rows}+'条记录'"></span></li>
+                                    </ul>
+                                    <!--当页面大于7-->
+                                    <ul class="pagination" th:if="${pageCount gt 7}">
+                                        <!--上一页-->
+                                        <li th:class="${page eq 0}? 'disabled' : ''">
+                                            <a href="javascript:void(0)" th:if="${page gt 0}" th:attr="pageNum=${page}-1" onclick="onChangePage(this)" >«</a>
+                                            <a href="javascript:void(0)" th:if="${page==0}" >«</a>
+                                        </li>
+                                        <!--首页-->
+                                        <li  th:class="${page eq 0}? 'active' : ''">
+                                            <a href="javascript:void(0)" th:pageNum="0" onclick="onChangePage(this)"  th:text="1"></a>
+                                        </li>
+                                        <!-- 当前页面小于等于4 -->
+                                        <li th:class="${(page + 1) eq i} ? 'active' : ''" th:if="${(page+1) le 4}" th:each="i : ${#numbers.sequence(2,5)}"  >
+                                            <a href="javascript:void(0)" th:pageNum="${i}-1" onclick="onChangePage(this)" th:text="${i}"></a>
+                                        </li>
+                                        <li class="disabled" th:if="${(page+1) le 4}" >
+                                            <a href="javascript:void(0)" >...</a>
+                                        </li>
+                                        <!-- 最后一页与当前页面之差，小于等于3 -->
+                                        <li class="disabled" th:if="${(pageCount-(page + 1)) le 3}" >
+                                        <a href="javascript:void(0)">...</a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(pageCount-4, pageCount-1)}" th:class="${(page + 1) eq i} ? 'active' : ''" th:if="${(pageCount-(page + 1)) le 3}" >
+                                            <a href="javascript:void(0)" onclick="onChangePage(this)" th:pageNum="${i} - 1" th:text="${i}"  ></a>
+                                        </li>
+                                        <!-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+                                        <li class="disabled" th:if="${((page + 1) gt 4) && ((pageCount-(page + 1)) gt 3 )}" >
+                                            <a href="javascript:void(0)">...</a>
+                                        </li>
+                                        <li th:if="${((page + 1) gt 4) && ((pageCount-(page + 1)) gt 3 )}"  >
+                                            <a href="javascript:void(0)" th:pageNum="${page}-1" th:text="${page}"  onclick="onChangePage(this)"></a>
+                                        </li>
+                                        <li class="active"  th:if="${((page + 1) gt 4) && ((pageCount-(page + 1)) gt 3 )}"  >
+                                            <a href="javascript:void(0)" th:pageNum="${page}" th:text="${page}+1"></a>
+                                        </li>
+                                        <li   th:if="${((page + 1) gt 4) && ((pageCount-(page + 1)) gt 3 )}"  >
+                                            <a href="javascript:void(0)" onclick="onChangePage(this)" th:pageNum="${page}+1"  th:text="${page}+2"></a>
+                                        </li>
+                                        <li class="disabled"  th:if="${((page + 1) gt 4) && ((pageCount-(page + 1)) gt 3 )}"  >
+                                            <a href="javascript:void(0)">...</a>
+                                        </li>
+                                        <!--最后一页-->
+                                        <li  th:class="${(page + 1) eq pageCount} ? 'active' : ''" >
+                                            <a href="javascript:void(0)" th:pageNum="${pageCount-1}" onclick="onChangePage(this)"  th:text="${pageCount}"></a>
+                                        </li>
+                                        <!--下一页-->
+                                        <li th:class="${page eq pageCount-1}? 'disabled' : ''">
+                                            <a href="javascript:void(0)" th:if="${page!=pageCount-1}" onclick="onChangePage(this)"  th:attr="pageNum=${page+1}">»</a>
+                                            <a href="javascript:void(0)" th:if="${page==pageCount-1}">»</a>
+                                        </li>
+                                        <li><span class="rows" th:text="'共'+${rows}+'条记录'"></span></li>
+                                        
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script
+	src="/admin/libs/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script
+	src="/admin/libs/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script>
+// 表格快速编辑功能，input失去焦点时自动保存数据。
+$(document).on('change', '.inputtxt', function() {
+
+    var id = $(this).attr('data');
+    var val = $(this).val();
+    if(val=='' || val==null){
+      $.alertMessager('请填写一个值', 'danger');
+      return false;
+    }
+    
+    var url="{:url('changeorder')}";
+    $.ajax({
+        dataType: "json",
+        url: url,
+        data:{id:id,sort_order:val},
+        type:'POST',
+        success:function(data){
+            if (data.status == 1) {
+                $.alertMessager(data.info, 'success');
+            } else {
+                $.alertMessager(data.info, 'danger');
+            }
+        },
+        error: function(e) {
+            if (e.responseText) {
+                alert(e.responseText);
+            }
+        }
+    });
+});
+
+	function changeDateFormat(value) {//日期格式化
+		var date = new Date();
+		date.setTime(value * 1000);
+		var y = date.getFullYear();
+		var m = date.getMonth() + 1;
+		m = m < 10 ? ('0' + m) : m;
+		var d = date.getDate();
+		d = d < 10 ? ('0' + d) : d;
+		var h = date.getHours();
+		h = h < 10 ? ('0' + h) : h;
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		minute = minute < 10 ? ('0' + minute) : minute;
+		second = second < 10 ? ('0' + second) : second;
+		return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+	}
+
+	$('.dateFormater').each(function(index, element) {
+		$(element).text(changeDateFormat($(element).text()))
+	})
+
+	/* 	function searchInfo() {//搜索按钮功能
+		var status=[[${status}]];
+	       var feetime=$('.feetime').val();//获取搜索参数
+	       var type=$('.type').val();
+	       var date_start=$('.date_start').val()
+	       var date_end=$('.date_end').val();
+	       var querytype=$('.querytype').val();//获取搜索参数
+	       var keyword=$('keyword').val();
+	       var href='/Admin/Money/index?page=0';//初始化
+	       href+="&status"+status+"&feetime="+feetime+"&type="+type+"&date_start="+date_start+"&date_end="+date_end+"&querytype="+querytype+"&keyword"+keyword;
+	       location.href=href;
+	   } */
+
+	   function onChangePage(event) {//点击分页钮跳转
+	        var href=location.href;//获取
+	        var typeText = $("#typeText").val();
+	        var index= href.indexOf("page")
+	        if(index==-1) {
+	            href+="?page=0&pageSize=10";
+	        }
+	        index=href.indexOf("page");
+	        indexhhh=href.indexOf("?");
+	        var index2=href.indexOf("&");
+	        if(typeText==null||typeText==''){
+	        	var prefix=href.substr(0,indexhhh+1);//获取?前的文本
+	        }else{
+	        	var prefix=href.substr(0,index);//获取pageNumber前的文本
+	        }	        
+	        var end=href.substr(index2,href.length);//获取&后的文本
+	        href=prefix+"page="+$(event).attr("pageNum")+end;//重写url
+	        location.href=href;
+	    }
+	    
+	    function searchByKeyword(){
+	    	var typeText = $("#typeText").val();
+	        if(typeText==null||typeText==''){
+				var href='/Admin/Message/index?page=0&pageSize=10';//初始化
+			}else{
+				var href='/Admin/Message/index?page=0&pageSize=10';//初始化
+	            href+="&keyword="+typeText;
+			}
+	        location.href=href; 
+	    };
+</script>
+
+</html>

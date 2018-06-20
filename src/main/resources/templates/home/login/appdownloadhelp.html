@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/home/wap/home/css/style.css}">
+<link rel="stylesheet" th:href="@{/home/wap/home/css/qiandao_style.css}">
+<script type="text/javascript" th:src="@{/home/wap/home/js/jquery-1.10.2.min.js}"></script>
+<title>华彩天下</title>
+<style>
+.mid{
+	margin-top:20%;
+	margin-left:20%;
+	float:left;
+	width:60%;
+	color:#FF6600;
+	font-size:4vmin;
+}
+.mid *{
+	text-align: center;
+}
+.mid img{
+	margin-left:10%;
+	width:80%;
+}
+
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		downloaded();
+	}); 
+	function downloaded(){
+		var ua = navigator.userAgent.toLowerCase();
+		if(ua.match(/MicroMessenger/i)!="micromessenger") {//如果是微信浏览器
+			location.href="http://www.lnhuacai.com/uploads/apk/downcc.apk";
+		}
+	}
+</script>
+</head>
+<body>
+	<div class="adddownhelptop" style="float:right;width:40%;height:20vmin;padding-left: 10%;padding-top: 10%;color:#FFFFFF;">
+		选择"浏览器中打开"
+	</div>
+	</br>
+	<div class="mid">
+		<img th:src="@{/home/wap/home/images/hctx_logo.png}">
+		<span style="display:block;">微信/QQ 内无法下载应用</span>
+	</div>
+</body>
+</html>

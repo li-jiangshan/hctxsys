@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="common/includ" />
+<head th:replace="common/layout" />
+<body>
+   <div id="main" class="col-xs-12 col-sm-9 main" style="overflow-y: scroll;">
+        <!-- 面包屑导航 -->
+        <ul class="breadcrumb">
+			<li><i class="fa fa-map-marker"></i></li>
+			<li class="text-muted">系统</li>
+            <li class="text-muted">系统功能</li>
+			<li class="text-muted">系统配置</li>
+			<li class="text-muted">奖励积分配置</li>
+		</ul>
+        <!-- 主体内容区域 -->
+        <div class="tab-content ct-tab-content">
+            <div class="panel-body">
+                <div class="builder formbuilder-box">
+                    <div class="builder-tabs builder-form-tabs">
+                       <ul class="nav nav-tabs">
+							<li><a href="/Admin/Config/group">系统配置</a></li>
+							<li><a href="/Admin/Config/system">基本设置</a></li>
+							<li><a href="/Admin/Config/fee">分销设置</a></li>
+							<!-- <li><a href="/Admin/Config/turntable">转盘配置</a></li> -->
+							<!-- <li><a href="/Admin/Config/siteclose">网站开关</a></li> -->
+							<li th:class="active"><a href="/Admin/Config/integral">奖励积分</a></li>
+						</ul>
+                    </div>
+                    <div class="form-group"></div>
+                    <div class="builder-container" >
+                        <div class="row" >
+                            <div class="col-xs-12" >
+                                <div class="form-group">
+                                    <label class="left control-label">奖励积分配置</label>
+                                </div>
+                                <form action="/Admin/Config/integralupdate" method="post" class="form-horizontal form form-builder">
+                                	<div class="form-type-list" th:each="row,rowStat : ${keysMap}" >
+                                		<input type="hidden" name="id" th:value="${row.id}">
+                                		<div class="form-group">
+	                                        <label class="left control-label">
+	                                            <span>平台跟商家：</span>
+	                                        </label>
+	                                        <div class="right" style="height: 50px">
+	                                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+	                                                <label style="position: relative;" th:if="${row.toSeller} eq '1'">
+	                                                    <input id="_date_1" type="checkbox" checked="checked">
+	                                                    <span style="color: #999;">平台跟商家奖励积分开关</span>
+	                                                    <input id="_date_1_input" type="hidden" name="toSeller" th:value="${row.toSeller}">
+	                                                </label>
+	                                                <label style="position: relative;" th:if="${row.toSeller} eq '0'">
+	                                                    <input id="_date_1" type="checkbox">
+	                                                    <span style="color: #999;">平台跟商家奖励积分开关</span>
+	                                                    <input id="_date_1_input" type="hidden" name="toSeller" th:value="${row.toSeller}">
+	                                                </label>
+	                                            </div>
+	                                            <script type="text/javascript">
+	                                                $(function(){
+	                                                    $(document).on('click', '#_date_1', function() {
+	                                                        var ch = $(this).is(':checked');
+	                                                        if (ch == true) {
+	                                                            $('#_date_1_input').val('1');
+	                                                        } else {
+	                                                            $('#_date_1_input').val('0');
+	                                                        }
+	                                                    });
+	                                                });
+	                                            </script>
+	                                        </div>
+	                                        <label class="left control-label">
+	                                            <span>平台跟消费者：</span>
+	                                        </label>
+	                                        <div class="right" style="height: 50px">
+	                                            <div class="checkbox checkbox-slider--b-flat checkbox-slider-md">
+	                                                <label style="position: relative;" th:if="${row.toCustomer} eq '1'">
+	                                                    <input id="_date_2" type="checkbox" checked="checked">
+	                                                    <span style="color: #999;">平台跟消费者奖励积分开关</span>
+	                                                    <input id="_date_2_input" type="hidden" name="toCustomer" th:value="${row.toCustomer}">
+	                                                </label>
+	                                                <label style="position: relative;" th:if="${row.toCustomer} eq '0'">
+	                                                    <input id="_date_2" type="checkbox">
+	                                                    <span style="color: #999;">平台跟消费者奖励积分开关</span>
+	                                                    <input id="_date_2_input" type="hidden" name="toCustomer" th:value="${row.toCustomer}">
+	                                                </label>
+	                                            </div>
+	                                            <script type="text/javascript">
+	                                                $(function(){
+	                                                    $(document).on('click', '#_date_2', function() {
+	                                                        var ch = $(this).is(':checked');
+	                                                        if (ch == true) {
+	                                                            $('#_date_2_input').val('1');
+	                                                        } else {
+	                                                            $('#_date_2_input').val('0');
+	                                                        }
+	                                                    });
+	                                                });
+	                                            </script>
+	                                        </div>
+	                                        <div class="right" style="height: 60px">
+												<label class="left control-label" style="width: 200px">平台收取运营费百分比：</label>
+												<div style="width: 200px" class="input-group">
+													<input type="text" name="runcost" id="runcost" class="form-control" th:value="${row.runcost}" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"> 
+													<span class="input-group-addon">%</span>
+												</div>
+											</div>
+											<div class="right" style="height: 60px">
+												<label class="left control-label" style="width: 200px">奖励消费者积分百分比：</label>
+												<div style="width: 200px" class="input-group">
+													<input type="text" name="returnIntegral" class="form-control" id="returnIntegral" th:value="${row.returnIntegral}" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"> 
+													<span class="input-group-addon">%</span>
+												</div>
+											</div>
+											<div class="right" style="height: 60px">
+												<label class="left control-label" style="width: 200px">商家购买库存积分百分比：</label>
+												<div style="width: 200px" class="input-group">
+													<input type="text" name="stockIntegral" class="form-control" id="stockIntegral" th:value="${row.stockIntegral}" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"> 
+													<span class="input-group-addon">%</span>
+												</div>
+											</div>
+											<div class="right" style="height: 60px">
+												<label class="left control-label" style="width: 200px">积分转现金手续费百分比：</label>
+												<div style="width: 200px" class="input-group">
+													<input type="text" name="integralMoneyFee" class="form-control" id="integralMoneyFee" th:value="${row.integralMoneyFee}" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"> 
+													<span class="input-group-addon">%</span>
+												</div>
+											</div>
+											<div class="right" style="height: 60px">
+												<label class="left control-label" style="width: 200px">额外新增返现额度：</label>
+												<div style="width: 200px" class="input-group">
+													<input type="hidden" name="amountMoneyId" class="form-control" id="amountMoneyId" th:value="${amountMoneyId}">
+													<input type="text" name="amountMoney" class="form-control" id="amountMoney" th:value="${amountMoney}" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')">
+												</div>
+											</div>
+	                                    </div>
+	                                    <div class="form-group"></div>
+                                		<div class="form-group bottom_button_list">
+                                    		<a class="btn btn-primary submit ajax-post" type="submit" target-form="form-builder" id="update">确定</a>
+                                    		<a class="btn btn-danger return" onclick="javascript:history.back(-1);return false;">取消</a>
+                                		</div>
+                                	</div>
+                                </form>
+                    	</div>
+                	</div>
+            	</div>
+            </div>
+        </div>
+    </div>                   
+</div>
+</body>
+<script type="text/javascript">
+	$("#update").click("click", function() {
+		if (required("平台收取运营费百分比", $("#runcost").val()) == 1) {
+			$.alertMessager("平台收取运营费百分比不能为空", "danger")
+			return false;
+		}
+		if ($("#runcost").val()>100) {
+			$.alertMessager("平台收取运营费百分比，请输入0-100数字", "danger")
+			return false;
+		}
+		if (required("奖励消费者积分百分比", $("#returnIntegral").val()) == 1) {
+			$.alertMessager("奖励消费者积分百分比不能为空", "danger")
+			return false;
+		}
+		if ($("#returnIntegral").val()>100) {
+			$.alertMessager("奖励消费者积分百分比，请输入0-100数字", "danger")
+			return false;
+		}
+		if (required("商家购买库存积分百分比", $("#stockIntegral").val()) == 1) {
+			$.alertMessager("商家购买库存积分百分比不能为空", "danger")
+			return false;
+		}
+		if ($("#stockIntegral").val()>100) {
+			$.alertMessager("商家购买库存积分百分比，请输入0-100数字", "danger")
+			return false;
+		}
+		if (required("积分转现金手续费百分比", $("#integralMoneyFee").val()) == 1) {
+			$.alertMessager("积分转现金手续费百分比不能为空", "danger")
+			return false;
+		}
+		if ($("#integralMoneyFee").val()>100) {
+			$.alertMessager("积分转现金手续费百分比，请输入0-100数字", "danger")
+			return false;
+		}
+		if (required("额外新增返现额度", $("#amountMoney").val()) == 1) {
+			$.alertMessager("额外新增返现额度不能为空", "danger")
+			return false;
+		}
+		if (!($("#amountMoney").val()<=99999999.99)) {
+			$.alertMessager("额外新增返现最大额度为99999999.99", "danger")
+			return false;
+		}
+	});
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,minimal-ui">
+<link rel="stylesheet" href="/home/wap/home/css/style.css">
+<link rel="stylesheet" href="/admin/layer/mobile/need/layer.css">
+<script src="/admin/libs/jquery/1.x/jquery.min.js"></script>
+<title>华彩天下</title>
+</head>
+<body>
+	<div class="sjxq">
+		<p class="sjxq_img">
+			<img th:src="${info.shopImg}">
+		</p>
+		<div class="sjxq_b">
+			<h3 th:text="${info.shopName}"></h3>
+		</div>
+		<div class="sjxq_b">
+			<h3>商家地址</h3>
+			<p class="dwtp" th:text="${info.province+info.city+info.district+info.addresssDetail}">
+				</br>
+				<img src="/home/wap/home/images/dw.jpg"><span id="long">距离获取失败</span>
+			</p>
+		</div>
+		<div class="sjxq_b">
+			<h3>营业时间</h3>
+			<p th:text="${info.workTime}"></p>
+		</div>
+		<div class="sjxq_b">
+			<h3>商家信息</h3>
+			<p th:if="${not #strings.isEmpty(info.content)}" th:text="${info.content}"></p>
+			<p th:if="${#strings.isEmpty(info.content)}">暂无介绍</p>
+		</div>
+		<div class="sjxq_b">
+			<h3>热门评论</h3>
+			<div class="pinglun">
+				<ul>
+					<li th:each="all,allStat : ${list}">
+						<div class="pinglun_top">
+							<span class="tx"><img src="/home/wap/home/images/tx.png"></span>
+							<span class="mz" th:text="${all.username}"></span>
+							<span class="wx">
+							<img th:each="i : ${#numbers.sequence(1, T(java.lang.Math).max(T(java.lang.Math).max(all.starAbility,all.starAttitude),all.starPrice))}" src="/home/wap/home/images/x1.png">&nbsp;
+							</span>
+						</div>
+						<p th:text="${all.content}"></p>
+						<p class="dateFormater wz_b" th:text="${all.createTime}"></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+<script>
+	function changeDateFormat(value) {//日期格式化
+		var date = new Date();
+		date.setTime(value * 1000);
+		var y = date.getFullYear();
+		var m = date.getMonth() + 1;
+		m = m < 10 ? ('0' + m) : m;
+		var d = date.getDate();
+		d = d < 10 ? ('0' + d) : d;
+		var h = date.getHours();
+		h = h < 10 ? ('0' + h) : h;
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		minute = minute < 10 ? ('0' + minute) : minute;
+		second = second < 10 ? ('0' + second) : second;
+		return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+	}
+
+	$('.dateFormater').each(function(index, element) {
+		$(element).text(changeDateFormat($(element).text()))
+	})
+</script>
+</body>
+</html>
